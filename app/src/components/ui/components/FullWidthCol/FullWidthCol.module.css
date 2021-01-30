@@ -1,0 +1,11 @@
+.root {
+  flex-grow: 1;
+  max-width: 100%;
+}
+
+@media (min-width: 1200px) {
+  .root {
+    padding-left: var(--step);
+    padding-right: var(--step);
+  }
+}

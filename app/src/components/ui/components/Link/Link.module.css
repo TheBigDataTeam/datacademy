@@ -1,0 +1,91 @@
+.root {
+  outline: none;
+  border: none;
+  text-decoration: none;
+}
+
+.root:focus,
+.root:active {
+  text-decoration: none;
+}
+
+/* Size modifier */
+.root_size_l {
+  line-height: 48px;
+  font-size: 18px;
+  padding: 0 24px;
+}
+
+.root_size_m {
+  line-height: 38px;
+  font-size: 16px;
+  padding: 0 19px;
+}
+
+.root_size_s {
+  line-height: 28px;
+  font-size: 13px;
+  padding: 0 14px;
+}
+
+/* Design modifier */
+.root_design_link {
+  color: #3677c2;
+  transition: color var(--transition_color);
+}
+
+.root_design_link.root_color_light {
+  color: var(--font_color_light);
+}
+
+.root_design_link.root_color_dark {
+  color: var(--font_color_main);
+}
+
+.root_design_link:hover,
+.root_design_link.root_color_light:hover,
+.root_design_link.root_color_dark:hover {
+  color: var(--font_color_accent);
+}
+
+/* Underline modifier */
+.root_underlined {
+  text-decoration: underline;
+}
+
+/* Fullwidth modifier */
+.root_fullwidth {
+  width: 100%;
+}
+
+/* Rounded modifier */
+.root_rounded {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* With different size */
+.root_rounded.root_size_s {
+  border-radius: 14px;
+}
+
+.root_rounded.root_size_m {
+  border-radius: 18px;
+}
+
+.root_rounded.root_size_l {
+  border-radius: 24px;
+}
+
+/* withIcon modifier */
+.root_onlyIcon {
+    display: inline-flex;
+    height: 38px;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    padding: 0;
+}
+
+.icon_onlyIcon {
+  margin: 0;
+}

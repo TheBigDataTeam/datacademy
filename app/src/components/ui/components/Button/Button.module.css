@@ -1,0 +1,90 @@
+.root {
+  position: relative;
+  display: inline-flex;
+  justify-content: center;
+  box-sizing: border-box;
+  align-items: center;
+  outline: none;
+}
+
+.root:focus,
+.root:active {
+  text-decoration: none;
+}
+
+.root:disabled {
+  cursor: default;
+}
+
+/* Size modifier */
+.root_size_l {
+  height: 56px;
+  min-width: 56px;
+  font-size: 18px;
+  padding: 2px 22px;
+}
+
+.root_size_m {
+  height: 40px;
+  min-width: 40px;
+  font-size: 16px;
+  padding: 2px 20px;
+}
+
+.root_size_s {
+  height: 28px;
+  min-width: 28px;
+  font-size: 13px;
+  padding: 2px 14px;
+}
+
+/* Fullwidth modifier */
+.root_fullwidth {
+  width: 100%;
+}
+
+/* Rounded modifier */
+
+/* With different size */
+.root_rounded.root_size_s {
+  border-radius: 14px;
+}
+
+.root_rounded.root_size_m {
+  border-radius: 20px;
+}
+
+.root_rounded.root_size_l {
+  border-radius: 28px;
+}
+
+/* Loading state modifier */
+.root_loading.root {
+  color: transparent;
+}
+
+.loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  line-height: 1;
+}
+
+/* withIcon modifier */
+.root_withIcon {
+  padding-left: 14px;
+}
+
+.root_onlyIcon {
+  padding: 0;
+}
+
+.icon {
+  margin-right: 10px;
+  line-height: 0;
+}
+
+.icon_onlyIcon {
+  margin: 0;
+}

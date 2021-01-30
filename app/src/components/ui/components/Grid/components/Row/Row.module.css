@@ -1,0 +1,13 @@
+.root {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: calc(-1 * var(--step));
+  margin-left: calc(-1 * var(--step));
+}
+
+@media (max-width: 1119px) {
+  .root_noGutter {
+    margin-right: calc(-2 * var(--step));
+    margin-left: calc(-2 * var(--step));
+  }
+}
