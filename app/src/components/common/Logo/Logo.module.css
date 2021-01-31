@@ -1,0 +1,9 @@
+.link {
+  text-decoration: none;
+}
+
+.logo {
+  width: 100px;
+  height: 40px;
+  color: var(--font_color_main);
+}

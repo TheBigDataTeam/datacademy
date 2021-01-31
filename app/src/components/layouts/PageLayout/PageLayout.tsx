@@ -1,6 +1,6 @@
 import React, { ReactNode, useEffect } from 'react';
 import classNames from 'classnames';
-import { Container, Loader } from 'components/ui';
+import { Container, Loader } from '../../ui';
 import styles from './PageLayout.module.css';
 
 const handleResize = (): void => {
@@ -45,7 +45,7 @@ export const PageLayout: React.FunctionComponent<Props> = ({
   });
   const contentClassName = classNames(styles.content, {
     [styles.content_center]: center || loading,
-  });
+  }); 
 
   return (
     <div className={rootClassName}>
@@ -56,6 +56,6 @@ export const PageLayout: React.FunctionComponent<Props> = ({
       </div>
 
       {footer && !loading && <div className={styles.footer}>{footer}</div>}
-    </div>
+    </div> 
   );
 };
