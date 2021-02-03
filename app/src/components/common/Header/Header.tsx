@@ -1,9 +1,11 @@
-import React from 'react'
+/* import { Logo } from '../index'; */
+import { Menu } from './MenuItems';
 
 export const Header = () => {
     return (
         <div>
-            <h1>I am Heder!</h1>
+            {/* <Logo /> */}
+            <Menu />
         </div>
     )
 }
