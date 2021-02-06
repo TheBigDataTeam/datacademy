@@ -5,7 +5,6 @@ import { menuItems } from './menuItems/menuItems';
 
 export const Menu: React.FunctionComponent = () => {
     return (
-        <Grid.Row>
             <Grid.Col>
                 <ul className={styles.root}>
                     {menuItems.map((item, i) => (
@@ -17,6 +16,5 @@ export const Menu: React.FunctionComponent = () => {
                     ))}
                 </ul>
             </Grid.Col>
-        </Grid.Row>
     )
 };
