@@ -1,4 +1,21 @@
 .root {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.left, .right {
+    display: flex;
+}
+
+.left {
+    padding: 0 10px;
+}
+
+.right {
+    padding: 0 10px;
+}
+
+.right:hover {
+    color: #f8be3a;
 }

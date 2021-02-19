@@ -1,3 +1,6 @@
-export { Landing } from './Landing/Landing';
-export { SignUp } from './SignUp/SignUp';
-export { Courses } from './Courses/Courses';
+export { LandingPage } from './Landing';
+export { SignUpPage } from './SignUp';
+export { LoginPage } from './Login';
+export { Catalog } from './Catalog/Catalog';
+export { Authors } from './Authors/Authors';
+export { FAQ } from './FAQ/FAQ';

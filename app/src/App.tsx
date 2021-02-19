@@ -1,16 +1,16 @@
 import React from 'react';
-import { BrowserRouter as Router, Route} from 'react-router-dom';
-import { Landing, SignUp } from './components/pages';
-import { Courses } from './components/pages';
+import './App.css'
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { LandingPage, SignUpPage, LoginPage, Catalog, Authors } from './components/pages';
 
-function App() {
-  return (
-    <Router>
-      <Route exact path="/" component={Landing} />
-      <Route path="/signup" component={SignUp} />
-      <Route path="/courses" component={Courses} />
-    </Router>
-  );
-}
-
-export default App;
+export const App: React.FunctionComponent = () => {
+	return (
+		<Router>
+			<Route exact path="/" component={LandingPage} />
+			<Route path="/signup" component={SignUpPage} />
+			<Route path="/login" component={LoginPage} />
+			<Route path="/catalog" component={Catalog} />
+			<Route path="/authors" component={Authors}/>
+		</Router>
+	);
+};

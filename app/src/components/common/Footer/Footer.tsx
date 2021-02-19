@@ -9,21 +9,21 @@ interface Props {
 }
 
 export const Footer: React.FunctionComponent<Props> = ({ withPadding }) => {
-  const className = classNames(styles.root, {
-    [styles['root_with-padding']]: withPadding,
-  });
+	const className = classNames(styles.root, {
+		[styles['root_with-padding']]: withPadding,
+	});
 
-  return (
-    <div className={className}>
-      <Container>
-        <Grid.Row>
-          <Grid.Col align='center'>
-            <div>
-              <Paragraph align='center'>© {getYears()} DataLearn</Paragraph>
-            </div>
-          </Grid.Col>
-        </Grid.Row>
-      </Container>
-    </div>
-  );
+	return (
+		<div className={className}>
+			<Container>
+				<Grid.Row>
+					<Grid.Col align='center'>
+						<div>
+							<Paragraph align='center'>© {getYears()} DataLearn</Paragraph>
+						</div>
+					</Grid.Col>
+				</Grid.Row>
+			</Container>
+		</div>
+	);
 };
