@@ -1,0 +1,11 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+    background-image: url('resources/bg-landing.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}

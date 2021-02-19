@@ -1,10 +1,10 @@
 .root {
   min-height: 100vh; /* Fallback for browsers that do not support Custom Properties */
-  min-height: calc(var(--vh, 1vh) * 100);
+  /* min-height: calc(var(--vh, 1vh) * 100); */
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 40px;
+  /* padding: 40px; */
 }
 
 .container {
@@ -20,7 +20,7 @@
 
 @media (min-width: 576px) {
   .root {
-    background-image: url('resources/bg1.jpg');
+    background-image: url('resources/bg-signup.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -28,8 +28,9 @@
 
   .container {
     border-radius: 16px;
+    background: #fff;
     background-color: rgba(255, 255, 255, 0.95);
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.25);
   }
 
   .wrapper {

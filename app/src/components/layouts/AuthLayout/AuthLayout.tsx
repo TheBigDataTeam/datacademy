@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { Logo } from 'components/common';
+//import { Logo } from 'components/common';
 import styles from './AuthLayout.module.css';
 
 export const AuthLayout: React.FunctionComponent = ({ children }) => {
@@ -23,7 +23,7 @@ export const AuthLayout: React.FunctionComponent = ({ children }) => {
       <div className={styles.container}>
         <div className={styles.wrapper}>
           <div className={styles.logo}>
-            <Logo />
+            {/* <Logo /> */}
           </div>
 
           {children}
