@@ -1,29 +1,28 @@
 import React, { useCallback, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Input, Button, Grid, Paragraph } from '../../ui';
 import { AuthLayout } from '../../layouts';
 
 interface FormData {
+  name: string,
+  surname: string,
   email: string;
   password: string;
 }
 
 const initialFormData: FormData = {
+  name: '',
+  surname: '',
   email: '',
   password: '',
 };
 
-export const SignUpPage: React.FunctionComponent = () => {
+export const SignUpPage: React.FunctionComponent = (): JSX.Element => {
   const [formData, setFormData] = useState<FormData>(initialFormData);
 
-  const handleChange = useCallback(
-    ({ target }) => {
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        [target.name]: target.value,
-      }));
-    },
-    []
-  );
+  const handleChange = () => {
+    console.log('TODO')
+  }
 
   const handleSubmit = useCallback(
     (event) => {
@@ -37,13 +36,28 @@ export const SignUpPage: React.FunctionComponent = () => {
       <form onSubmit={handleSubmit}>
         <Grid.Row>
           <Input
+              name='name'
+              value={formData.name}
+              placeholder='Name'
+              onChange={handleChange}
+          />
+        </Grid.Row>
+        <Grid.Row>
+          <Input
+              name='surname'
+              value={formData.surname}
+              placeholder='Surname'
+              onChange={handleChange}
+          />
+        </Grid.Row>
+        <Grid.Row>
+          <Input
             name='email'
             value={formData.email}
             placeholder='Email'
             onChange={handleChange}
           />
         </Grid.Row>
-
         <Grid.Row>
           <Input
             type='password'
@@ -54,11 +68,11 @@ export const SignUpPage: React.FunctionComponent = () => {
           />
         </Grid.Row>
         <Grid.Row>
-          <Button type='submit' fullWidth design='secondary'>
+          <Button type='submit' fullWidth design='secondary' rounded>
             SignUp
           </Button>
         </Grid.Row>
-        <Grid.Row>
+        <Grid.Row marginBottom='none' marginTop='xl'>
           <Grid.Col cols={12}>
             <Paragraph align="center">
                 Already have an account?
@@ -66,9 +80,11 @@ export const SignUpPage: React.FunctionComponent = () => {
           </Grid.Col>
         </Grid.Row>
         <Grid.Row>
-          <Button fullWidth design='default'>
-            Go to Login Page
-          </Button>
+          <Grid.Col cols={12}>
+            <Paragraph align="center" marginTop='none'>
+              <Link to="/login">Go to Login Page</Link>
+            </Paragraph>
+          </Grid.Col>
         </Grid.Row>
       </form>
     </AuthLayout>

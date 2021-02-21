@@ -1,9 +1,54 @@
+:root {
+  /* Grid */
+  --step: 8px;
+
+  /* Paddings */
+  --padding_xs: calc(var(--step) / 2); /* 4px */
+  --padding_s: var(--step);
+  --padding_m: calc(var(--step) * 2); /* 16px */
+  --padding_l: calc(var(--step) * 3); /* 24px */
+  --padding_xl: calc(var(--step) * 4); /* 32px */
+  --padding_xxl: calc(var(--step) * 5); /* 40px */
+
+  /* Transitions */
+  --transition_color: 200ms;
+
+  /* Other */
+  --border_radius: calc(var(--step) / 2); /* 4px */
+
+  /* Font: sizes */
+  --font_size_s: 13px;
+  --font_size_m: 16px;
+
+  /* Font: colors */
+  --font_color_main: #333;
+  --font_color_light: #fff;
+  --font_color_accent: #f41224;
+
+  /* Controls: colors */
+  --color_primary: #009cf3;
+  --color_primary_hover: #0083cc;
+  --color_primary_disabled: #93d8ff;
+
+  --color_secondary: #ffd166;
+  --color_secondary_hover: #f8be3a;
+  --color_secondary_disabled: #fde09e;
+
+  --color_caution: #ff6163;
+  --color_caution_hover: #e82c2f;
+  --color_caution_disabled: #f8a2a3;
+
+  --color_default: #fff;
+  --color_default_hover: #f9f9f9;
+  --color_default_disabled: #f4f4f4;
+}
+
 .primary,
 .secondary,
 .caution,
 .default {
   overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
   border-radius: calc(var(--step) / 2);
   color: var(--font_color_light);
   text-align: center;
