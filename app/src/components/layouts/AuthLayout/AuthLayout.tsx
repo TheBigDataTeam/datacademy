@@ -1,6 +1,10 @@
 import React, { useCallback, useEffect } from 'react';
-//import { Logo } from 'components/common';
+import { Logo } from '../../common';
 import styles from './AuthLayout.module.css';
+
+interface Props {
+  children: React.ReactNode
+}
 
 export const AuthLayout: React.FunctionComponent = ({ children }) => {
   const handleResize = useCallback(() => {
@@ -23,9 +27,8 @@ export const AuthLayout: React.FunctionComponent = ({ children }) => {
       <div className={styles.container}>
         <div className={styles.wrapper}>
           <div className={styles.logo}>
-            {/* <Logo /> */}
+            <Logo size='l'/>
           </div>
-
           {children}
         </div>
       </div>
