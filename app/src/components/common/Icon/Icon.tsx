@@ -8,15 +8,17 @@ import { ReactComponent as CloseIcon} from './resources/close.svg';
 import { ReactComponent as Twitter } from './resources/twitter.svg';
 import { ReactComponent as Facebook } from './resources/facebook.svg';
 import { ReactComponent as Google } from './resources/google.svg';
+import { ReactComponent as Github } from './resources/github.svg';
+import { ReactComponent as Linkedin} from './resources/linkedin.svg';
 
 interface Props {
-    type: 'login' | 'logout' | 'burger' | 'close' | 'twitter' | 'facebook' | 'google';
+    type: 'login' | 'logout' | 'burger' | 'close' | 'twitter' | 'facebook' | 'google' | 'github' | 'linkedin';
     size?: 's' | 'm' | 'l';
     color?: boolean;
     inverted?: boolean;
 } 
 
-export const Icon: React.FunctionComponent<Props> = ({ type, size='m', color, inverted}): JSX.Element => {
+export const Icon: React.FunctionComponent<Props> = ({type, size='m', color, inverted}): JSX.Element => {
 
     const className = classNames(styles[`root_size_${size}`], {
         [styles.root_color_facebook]: color && type === 'facebook',
@@ -45,6 +47,12 @@ export const Icon: React.FunctionComponent<Props> = ({ type, size='m', color, in
         }
         case 'google': {
             return <Google className={className}/>
+        }
+        case 'github': {
+            return <Github />
+        }
+        case 'linkedin': {
+            return <Linkedin />
         }
         default: {
             return null;
