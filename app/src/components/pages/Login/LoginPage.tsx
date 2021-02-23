@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { SocialButtons} from "./Components";
+import { SocialButtons} from '../../common';
 import { Input, Button, Grid, Paragraph } from '../../ui';
 import { AuthLayout } from '../../layouts';
 
@@ -58,7 +58,9 @@ export const LoginPage: React.FunctionComponent = (): JSX.Element => {
                 </Grid.Row>
                 <Grid.Row>
                     <Grid.Col>
-                        <span>Don`&apost` have an account?</span><Link to="/signup">Sign Up</Link>
+                        <Paragraph align="center" size="s">
+                            Don&apos;t have an account? <Link to="/signup">Sign Up</Link>
+                        </Paragraph>
                     </Grid.Col>
                 </Grid.Row>
             </form>
