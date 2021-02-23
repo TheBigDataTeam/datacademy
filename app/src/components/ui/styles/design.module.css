@@ -48,7 +48,6 @@
 .caution,
 .default {
   overflow: hidden;
-
   border-radius: calc(var(--step) / 2);
   color: var(--font_color_light);
   text-align: center;

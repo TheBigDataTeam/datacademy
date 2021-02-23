@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Input, Button, Grid, Paragraph } from '../../ui';
 import { AuthLayout } from '../../layouts';
+import {SocialButtons} from "../../common";
 
 interface FormData {
   name: string,
@@ -69,20 +70,16 @@ export const SignUpPage: React.FunctionComponent = (): JSX.Element => {
         </Grid.Row>
         <Grid.Row>
           <Button type='submit' fullWidth design='secondary' rounded>
-            SignUp
+            Sign Up
           </Button>
         </Grid.Row>
-        <Grid.Row marginBottom='none' marginTop='xl'>
-          <Grid.Col cols={12}>
-            <Paragraph align="center">
-                Already have an account?
-            </Paragraph>
-          </Grid.Col>
+        <Grid.Row>
+          <SocialButtons />
         </Grid.Row>
         <Grid.Row>
-          <Grid.Col cols={12}>
-            <Paragraph align="center" marginTop='none'>
-              <Link to="/login">Go to Login Page</Link>
+          <Grid.Col>
+            <Paragraph align="center" size="s">
+              Already have an account? <Link to="/login">Log In</Link>
             </Paragraph>
           </Grid.Col>
         </Grid.Row>
