@@ -1,8 +1,8 @@
 import React, { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { SocialButtons} from '../../common';
-import { Input, Button, Grid, Paragraph } from '../../ui';
-import { AuthLayout } from '../../layouts';
+import { SocialButtons} from '../../../common';
+import { Input, Button, Grid, Paragraph } from '../../../ui';
+import { AuthLayout } from '../../../layouts';
 
 interface FormData {
     email: string;
