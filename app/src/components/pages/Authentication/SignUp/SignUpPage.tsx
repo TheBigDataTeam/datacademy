@@ -79,7 +79,7 @@ export const SignUpPage: React.FunctionComponent = (): JSX.Element => {
         <Grid.Row>
           <Grid.Col>
             <Paragraph align="center" size="s">
-              Already have an account? <Link to="/login">Log In</Link>
+              Already have an account? <Link to="/auth/login">Log In</Link>
             </Paragraph>
           </Grid.Col>
         </Grid.Row>

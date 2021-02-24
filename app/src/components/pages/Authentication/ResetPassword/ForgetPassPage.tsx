@@ -14,7 +14,7 @@ const initialFormData: FormData = {
     password: '',
 };
 
-export const LoginPage: React.FunctionComponent = (): JSX.Element => {
+export const ForgetPassPage: React.FunctionComponent = (): JSX.Element => {
     const [formData, setFormData] = useState<FormData>(initialFormData);
 
     const handleChange = () => {

@@ -1,0 +1,1 @@
+export { ForgetPassPage } from './ForgetPassPage';
