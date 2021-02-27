@@ -1,60 +1,19 @@
 import React, { useCallback, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { SocialButtons} from '../../../common';
-import { Input, Button, Grid, Paragraph } from '../../../ui';
 import { AuthLayout } from '../../../layouts';
+import { EmailEntry, Confirmation } from './components';
 
-interface FormData {
-    email: string;
-    password: string;
-}
-
-const initialFormData: FormData = {
-    email: '',
-    password: '',
-};
+type PageState = 'EmailEntry' | 'Confirmation';
 
 export const ForgetPassPage: React.FunctionComponent = (): JSX.Element => {
-    const [formData, setFormData] = useState<FormData>(initialFormData);
+    const [pageState, setPageState] = useState<PageState>('EmailEntry');
 
-    const handleChange = () => {
-        console.log('TODO')
-    }
-
-    const handleSubmit = useCallback(
-        (event) => {
-            event.preventDefault();
-        },
-        []
-    );
+    const handlePageChangeState = useCallback(() => {
+        setPageState('Confirmation')
+    }, [setPageState])
 
     return (
         <AuthLayout>
-            <form onSubmit={handleSubmit}>
-                <Grid.Row>
-                    <Input
-                        name='email'
-                        value={formData.email}
-                        placeholder='Email'
-                        onChange={handleChange}
-                    />
-                </Grid.Row>
-                <Grid.Row>
-                    <Button type='submit' fullWidth design='primary' rounded>
-                        Log In
-                    </Button>
-                </Grid.Row>
-                <Grid.Row>
-                    <SocialButtons />
-                </Grid.Row>
-                <Grid.Row>
-                    <Grid.Col>
-                        <Paragraph align="center" size="s">
-                            Don&apos;t have an account? <Link to="/signup">Sign Up</Link>
-                        </Paragraph>
-                    </Grid.Col>
-                </Grid.Row>
-            </form>
+            { pageState === 'EmailEntry' ? <EmailEntry handlePageChangeState={handlePageChangeState} /> : <Confirmation /> }
         </AuthLayout>
     );
 };

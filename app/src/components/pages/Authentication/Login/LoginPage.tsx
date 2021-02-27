@@ -50,8 +50,8 @@ export const LoginPage: React.FunctionComponent = (): JSX.Element => {
                 </Grid.Row>
                 <Grid.Row>
                     <Grid.Col>
-                        <Paragraph align="center" size="s">
-                            Forget password? <Link to="/auth/forget">Reset password</Link>
+                        <Paragraph align="right" size="s">
+                            <Link to="/auth/forget">Forgot password?</Link>
                         </Paragraph>
                     </Grid.Col>
                 </Grid.Row>
@@ -61,7 +61,7 @@ export const LoginPage: React.FunctionComponent = (): JSX.Element => {
                     </Button>
                 </Grid.Row>
                 <Grid.Row>
-                        <SocialButtons />
+                    <SocialButtons />
                 </Grid.Row>
                 <Grid.Row>
                     <Grid.Col>
