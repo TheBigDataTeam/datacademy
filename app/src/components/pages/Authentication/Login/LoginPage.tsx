@@ -49,17 +49,24 @@ export const LoginPage: React.FunctionComponent = (): JSX.Element => {
                     />
                 </Grid.Row>
                 <Grid.Row>
+                    <Grid.Col>
+                        <Paragraph align="right" size="s">
+                            <Link to="/auth/forget">Forgot password?</Link>
+                        </Paragraph>
+                    </Grid.Col>
+                </Grid.Row>
+                <Grid.Row>
                     <Button type='submit' fullWidth design='primary' rounded>
                         Log In
                     </Button>
                 </Grid.Row>
                 <Grid.Row>
-                        <SocialButtons />
+                    <SocialButtons />
                 </Grid.Row>
                 <Grid.Row>
                     <Grid.Col>
                         <Paragraph align="center" size="s">
-                            Don&apos;t have an account? <Link to="/signup">Sign Up</Link>
+                            Don&apos;t have an account? <Link to="/auth/signup">Sign Up</Link>
                         </Paragraph>
                     </Grid.Col>
                 </Grid.Row>
