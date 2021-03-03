@@ -1,6 +1,6 @@
 import React, { ReactNode, useEffect } from 'react';
 import classNames from 'classnames';
-import { Container, Loader } from '../../ui';
+import { Container, Loader } from 'components/ui';
 import styles from './PageLayout.module.css';
 
 const handleResize = (): void => {

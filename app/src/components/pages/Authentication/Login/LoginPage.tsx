@@ -37,6 +37,7 @@ export const LoginPage: React.FunctionComponent = (): JSX.Element => {
                         value={formData.email}
                         placeholder='Email'
                         onChange={handleChange}
+                        autoFocus
                     />
                 </Grid.Row>
                 <Grid.Row>

@@ -1,35 +1,48 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useImperativeHandle, useRef } from 'react';
+import { Icon } from 'components/common';
 import classNames from 'classnames';
 import styles from './Input.module.css';
 
 type Size = 's' | 'm' | 'l';
 type TextAlign = 'left' | 'center' | 'right';
 
-interface Props
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
+export interface Props
+    extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   size?: Size;
   rounded?: boolean;
   textAlign?: TextAlign;
+  invalid?: boolean;
+  ref?: React.Ref<HTMLInputElement>;
 }
 
-export const Input: React.FunctionComponent<Props> = ({
-  size = 'm',
-  textAlign = 'left',
-  rounded,
-  autoFocus,
-  ...restProps
-}) => {
-  const ref = useRef<HTMLInputElement>(null);
-  const className = classNames(styles.root, styles[`root_size_${size}`], {
-    [styles.root_rounded]: rounded,
-    [styles[`root_text-align_${textAlign}`]]: textAlign,
-  });
+export const Input: React.FunctionComponent<Props> = React.forwardRef(
+    (
+        {
+          size = 'm',
+          textAlign = 'left',
+          autoFocus,
+          rounded,
+          invalid,
+          ...restProps
+        },
+        ref
+    ) => {
+      const inputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    if (ref.current && autoFocus) {
-      ref.current.focus();
+      useImperativeHandle(ref, () => inputRef.current);
+
+      const className = classNames(styles.root, styles[`root_size_${size}`], {
+        [styles.root_rounded]: rounded,
+        [styles[`root_text-align_${textAlign}`]]: textAlign,
+        [styles.root_invalid]: invalid,
+      });
+
+      useEffect(() => {
+        if (autoFocus) {
+          inputRef.current.focus();
+        }
+      }, [autoFocus]);
+
+      return <input ref={inputRef} className={className} {...restProps} />
     }
-  }, [autoFocus]);
-
-  return <input ref={ref} className={className} {...restProps} />;
-};
+);
