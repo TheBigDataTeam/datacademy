@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Logo } from '../';
+import { Logo } from 'components/common';
 import { Menu } from './components';
 import { Login } from './components';
 import styles from './Header.module.css';
@@ -19,10 +19,10 @@ export const Header: React.FunctionComponent<Props> = ({ inverted }): JSX.Elemen
 				<Logo inverted={inverted} />
 			</div>
 			<Menu />
-			{/* TODO Logout Icon Component */}
-			{user && <Link to="/login" className={styles.right}>
-				<Login />
+			{/* TODO Logout Icon Component when user is false */}
+			{user && <Link to="/auth/login" className={styles.right}>
+				{ inverted ? <Login inverted /> : <Login /> }
 			</Link>}
 		</div>
 	);
-};
+}

@@ -1,9 +1,9 @@
 import React from 'react';
 import styles from './LandingPage.module.css';
-import { LandingLayout } from '../../layouts';
-import { Footer, Header } from '../../common';
-import { Grid, Paragraph } from '../../ui';
-import { Form } from './Form';
+import { LandingLayout } from 'components/layouts';
+import { Footer, Header } from 'components/common';
+import { Grid, Paragraph } from 'components/ui';
+import { Form } from './components';
 
 export const LandingPage: React.FunctionComponent = (): JSX.Element => {
 	return (

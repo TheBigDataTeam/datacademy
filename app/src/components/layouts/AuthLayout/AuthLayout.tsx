@@ -6,7 +6,7 @@ interface Props {
   children: React.ReactNode
 }
 
-export const AuthLayout: React.FunctionComponent = ({ children }) => {
+export const AuthLayout: React.FunctionComponent<Props> = ({ children }) => {
   const handleResize = useCallback(() => {
     const vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty('--vh', `${vh}px`);
@@ -20,7 +20,7 @@ export const AuthLayout: React.FunctionComponent = ({ children }) => {
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, []);
+  }, [handleResize]);
 
   return (
     <div className={styles.root}>

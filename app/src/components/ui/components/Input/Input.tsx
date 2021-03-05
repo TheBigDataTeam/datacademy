@@ -1,5 +1,4 @@
 import React, { useEffect, useImperativeHandle, useRef } from 'react';
-import { Icon } from 'components/common';
 import classNames from 'classnames';
 import styles from './Input.module.css';
 

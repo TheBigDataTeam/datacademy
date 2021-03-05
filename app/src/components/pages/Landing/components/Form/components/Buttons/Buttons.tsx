@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Text } from '../../../ui';
+import { Button, Text } from 'components/ui';
 import styles from './Buttons.module.css';
 
 export const Buttons:React.FunctionComponent = (): JSX.Element => {

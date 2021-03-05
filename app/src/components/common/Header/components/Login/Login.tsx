@@ -1,8 +1,12 @@
 import React from 'react';
-import { Icon } from '../../../';
+import { Icon } from 'components/common';
 
-export const Login: React.FunctionComponent = (): JSX.Element => {
+interface Props {
+	inverted?: boolean
+}
+
+export const Login: React.FunctionComponent<Props> = ({ inverted }): JSX.Element => {
 	return (
-		<Icon type="login" size="l" inverted />
+		inverted ? <Icon type="login" size="l" inverted /> : <Icon type="login" size="l" />
 	);
 };
