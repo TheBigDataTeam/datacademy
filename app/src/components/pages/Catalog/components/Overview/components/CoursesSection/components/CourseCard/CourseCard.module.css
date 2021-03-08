@@ -1,8 +1,8 @@
 .root {
     display: flex;
     flex-direction: column;
-    width: 375px;
-    margin: 0 0.5rem;
+    min-width: 275px;
+    max-width: 100%;
     padding: 0.5rem;
     border: 1px solid #ccc;
 }

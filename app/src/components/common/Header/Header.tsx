@@ -18,7 +18,7 @@ export const Header: React.FunctionComponent<Props> = ({ inverted }): JSX.Elemen
 			<div className={styles.left}>
 				<Logo inverted={inverted} />
 			</div>
-			<Menu />
+			{ inverted ? <Menu inverted /> : <Menu /> }
 			{/* TODO Logout Icon Component when user is false */}
 			{user && <Link to="/auth/login" className={styles.right}>
 				{ inverted ? <Login inverted /> : <Login /> }

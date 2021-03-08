@@ -38,7 +38,7 @@ export const PageLayout: React.FunctionComponent<Props> = ({
     return (): void => {
       window.removeEventListener('resize', handleResize);
     };
-  }, []);
+  }, [handleResize]);
 
   const rootClassName = classNames(styles.root, {
     [styles.root_offset_top]: topOffset,
