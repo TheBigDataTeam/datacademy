@@ -41,6 +41,7 @@ export const SignUpPage: React.FunctionComponent = (): JSX.Element => {
               value={formData.name}
               placeholder='Name'
               onChange={handleChange}
+              autoFocus
           />
         </Grid.Row>
         <Grid.Row>

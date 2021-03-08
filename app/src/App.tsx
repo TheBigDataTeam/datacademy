@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.module.css'
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { LandingPage, SignUpPage, LoginPage, ForgetPassPage, CatalogPage, Authors } from './components/pages';
+import { LandingPage, SignUpPage, LoginPage, ForgetPassPage, CatalogPage, Authors } from 'components/pages';
 
 export const App: React.FunctionComponent = () => {
 	return (
