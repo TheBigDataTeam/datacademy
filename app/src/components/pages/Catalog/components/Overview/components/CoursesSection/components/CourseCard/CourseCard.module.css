@@ -1,0 +1,20 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    min-width: 275px;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+}
+
+.root:hover {
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+}
+
+/* for development only */
+.img {
+    width: 150px;
+    height: 200px;
+    border: 1px solid black;
+    margin: auto;
+}

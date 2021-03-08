@@ -1,6 +1,6 @@
 import React, { ReactNode, useEffect } from 'react';
 import classNames from 'classnames';
-import { Container, Loader } from '../../ui';
+import { Container, Loader } from 'components/ui';
 import styles from './PageLayout.module.css';
 
 const handleResize = (): void => {
@@ -38,7 +38,7 @@ export const PageLayout: React.FunctionComponent<Props> = ({
     return (): void => {
       window.removeEventListener('resize', handleResize);
     };
-  }, []);
+  }, [handleResize]);
 
   const rootClassName = classNames(styles.root, {
     [styles.root_offset_top]: topOffset,

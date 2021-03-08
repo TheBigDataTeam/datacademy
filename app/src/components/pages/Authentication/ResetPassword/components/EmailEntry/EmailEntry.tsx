@@ -40,6 +40,7 @@ export const EmailEntry: React.FunctionComponent<Props> = ({ handlePageChangeSta
                         value={formData.email}
                         placeholder='Email'
                         onChange={handleChange}
+                        autoFocus
                     />
                 </Grid.Row>
                 <Grid.Row>

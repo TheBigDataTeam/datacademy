@@ -1,6 +1,6 @@
 import React from 'react';
-import { Buttons } from '../Buttons';
-import { Paragraph } from '../../../ui';
+import { Buttons } from './components';
+import { Paragraph } from 'components/ui';
 import styles from './Form.module.css';
 
 export const Form:React.FunctionComponent = () => {
