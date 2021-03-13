@@ -1,0 +1,1 @@
+export { AuthorsCard } from './AuthorsCard';
