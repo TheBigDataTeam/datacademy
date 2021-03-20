@@ -1,0 +1,9 @@
+version: "3.7"
+
+services:
+  nginx:
+    volumes:
+      - ./nginx/conf.d.dev:/etc/nginx/conf.d
+  app:
+    volumes:
+      - ./app:/home/node/app
