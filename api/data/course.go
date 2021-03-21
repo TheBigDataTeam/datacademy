@@ -10,9 +10,11 @@ type Course struct {
 	ID          int    `json:"id"`
 	Title       string `json:"title" validate:"required"`
 	Description string `json:"description" validate:"required"`
-	Image       string `json:"image"`
+	Theme       string `json:"theme"`
 	Author      string `json:"author" validate:"required,author"`
 	TechStack   string `json:"techstack"`
+	Duration    string `json:"duration"`
+	Difficulty  string `json:"difficulty"`
 	CreatedOn   string `json:"-"`
 	UpdatedOn   string `json:"-"`
 }
@@ -92,7 +94,6 @@ var courseList = []*Course{
 		ID:          1,
 		Title:       "Big Data for Dummies",
 		Description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
-		Image:       "big-data.png",
 		Author:      "Dima Anoshin",
 		TechStack:   "SQL",
 		CreatedOn:   time.Now().UTC().String(),
@@ -102,7 +103,6 @@ var courseList = []*Course{
 		ID:          2,
 		Title:       "Big Data for Dummies",
 		Description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
-		Image:       "big-data.png",
 		Author:      "Dima Anoshin",
 		TechStack:   "SQL",
 		CreatedOn:   time.Now().UTC().String(),
