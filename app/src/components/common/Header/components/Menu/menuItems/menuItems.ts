@@ -8,7 +8,7 @@ type Item = {
     {
       type: 'item',
       title: 'Catalog',
-      url: '/catalog',
+      url: '/courses',
     },
     {
       type: 'item',

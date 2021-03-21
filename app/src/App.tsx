@@ -10,7 +10,7 @@ export const App: React.FunctionComponent = () => {
 			<Route path="/auth/signup" component={SignUpPage} />
 			<Route path="/auth/login" component={LoginPage} />
 			<Route path="/auth/forget" component={ForgetPassPage} />
-			<Route path="/catalog" component={CatalogPage} />
+			<Route path="/courses" component={CatalogPage} />
 			<Route path="/authors" component={AuthorsPage}/>
 		</Router>
 	);
