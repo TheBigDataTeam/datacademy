@@ -68,3 +68,24 @@ export const listOfAuthors = [
         social: ['linkedin', 'facebook'],
     },
 ];
+
+export const listOfPricingCards = [
+    {
+        id: 1,
+        title: 'Basic',
+        price: '$9.99',
+        features: ['Access to all courses', 'Something else', 'Something else']
+    },
+    {
+        id: 2,
+        title: 'Premium',
+        price: '$19.99',
+        features: ['Access to all courses', 'Something else', 'Something else', 'Code review']
+    },
+    {
+        id: 3,
+        title: 'Enterprise',
+        price: '$29.99',
+        features: ['Access to all courses', 'Something else', 'Something else', 'Code review', 'Slack chat with DataLearn Team']
+    }
+]

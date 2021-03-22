@@ -7,15 +7,14 @@ export const CoursesSection: React.FunctionComponent = (): JSX.Element => {
 
     return (
         <Grid.Row>
-            { listOfCourseCards.map(item => (
+            {listOfCourseCards.map(item => (
                 <Grid.Col key={item.id} cols={12} colsSM={6} colsMD={4} marginBottom='xl'>
-                <CourseCard
-                    title={item.title}
-                    image={item.image}
-                    description={item.description}
-                    tech_stack={item.tech_stack}
-                    author={item.author}
-                />
+                    <CourseCard
+                        title={item.title}
+                        description={item.description}
+                        tech_stack={item.tech_stack}
+                        author={item.author}
+                    />
                 </Grid.Col>
             ))}
         </Grid.Row>
