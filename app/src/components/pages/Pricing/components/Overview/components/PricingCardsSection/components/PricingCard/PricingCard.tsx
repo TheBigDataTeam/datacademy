@@ -1,4 +1,5 @@
 import React from 'react';
+import { Paragraph, Button } from 'components/ui'
 import styles from './PricingCard.module.css';
 
 interface Props {
@@ -10,13 +11,16 @@ interface Props {
 export const PricingCard: React.FunctionComponent<Props> = ({ title, price, features }): JSX.Element => {
     return (
         <div className={styles.root}>
-            <h2>{title}</h2>
-            <h4>{price}</h4>
+            <Paragraph size="xl" align="center" marginTop="l">{title}</Paragraph>
+            <Paragraph align="center" size="l">{price}</Paragraph>
             <ul>
                 {features.map(feature => (
-                    <li key={1} className={styles.list_item}>{feature}</li>
+                    <li key={1} className={styles.list_item}> {/* TODO random number for a key! */}
+                        <Paragraph size="l">{feature}</Paragraph>
+                    </li>
                 ))}
             </ul>
+            <Button design="primary" rounded>Get Started</Button>
         </div>
     )
 }
