@@ -10,9 +10,10 @@ import { ReactComponent as Facebook } from './resources/facebook.svg';
 import { ReactComponent as Google } from './resources/google.svg';
 import { ReactComponent as Github } from './resources/github.svg';
 import { ReactComponent as Linkedin} from './resources/linkedin.svg';
+import { ReactComponent as Dollar } from './resources/dollar.svg';
 
 interface Props {
-    type: 'login' | 'logout' | 'burger' | 'close' | 'twitter' | 'facebook' | 'google' | 'github' | 'linkedin';
+    type: 'login' | 'logout' | 'burger' | 'close' | 'twitter' | 'facebook' | 'google' | 'github' | 'linkedin' | 'dollar';
     size?: 's' | 'm' | 'l';
     color?: boolean;
     inverted?: boolean;
@@ -53,6 +54,9 @@ export const Icon: React.FunctionComponent<Props> = ({type, size='m', color, inv
         }
         case 'linkedin': {
             return <Linkedin />
+        }
+        case 'dollar': {
+            return <Dollar className={className}/>
         }
         default: {
             return null;
