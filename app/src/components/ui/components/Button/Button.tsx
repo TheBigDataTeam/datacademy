@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Loader } from '../Loader';
-import { ButtonDesign, ButtonSize } from '../../common';
-import designStyles from '../../styles/design.module.css';
+import { Loader } from 'components/ui';
+import { ButtonDesign, ButtonSize } from 'components/ui/common';
+import designStyles from 'components/ui/styles/design.module.css';
 import styles from './Button.module.css';
 
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {

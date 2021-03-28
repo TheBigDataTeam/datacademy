@@ -8,3 +8,4 @@ export { Loader } from './components/Loader';
 export { Paragraph } from './components/Paragraph';
 export { Text } from './components/Text';
 export { Textarea } from './components/Textarea';
+export { Switch } from './components/Switch';
