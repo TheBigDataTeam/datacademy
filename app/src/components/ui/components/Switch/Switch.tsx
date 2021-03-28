@@ -8,8 +8,7 @@ interface Props {
     size?: Size
     rounded?: boolean
     toggled: boolean
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onToggle: any
+    onToggle: VoidFunction
 }
 
 export const Switch: React.FunctionComponent<Props> = ({ size = 'm', rounded, toggled, onToggle }): JSX.Element => {
