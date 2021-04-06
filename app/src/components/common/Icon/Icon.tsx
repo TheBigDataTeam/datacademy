@@ -11,9 +11,12 @@ import { ReactComponent as Google } from './resources/google.svg';
 import { ReactComponent as Github } from './resources/github.svg';
 import { ReactComponent as Linkedin} from './resources/linkedin.svg';
 import { ReactComponent as Dollar } from './resources/dollar.svg';
+import { ReactComponent as Copyright } from './resources/copyright.svg'
 
 interface Props {
-    type: 'login' | 'logout' | 'burger' | 'close' | 'twitter' | 'facebook' | 'google' | 'github' | 'linkedin' | 'dollar';
+    type: 'login' | 'logout' | 'burger' | 'close' | 'twitter' | 
+    'facebook' | 'google' | 'github' | 'linkedin' | 'dollar' | 
+    'copyright';
     size?: 's' | 'm' | 'l';
     color?: boolean;
     inverted?: boolean;
@@ -57,6 +60,9 @@ export const Icon: React.FunctionComponent<Props> = ({type, size='m', color, inv
         }
         case 'dollar': {
             return <Dollar className={className}/>
+        }
+        case 'copyright': {
+            return <Copyright />
         }
         default: {
             return null;

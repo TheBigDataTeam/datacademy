@@ -1,0 +1,8 @@
+.cover {
+    background-image: url("./temp_images_for_dev/bg_kultura_i_tsennos.svg"); /* TODO: replace by address coming from props! */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+    min-height: 500px;
+}

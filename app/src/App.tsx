@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.module.css'
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { LandingPage, SignUpPage, LoginPage, ForgetPassPage, CatalogPage, AuthorsPage, PricingPage, PaymentPage } from 'components/pages';
+import { LandingPage, SignUpPage, LoginPage, ForgetPassPage, CatalogPage, AuthorsPage, ProjectInfoPage, PricingPage, PaymentPage } from 'components/pages';
 
 export const App: React.FunctionComponent = () => {
 	return (
@@ -13,6 +13,7 @@ export const App: React.FunctionComponent = () => {
 			<Route path="/courses" component={CatalogPage} />
 			<Route path="/authors" component={AuthorsPage}/>
 			<Route path="/pricing" component={PricingPage}/>
+			<Route path="/project" component={ProjectInfoPage}/>
 			<Route path="/payment" component={PaymentPage}/>
 		</Router>
 	);
