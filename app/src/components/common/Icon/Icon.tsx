@@ -53,16 +53,17 @@ export const Icon: React.FunctionComponent<Props> = ({type, size='m', color, inv
             return <Google className={className}/>
         }
         case 'github': {
-            return <Github />
+            return <Github className={className}/>
         }
         case 'linkedin': {
-            return <Linkedin />
+            return <Linkedin className={className}/>
         }
         case 'dollar': {
             return <Dollar className={className}/>
         }
+        /* TODO: possibly remove if find no usage */
         case 'copyright': {
-            return <Copyright />
+            return <Copyright className={className}/>
         }
         default: {
             return null;
