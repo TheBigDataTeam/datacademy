@@ -9,7 +9,7 @@ export const listOfCourseCards = [
     },
     {
         id: 2,
-        title: 'Big Data',
+        title: 'Small Data',
         image: '../logo_datalearn.png',
         description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Incidunt, error!',
         tech_stack: 'SQL',
@@ -17,7 +17,7 @@ export const listOfCourseCards = [
     },
     {
         id: 3,
-        title: 'Big Data',
+        title: 'Very Big Data',
         image: 'components/pages/catalog/logo_datalearn.png',
         description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Incidunt, error!',
         tech_stack: 'SQL',
@@ -25,7 +25,7 @@ export const listOfCourseCards = [
     },
     {
         id: 4,
-        title: 'Big Data',
+        title: 'So So Data',
         image: '../logo_datalearn.png',
         description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Incidunt, error!',
         tech_stack: 'SQL',

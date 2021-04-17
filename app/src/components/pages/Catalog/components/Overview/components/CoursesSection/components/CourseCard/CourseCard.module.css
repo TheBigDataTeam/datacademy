@@ -1,9 +1,10 @@
 .root {
     display: flex;
     flex-direction: column;
-    min-width: 275px;
+    min-width: 250px;
     padding: 0.5rem;
     border: 1px solid #ccc;
+    border-radius: 16px;
 }
 
 .root:hover {
