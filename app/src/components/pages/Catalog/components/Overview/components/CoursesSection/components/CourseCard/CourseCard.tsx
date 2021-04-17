@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './CourseCard.module.css';
-import { Paragraph } from "components/ui";
+import { Paragraph } from 'components/ui';
 
 interface Props {
     title: string

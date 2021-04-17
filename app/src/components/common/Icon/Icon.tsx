@@ -11,13 +11,15 @@ import { ReactComponent as Google } from './resources/google.svg';
 import { ReactComponent as Github } from './resources/github.svg';
 import { ReactComponent as Linkedin} from './resources/linkedin.svg';
 import { ReactComponent as Dollar } from './resources/dollar.svg';
-import { ReactComponent as Copyright } from './resources/copyright.svg'
+import { ReactComponent as Motobike } from './resources/motobike.svg';
+import { ReactComponent as Airplane } from './resources/airplane.svg';
+import { ReactComponent as Helicopter } from './resources/helicopter.svg';
+
+/* TODO augment import of svg components => list is too long */
 
 interface Props {
-    type: 'login' | 'logout' | 'burger' | 'close' | 'twitter' | 
-    'facebook' | 'google' | 'github' | 'linkedin' | 'dollar' | 
-    'copyright';
-    size?: 's' | 'm' | 'l';
+    type: string /* TODO find a way to implement narrowing */
+    size?: 's' | 'm' | 'l' | 'xl' | 'xxl';
     color?: boolean;
     inverted?: boolean;
 } 
@@ -61,9 +63,14 @@ export const Icon: React.FunctionComponent<Props> = ({type, size='m', color, inv
         case 'dollar': {
             return <Dollar className={className}/>
         }
-        /* TODO: possibly remove if find no usage */
-        case 'copyright': {
-            return <Copyright className={className}/>
+        case 'motobike': {
+            return <Motobike className={className}/>
+        }
+        case 'airplane': {
+            return <Airplane className={className}/>
+        }
+        case 'helicopter': {
+            return <Helicopter className={className}/>
         }
         default: {
             return null;
