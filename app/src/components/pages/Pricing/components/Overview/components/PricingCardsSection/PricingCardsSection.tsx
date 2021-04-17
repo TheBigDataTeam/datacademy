@@ -26,6 +26,7 @@ export const PricingCardsSection: React.FunctionComponent = (): JSX.Element => {
                             title={card.title}
                             price={toggled ? card.price : card.priceY}
                             features={card.features}
+                            icon={card.icon}
                         />
                     </Grid.Col>
                 ))}
