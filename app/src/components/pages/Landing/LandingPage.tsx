@@ -11,7 +11,7 @@ export const LandingPage: React.FunctionComponent = (): JSX.Element => {
 			<div className={styles.root}>
 				<Grid.Row>
 					<Grid.Col>
-						<Paragraph size="xxl" color="inverted">Data Engineering / Data Science</Paragraph>
+						<Paragraph size="xl" color="inverted">Data Engineering / Data Science</Paragraph>
 					</Grid.Col>
 				</Grid.Row> 
 				<Grid.Row>
