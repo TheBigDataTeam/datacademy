@@ -1,9 +1,23 @@
-import React from 'react'
+import React from 'react';
+import { Paragraph } from 'components/ui';
+import { v4 as uuidv4 } from 'uuid';
+import { Grid, Header } from 'components/ui';
 
-export const TechStackSection: React.FunctionComponent = (): JSX.Element => {
+interface Props {
+    techstack: Array<string>
+}
+
+export const TechStackSection: React.FunctionComponent<Props> = ({ techstack }): JSX.Element => {
     return (
-        <div>
-            <h2>List of software we will be using</h2>
-        </div>
+        <Grid.Row>
+            <Grid.Col>
+                <Header>Here is what we will be using:</Header>
+                <ul>
+                    {techstack.map((stack) => (
+                        <li key={uuidv4()}><Paragraph size="xl">{stack}</Paragraph></li>
+                    ))}
+                </ul>
+            </Grid.Col>
+        </Grid.Row>
     )
 }

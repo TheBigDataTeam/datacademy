@@ -1,9 +1,20 @@
 import React from 'react';
+//import { Paragraph } from 'components/ui';
 
-export const SyllabusSection: React.FunctionComponent = (): JSX.Element => {
+interface Props {
+    syllabus: Array<string>
+}
+
+export const SyllabusSection: React.FunctionComponent<Props> = (): JSX.Element => {
     return (
         <div>
-            <h2>Here is what will be in the course</h2>           
+            {/* <ul>
+                {syllabus.map((item => {
+                    <li>
+                        <Paragraph>{item}</Paragraph>
+                    </li>
+                }))}
+            </ul>  */}         
         </div>
     )
 }

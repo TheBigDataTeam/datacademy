@@ -29,9 +29,9 @@ export const CoursePage: React.FunctionComponent = (): JSX.Element => {
                     </Grid.Col>
                 </Grid.Row>
                 <AuthorSection data={data}/>
-                <SyllabusSection />
+                <SyllabusSection syllabus={data.data.syllabus}/>
                 <BenefitsSection />
-                <TechStackSection />
+                <TechStackSection techstack={data.data.techstack}/>
             </>
             : <h2>Loading</h2>}
         </PageLayout>

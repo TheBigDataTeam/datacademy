@@ -6,16 +6,16 @@ import (
 
 // Course defines the structure for an API
 type Course struct {
-	ID          int    `json:"id"`
-	Title       string `json:"title" validate:"required"`
-	Description string `json:"description" validate:"required"`
-	Theme       string `json:"theme"`
-	Author      string `json:"author" validate:"required,author"`
-	TechStack   string `json:"techstack"`
-	Duration    string `json:"duration"`
-	Difficulty  string `json:"difficulty"`
-	CreatedOn   string `json:"-"`
-	UpdatedOn   string `json:"-"`
+	ID          int      `json:"id"`
+	Title       string   `json:"title" validate:"required"`
+	Description string   `json:"description" validate:"required"`
+	Theme       string   `json:"theme"`
+	Author      string   `json:"author" validate:"required,author"`
+	TechStack   []string `json:"techstack"`
+	Duration    string   `json:"duration"`
+	Difficulty  string   `json:"difficulty"`
+	CreatedOn   string   `json:"-"`
+	UpdatedOn   string   `json:"-"`
 }
 
 // Courses is a slice of Course(s)
@@ -91,44 +91,39 @@ var courseList = []*Course{
 		Title:       "Big Data for Dummies",
 		Description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
 		Author:      "Dima Anoshin",
-		TechStack:   "SQL",
-		CreatedOn:   time.Now().UTC().String(),
-		UpdatedOn:   time.Now().UTC().String(),
+		TechStack: []string{"Excel", "SQL: Postgres/MySQL", "Amazon Redshift", "ETL Pentaho DI",
+			"BigData Elastic Map Reduce (Hadoop), Hive, Presto, Athena, Spectrum", "BI Tableau"},
+		CreatedOn: time.Now().UTC().String(),
+		UpdatedOn: time.Now().UTC().String(),
 	},
 	{
 		ID:          2,
 		Title:       "Small Data for Dummies",
 		Description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
 		Author:      "Dima Anoshin",
-		TechStack:   "SQL",
-		CreatedOn:   time.Now().UTC().String(),
-		UpdatedOn:   time.Now().UTC().String(),
+		TechStack: []string{"Excel", "SQL: Postgres/MySQL", "Amazon Redshift", "ETL Pentaho DI",
+			"BigData Elastic Map Reduce (Hadoop), Hive, Presto, Athena, Spectrum", "BI Tableau"},
+		CreatedOn: time.Now().UTC().String(),
+		UpdatedOn: time.Now().UTC().String(),
 	},
 	{
 		ID:          3,
 		Title:       "Very Big Data for Dummies",
 		Description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
 		Author:      "Dima Anoshin",
-		TechStack:   "SQL",
-		CreatedOn:   time.Now().UTC().String(),
-		UpdatedOn:   time.Now().UTC().String(),
+		TechStack: []string{"Excel", "SQL: Postgres/MySQL", "Amazon Redshift", "ETL Pentaho DI",
+			"BigData Elastic Map Reduce (Hadoop), Hive, Presto, Athena, Spectrum", "BI Tableau"},
+		CreatedOn: time.Now().UTC().String(),
+		UpdatedOn: time.Now().UTC().String(),
 	},
 	{
 		ID:          4,
 		Title:       "So So Data for Dummies",
 		Description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
 		Author:      "Dima Anoshin",
-		TechStack:   "SQL",
-		CreatedOn:   time.Now().UTC().String(),
-		UpdatedOn:   time.Now().UTC().String(),
-	},
-	{
-		ID:          5,
-		Title:       "Not only Data for Dummies",
-		Description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
-		Author:      "Dima Anoshin",
-		TechStack:   "SQL",
-		CreatedOn:   time.Now().UTC().String(),
-		UpdatedOn:   time.Now().UTC().String(),
+		TechStack: []string{"Excel", "SQL: Postgres/MySQL", "Amazon Redshift", "ETL Pentaho DI",
+			"BigData Elastic Map Reduce (Hadoop), Hive, Presto, Athena, Spectrum", "BI Tableau"},
+		CreatedOn: time.Now().UTC().String(),
+		UpdatedOn: time.Now().UTC().String(),
 	},
 }
