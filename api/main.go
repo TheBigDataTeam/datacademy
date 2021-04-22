@@ -50,7 +50,7 @@ func main() {
 		Addr:         ":3100",
 		Handler:      corsHandler(sm),   // set the default handler
 		ErrorLog:     l,                 // set the logger for the server
-		IdleTimeout:  120 * time.Second, // max time for connections using TCP Keep-Aöove
+		IdleTimeout:  120 * time.Second, // max time for connections using TCP Keep-Alive
 		ReadTimeout:  1 * time.Second,   // max time to read request for the client
 		WriteTimeout: 1 * time.Second,   // max time to write response to the client
 	}
@@ -75,6 +75,7 @@ func main() {
 	l.Println("Command to terminate received, shutdown", sig)
 
 	// gracefully shutdown the server, waiting max 30 seconds for current operations to complete
-	timeoutContext, _ := context.WithTimeout(context.Background(), 30*time.Second)
+	timeoutContext, cancelContext := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancelContext()
 	server.Shutdown(timeoutContext)
 }

@@ -21,7 +21,7 @@ func (c *Courses) ListAllCourses(rw http.ResponseWriter, r *http.Request) {
 
 // ListSingleCourse handles GET requests for a single course
 func (c *Courses) ListSingleCourse(rw http.ResponseWriter, r *http.Request) {
-	id := util.GetCourseIDfromRequest(r)
+	id := util.GetIDfromRequest(r)
 
 	c.l.Println("[SUCCESS] get record id", id)
 
@@ -33,13 +33,13 @@ func (c *Courses) ListSingleCourse(rw http.ResponseWriter, r *http.Request) {
 	case data.ErrorCourseNotFound:
 		c.l.Println("[ERROR] fetching course", err)
 		rw.WriteHeader(http.StatusNotFound)
-		data.ToJSON(&GenericError{Message: err.Error()}, rw)
+		data.ToJSON(&util.GenericError{Message: err.Error()}, rw)
 		return
 
 	default:
 		c.l.Println("[ERROR] fetching course", err)
 		rw.WriteHeader(http.StatusInternalServerError)
-		data.ToJSON(&GenericError{Message: err.Error()}, rw)
+		data.ToJSON(&util.GenericError{Message: err.Error()}, rw)
 		return
 	}
 	err = data.ToJSON(course, rw)

@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/Serj1c/datalearn/api/data"
+	"github.com/Serj1c/datalearn/api/util"
 )
 
 // UpdCourse handles PUT requests to update courses
@@ -16,7 +17,7 @@ func (c *Courses) UpdCourse(rw http.ResponseWriter, r *http.Request) {
 	if err != data.ErrorCourseNotFound {
 		c.l.Println("[ERROR] course not found", err)
 		rw.WriteHeader(http.StatusNotFound)
-		data.ToJSON(&GenericError{Message: "Product not found in database"}, rw)
+		data.ToJSON(&util.GenericError{Message: "Product not found in database"}, rw)
 		return
 	}
 	// write the no content success header

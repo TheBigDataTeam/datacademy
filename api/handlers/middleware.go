@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/Serj1c/datalearn/api/data"
+	"github.com/Serj1c/datalearn/api/util"
 )
 
 // MiddlewareValidateCourse validates the course in the request and calls next if ok
@@ -16,7 +17,7 @@ func (c *Courses) MiddlewareValidateCourse(next http.Handler) http.Handler {
 		if err != nil {
 			c.l.Println("[ERROR] deserializing course", err)
 			rw.WriteHeader(http.StatusBadRequest)
-			data.ToJSON(&GenericError{Message: err.Error()}, rw)
+			data.ToJSON(&util.GenericError{Message: err.Error()}, rw)
 			return
 		}
 
@@ -27,7 +28,7 @@ func (c *Courses) MiddlewareValidateCourse(next http.Handler) http.Handler {
 
 			// return the validation messages
 			rw.WriteHeader(http.StatusUnprocessableEntity)
-			data.ToJSON(&ValidationError{Messages: errs.Errors()}, rw)
+			data.ToJSON(&util.ValidationError{Messages: errs.Errors()}, rw)
 			return
 		}
 		// add the course to the context
