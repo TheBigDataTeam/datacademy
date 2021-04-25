@@ -15,7 +15,7 @@ func (c *Courses) ListAllCourses(rw http.ResponseWriter, r *http.Request) {
 
 	err := data.ToJSON(courses, rw)
 	if err != nil {
-		c.l.Println("[ERROR] serializing product", err)
+		c.l.Println("[ERROR] serializing course", err)
 	}
 }
 

@@ -17,11 +17,12 @@ import (
 func main() {
 
 	// create a logger for a server
-	l := log.New(os.Stdout, "courses-api", log.LstdFlags)
+	l := log.New(os.Stdout, "API ", log.LstdFlags)
 	v := data.NewValidation()
 
 	// create the handlers
 	coursesHandler := handlers.NewCourses(l, v)
+	authorsHandler := handlers.NewAuthors(l, v)
 
 	// register handlers
 	sm := mux.NewRouter()
@@ -29,7 +30,9 @@ func main() {
 	// handlers for API
 	getRouter := sm.Methods(http.MethodGet).Subrouter()
 	getRouter.HandleFunc("/courses", coursesHandler.ListAllCourses)
+	getRouter.HandleFunc("/authors", authorsHandler.ListAllAuthors)
 	getRouter.HandleFunc("/courses/{id:[0-9]+}", coursesHandler.ListSingleCourse)
+	getRouter.HandleFunc("/authors/{id:[0-9]+}", authorsHandler.ListSingleAuthor)
 
 	putRouter := sm.Methods(http.MethodPut).Subrouter()
 	putRouter.HandleFunc("/courses/{id:[0-9]+}", coursesHandler.UpdCourse)
