@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './SocialButtons.module.css';
-import { Button } from '../../ui';
-import { Icon } from '../'
+import { Button } from 'components/ui';
+import { Icon } from 'components/common'
 
 export const SocialButtons: React.FunctionComponent = (): JSX.Element => {
     return (

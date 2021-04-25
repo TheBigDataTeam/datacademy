@@ -17,11 +17,12 @@ import (
 func main() {
 
 	// create a logger for a server
-	l := log.New(os.Stdout, "courses-api", log.LstdFlags)
+	l := log.New(os.Stdout, "API ", log.LstdFlags)
 	v := data.NewValidation()
 
 	// create the handlers
 	coursesHandler := handlers.NewCourses(l, v)
+	authorsHandler := handlers.NewAuthors(l, v)
 
 	// register handlers
 	sm := mux.NewRouter()
@@ -29,7 +30,9 @@ func main() {
 	// handlers for API
 	getRouter := sm.Methods(http.MethodGet).Subrouter()
 	getRouter.HandleFunc("/courses", coursesHandler.ListAllCourses)
+	getRouter.HandleFunc("/authors", authorsHandler.ListAllAuthors)
 	getRouter.HandleFunc("/courses/{id:[0-9]+}", coursesHandler.ListSingleCourse)
+	getRouter.HandleFunc("/authors/{id:[0-9]+}", authorsHandler.ListSingleAuthor)
 
 	putRouter := sm.Methods(http.MethodPut).Subrouter()
 	putRouter.HandleFunc("/courses/{id:[0-9]+}", coursesHandler.UpdCourse)
@@ -41,6 +44,7 @@ func main() {
 
 	deleteRouter := sm.Methods(http.MethodDelete).Subrouter()
 	deleteRouter.HandleFunc("/courses/{id:[0-9]+}", coursesHandler.DelCourse)
+	deleteRouter.HandleFunc("/authors/{id:[0-9]+}", authorsHandler.DelAuthor)
 
 	// CORS
 	corsHandler := gohandlers.CORS(gohandlers.AllowedOrigins([]string{"http://localhost:3000"}))
@@ -50,7 +54,7 @@ func main() {
 		Addr:         ":3100",
 		Handler:      corsHandler(sm),   // set the default handler
 		ErrorLog:     l,                 // set the logger for the server
-		IdleTimeout:  120 * time.Second, // max time for connections using TCP Keep-Aöove
+		IdleTimeout:  120 * time.Second, // max time for connections using TCP Keep-Alive
 		ReadTimeout:  1 * time.Second,   // max time to read request for the client
 		WriteTimeout: 1 * time.Second,   // max time to write response to the client
 	}
@@ -75,6 +79,7 @@ func main() {
 	l.Println("Command to terminate received, shutdown", sig)
 
 	// gracefully shutdown the server, waiting max 30 seconds for current operations to complete
-	timeoutContext, _ := context.WithTimeout(context.Background(), 30*time.Second)
+	timeoutContext, finish := context.WithTimeout(context.Background(), 30*time.Second)
+	defer finish()
 	server.Shutdown(timeoutContext)
 }

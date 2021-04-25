@@ -15,15 +15,15 @@ func getNextID() /* int */ {
 	return //lastItemInDB.ID + 1
 }
 
-// GetCourseIDfromRequest returns the course ID from the URL
-func GetCourseIDfromRequest(r *http.Request) int {
-	// parse the product id from the url
+// GetIDfromRequest returns the ID from the URL
+func GetIDfromRequest(r *http.Request) int {
+	// parse the id from the url
 	vars := mux.Vars(r)
 
 	// convert the id into an integer and return
 	id, err := strconv.Atoi(vars["id"])
 	if err != nil {
-		panic(err)
+		panic(err) /* TODO must be no panic! */
 	}
 	return id
 }

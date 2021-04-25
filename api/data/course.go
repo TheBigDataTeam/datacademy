@@ -1,7 +1,6 @@
 package data
 
 import (
-	"fmt"
 	"time"
 )
 
@@ -22,9 +21,6 @@ type Course struct {
 // Courses is a slice of Course(s)
 type Courses []*Course
 
-// ErrorCourseNotFound is an error raised when a product can not be found
-var ErrorCourseNotFound = fmt.Errorf("Course not found")
-
 // GetCourses returns a list of courses
 func GetCourses() Courses {
 	return courseList
@@ -43,19 +39,19 @@ func GetCourseByID(id int) (*Course, error) {
 // UpdateCourse replaces a course in the DB with the given item.
 // If a course with the given id does not exist in th DB
 // this function returns CourseNotFound error
-/* TODO: currently if some filds are comming empty - it makes corresponding filds in data set empty as well - needs to be fixed */
+/* TODO: currently if some filds are comming empty - it makes corresponding fields in data set empty as well - needs to be fixed */
 func UpdateCourse(c Course) error {
-	positionOfFoundCourse := findIndexByCourseID(c.ID)
-	if positionOfFoundCourse == -1 {
+	index := findIndexByCourseID(c.ID)
+	if index == -1 {
 		return ErrorCourseNotFound
 	}
-	courseList[positionOfFoundCourse] = &c
+	courseList[index] = &c
 	return nil
 }
 
 // AddCourse adds new course to the DB
 func AddCourse(c Course) {
-	c.ID = getNextID()
+	c.ID = getNextCourseID()
 	courseList = append(courseList, &c)
 }
 
@@ -72,7 +68,7 @@ func DeleteCourse(id int) error {
 /* TODO: make this function available for all handlers */
 
 // getNextId generates a new id for a product being inserted into db
-func getNextID() int {
+func getNextCourseID() int {
 	lastItemInDB := courseList[len(courseList)-1]
 	return lastItemInDB.ID + 1
 }
