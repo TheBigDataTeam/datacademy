@@ -14,7 +14,7 @@ func (c *Courses) UpdCourse(rw http.ResponseWriter, r *http.Request) {
 	c.l.Println("[SUCCESS] updating record id", course.ID)
 
 	err := data.UpdateCourse(course)
-	if err != data.ErrorCourseNotFound {
+	if err == data.ErrorCourseNotFound {
 		c.l.Println("[ERROR] course not found", err)
 		rw.WriteHeader(http.StatusNotFound)
 		data.ToJSON(&util.GenericError{Message: "Product not found in database"}, rw)

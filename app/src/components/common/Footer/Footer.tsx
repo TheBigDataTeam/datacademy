@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Container, Grid, Paragraph } from '../../ui';
+import { Container, Grid, Paragraph } from 'components/ui';
 import { getYears } from './utils';
 import styles from './Footer.module.css';
 

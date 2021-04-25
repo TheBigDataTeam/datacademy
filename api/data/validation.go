@@ -23,7 +23,7 @@ func (v ValidationError) Error() string {
 	)
 }
 
-// type ValidationErrors is a collection of ValidationError
+// ValidationErrors is a collection of ValidationError
 type ValidationErrors []ValidationError
 
 // Errors converts the slice into a string slice

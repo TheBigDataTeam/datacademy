@@ -44,6 +44,7 @@ func main() {
 
 	deleteRouter := sm.Methods(http.MethodDelete).Subrouter()
 	deleteRouter.HandleFunc("/courses/{id:[0-9]+}", coursesHandler.DelCourse)
+	deleteRouter.HandleFunc("/authors/{id:[0-9]+}", authorsHandler.DelAuthor)
 
 	// CORS
 	corsHandler := gohandlers.CORS(gohandlers.AllowedOrigins([]string{"http://localhost:3000"}))
@@ -78,7 +79,7 @@ func main() {
 	l.Println("Command to terminate received, shutdown", sig)
 
 	// gracefully shutdown the server, waiting max 30 seconds for current operations to complete
-	timeoutContext, cancelContext := context.WithTimeout(context.Background(), 30*time.Second)
-	defer cancelContext()
+	timeoutContext, finish := context.WithTimeout(context.Background(), 30*time.Second)
+	defer finish()
 	server.Shutdown(timeoutContext)
 }
