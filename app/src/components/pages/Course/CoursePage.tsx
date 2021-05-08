@@ -40,8 +40,8 @@ export const CoursePage: React.FunctionComponent = (): JSX.Element => {
                     </Grid.Col>
                 </Grid.Row>
                 <AuthorSection author={author}/>
-                <SyllabusSection syllabus={courses.data.syllabus}/>
                 <BenefitsSection />
+                <SyllabusSection syllabus={courses.data.syllabus}/>
                 <TechStackSection techstack={courses.data.techstack}/>
             </>
             : <h2>Loading</h2>}

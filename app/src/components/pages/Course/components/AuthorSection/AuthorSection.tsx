@@ -1,6 +1,6 @@
 import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { Grid, Paragraph } from 'components/ui';
+import { Grid, Paragraph, Header } from 'components/ui';
 import styles from './AuthorSection.module.css';
 
 interface Props {
@@ -13,7 +13,7 @@ export const AuthorSection: React.FunctionComponent<Props> = ({ author }): JSX.E
         <>
         <Grid.Row marginBottom="none">
             <Grid.Col marginBottom="none">
-                <h3>Your teacher: {author?.data.fullname}</h3>
+                <Header>Your teacher: {author?.data.fullname}</Header>
             </Grid.Col>
         </Grid.Row>
         <Grid.Row marginTop="none">
@@ -21,7 +21,9 @@ export const AuthorSection: React.FunctionComponent<Props> = ({ author }): JSX.E
                 <div className={styles.wrapper}>
                     <ul className={styles.list}>
                         {author?.data.features.map((feature: string) => (
-                            <li key={uuidv4()} /* className={styles.list_item} */><Paragraph size="ml">{feature}</Paragraph></li>
+                            <li key={uuidv4()} className={styles.list_item}>
+                                <Paragraph size="ml">{feature}</Paragraph>
+                            </li>
                         ))}
                     </ul>
                     <div className={styles.img}/>

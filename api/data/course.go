@@ -12,8 +12,9 @@ type Course struct {
 	Theme       string   `json:"theme"`
 	Author      string   `json:"author" validate:"required,author"`
 	TechStack   []string `json:"techstack"`
-	Duration    string   `json:"duration"`
-	Difficulty  string   `json:"difficulty"`
+	Syllabus    []string `json:"syllabus"`
+	Duration    string   `json:"-"`
+	Difficulty  string   `json:"-"`
 	CreatedOn   string   `json:"-"`
 	UpdatedOn   string   `json:"-"`
 }
@@ -93,6 +94,18 @@ var courseList = []*Course{
 		Author:      "Dima Anoshin",
 		TechStack: []string{"Excel", "SQL: Postgres/MySQL", "Amazon Redshift", "ETL Pentaho DI",
 			"BigData Elastic Map Reduce (Hadoop), Hive, Presto, Athena, Spectrum", "BI Tableau"},
+		Syllabus: []string{"Модуль 1: Роль Аналитики и Инженера данных в организации",
+			"Модуль 2: Базы Данных и SQL",
+			"Модуль 3: Визуализация данных, дашборды и отчетность - Business Intelligence",
+			"Модуль 4: Интеграция данных и создание потоков данных (data piplelines)",
+			"Модуль 4: Облачные вычисления (Cloud Computing)",
+			"Модуль 6: Облачное Хранилище данных",
+			"Модуль 7: Знакомство с Apache Spark",
+			"Модуль 8: Создание решения для Big Data с использованием Hadoop and Spark",
+			"Модуль 9: Знакомство с понятием Озера Данных и его создание с помощью инструментов AWS",
+			"Модуль 10: Решение задачи по стримингу данных",
+			"Модуль 11: Задачи Машинного Обучения глазами инженера данных",
+			"Модуль 12: Лучшие практики инженера данных"},
 		CreatedOn: time.Now().UTC().String(),
 		UpdatedOn: time.Now().UTC().String(),
 	},
@@ -103,6 +116,7 @@ var courseList = []*Course{
 		Author:      "Dima Anoshin",
 		TechStack: []string{"Excel", "SQL: Postgres/MySQL", "Amazon Redshift", "ETL Pentaho DI",
 			"BigData Elastic Map Reduce (Hadoop), Hive, Presto, Athena, Spectrum", "BI Tableau"},
+		Syllabus:  []string{},
 		CreatedOn: time.Now().UTC().String(),
 		UpdatedOn: time.Now().UTC().String(),
 	},
@@ -113,6 +127,7 @@ var courseList = []*Course{
 		Author:      "Dima Anoshin",
 		TechStack: []string{"Excel", "SQL: Postgres/MySQL", "Amazon Redshift", "ETL Pentaho DI",
 			"BigData Elastic Map Reduce (Hadoop), Hive, Presto, Athena, Spectrum", "BI Tableau"},
+		Syllabus:  []string{},
 		CreatedOn: time.Now().UTC().String(),
 		UpdatedOn: time.Now().UTC().String(),
 	},
@@ -123,6 +138,7 @@ var courseList = []*Course{
 		Author:      "Dima Anoshin",
 		TechStack: []string{"Excel", "SQL: Postgres/MySQL", "Amazon Redshift", "ETL Pentaho DI",
 			"BigData Elastic Map Reduce (Hadoop), Hive, Presto, Athena, Spectrum", "BI Tableau"},
+		Syllabus:  []string{},
 		CreatedOn: time.Now().UTC().String(),
 		UpdatedOn: time.Now().UTC().String(),
 	},

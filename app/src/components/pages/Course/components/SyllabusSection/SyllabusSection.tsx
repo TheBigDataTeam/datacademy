@@ -1,20 +1,21 @@
 import React from 'react';
-//import { Paragraph } from 'components/ui';
+import { Paragraph, Header } from 'components/ui';
 
 interface Props {
     syllabus: Array<string>
 }
 
-export const SyllabusSection: React.FunctionComponent<Props> = (): JSX.Element => {
+export const SyllabusSection: React.FunctionComponent<Props> = ({syllabus}): JSX.Element => {
     return (
         <div>
-            {/* <ul>
-                {syllabus.map((item => {
+            <Header>Course content:</Header>
+            <ul>
+                {syllabus?.map((item) => {
                     <li>
                         <Paragraph>{item}</Paragraph>
                     </li>
-                }))}
-            </ul>  */}         
+                })}
+            </ul>       
         </div>
     )
 }
