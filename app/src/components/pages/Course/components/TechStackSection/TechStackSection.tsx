@@ -14,7 +14,7 @@ export const TechStackSection: React.FunctionComponent<Props> = ({ techstack }):
                 <Header>Here is what we will be using:</Header>
                 <ul>
                     {techstack.map((stack) => (
-                        <li key={uuidv4()}><Paragraph size="xl">{stack}</Paragraph></li>
+                        <li key={uuidv4()}><Paragraph size="ml">{stack}</Paragraph></li>
                     ))}
                 </ul>
             </Grid.Col>

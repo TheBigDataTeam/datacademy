@@ -9,29 +9,40 @@ export const CoursePage: React.FunctionComponent = (): JSX.Element => {
 
     /* TODO TypeScript */
 
-    const [data, setData] = useState(null);
+    const [courses, setCourses] = useState(null);
+    const [author, setAuthor] = useState(null);
+
+    /* TODO URLs to be dynamic */
 
     useEffect(() => {
         const fetchData = async (): Promise<void> => {
             const result = await axios.get("http://localhost:3100/courses/1")
-            setData(result)
+            setCourses(result)
         }
         fetchData();
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        const fetchAuthor = async ():Promise<void> => {
+            const result = await axios.get("http://localhost:3100/authors/1")
+            setAuthor(result)
+        }
+        fetchAuthor();
+    }, []);
 
     return (
         <PageLayout header={<Header />} footer={<Footer />} topOffset>
-            {data ? 
+            {courses ? 
             <>
                 <Grid.Row>
                     <Grid.Col>
-                        <Paragraph size="xxl">{data.data.title}</Paragraph>
+                        <Paragraph size="xxl">{courses.data.title}</Paragraph>
                     </Grid.Col>
                 </Grid.Row>
-                <AuthorSection data={data}/>
-                <SyllabusSection syllabus={data.data.syllabus}/>
+                <AuthorSection author={author}/>
+                <SyllabusSection syllabus={courses.data.syllabus}/>
                 <BenefitsSection />
-                <TechStackSection techstack={data.data.techstack}/>
+                <TechStackSection techstack={courses.data.techstack}/>
             </>
             : <h2>Loading</h2>}
         </PageLayout>
