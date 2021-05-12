@@ -2,13 +2,14 @@ FROM node:12.16.2
 
 WORKDIR /home/node/app
 
-COPY ./package.json ./
-COPY ./yarn.lock ./
-
+COPY package.json yarn.lock ./
 RUN yarn install
 
 COPY . .
 
-EXPOSE 3000
-
-CMD [ "yarn", "start" ]
+CMD if [ "$ENV" = "development" ]; then \
+        yarn start; \
+    else \
+        yarn build && \
+        yarn start -p 3100; \
+    fi

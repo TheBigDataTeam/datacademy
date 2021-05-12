@@ -1,9 +1,9 @@
 version: "3.7"
 
 services:
-  nginx:
+  api:
     volumes:
-      - ./nginx/conf.d.dev:/etc/nginx/conf.d
+      - ./api:/go/src/api
   app:
     volumes:
       - ./app:/home/node/app
