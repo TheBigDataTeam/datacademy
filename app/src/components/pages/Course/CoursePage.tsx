@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Header, Footer } from 'components/common';
 import { PageLayout } from 'components/layouts';
 import { Grid, Paragraph } from 'components/ui';
-import { AuthorSection, SyllabusSection, BenefitsSection, TechStackSection, SubscribeSection } from './components';
+import { AuthorSection, SyllabusSection, BeneficiarsSection, TechStackSection, SubscribeSection } from './components';
 import { Author, Course } from 'models';
 import axios, { AxiosResponse } from 'axios';
 
@@ -16,6 +16,8 @@ export const CoursePage: React.FunctionComponent = (): JSX.Element => {
     const [course, setCourse] = useState<Course>(null);
     const [author, setAuthor] = useState<Author>(null);
 
+    const [authorIdToFetch, setAuthorIdToFetch] = useState<number>(null);
+
     const params: ParamsType = useParams();
 
     useEffect(() => {
@@ -23,20 +25,19 @@ export const CoursePage: React.FunctionComponent = (): JSX.Element => {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const result: AxiosResponse<any> = await axios.get(`http://localhost:3100/courses/${params.id}`);
             setCourse(result.data);
+            setAuthorIdToFetch(result.data.authorid);
         }
         fetchData();
     }, [params.id]);
 
-    /* TODO URL to fetch author to be dynamic */
-
     useEffect(() => {
         const fetchAuthor = async ():Promise<void> => {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const result: AxiosResponse<any> = await axios.get("http://localhost:3100/authors/1");
+            const result: AxiosResponse<any> = await axios.get(`http://localhost:3100/authors/${authorIdToFetch}`);
             setAuthor(result.data);
         }
         fetchAuthor();
-    }, []);
+    }, [authorIdToFetch]);
 
     return (
         <PageLayout header={<Header />} footer={<Footer />} topOffset>
@@ -48,7 +49,7 @@ export const CoursePage: React.FunctionComponent = (): JSX.Element => {
                     </Grid.Col>
                 </Grid.Row>
                 <AuthorSection author={author}/>
-                <BenefitsSection />
+                <BeneficiarsSection beneficiars={course.beneficiars}/>
                 <SyllabusSection syllabus={course.syllabus}/>
                 <TechStackSection techstack={course.techstack}/>
                 <SubscribeSection />

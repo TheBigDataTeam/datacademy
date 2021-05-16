@@ -22,7 +22,7 @@ var authorsList = []*Author{
 		ID:         1,
 		CourseID:   []int{1, 2, 3},
 		Email:      "topless@datacademy.net",
-		Fullname:   "Dima Anoshin",
+		Fullname:   "Dmitry Anoshin",
 		Speciality: "Big data",
 		Features: []string{"Data Engineer in Amazon, Alexa AI",
 			"10+ years of experience in Analytics (Russia, Europe, Canada and USA)",

@@ -1,0 +1,1 @@
+export { BeneficiarsSection } from './BeneficiarsSection';

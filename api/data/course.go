@@ -11,9 +11,11 @@ type Course struct {
 	Description string   `json:"description" validate:"required"`
 	Theme       string   `json:"theme"`
 	Author      string   `json:"author" validate:"required,author"`
+	AuthorID    int      `json:"authorid"`
 	TechStack   []string `json:"techstack"`
 	Syllabus    []string `json:"syllabus"`
 	Duration    string   `json:"-"`
+	Beneficiars []string `json:"beneficiars"`
 	Difficulty  string   `json:"-"`
 	CreatedOn   string   `json:"-"`
 	UpdatedOn   string   `json:"-"`
@@ -91,7 +93,8 @@ var courseList = []*Course{
 		ID:          1,
 		Title:       "Big Data for Dummies",
 		Description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
-		Author:      "Dima Anoshin",
+		Author:      "Dmitry Anoshin",
+		AuthorID:    1,
 		TechStack: []string{"Excel", "SQL: Postgres/MySQL", "Amazon Redshift", "ETL Pentaho DI",
 			"BigData Elastic Map Reduce (Hadoop), Hive, Presto, Athena, Spectrum", "BI Tableau"},
 		Syllabus: []string{"Module 1: Roles of analytics and data engineer in an organization",
@@ -106,6 +109,12 @@ var courseList = []*Course{
 			"Module 10: Data streaming task completion",
 			"Module 11: Machine Learning tasks from data engineer's point of view",
 			"Module 12: Data engineer's best practices"},
+		Beneficiars: []string{"Analysts: Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+			"Market managers: Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+			"Engineers: Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+			"Entrepreneurs: Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+			"Financiers: Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+			"And of course - Novices"},
 		CreatedOn: time.Now().UTC().String(),
 		UpdatedOn: time.Now().UTC().String(),
 	},
@@ -114,6 +123,7 @@ var courseList = []*Course{
 		Title:       "Small Data for Dummies",
 		Description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
 		Author:      "Dima Anoshin",
+		AuthorID:    1,
 		TechStack: []string{"Excel", "SQL: Postgres/MySQL", "Amazon Redshift", "ETL Pentaho DI",
 			"BigData Elastic Map Reduce (Hadoop), Hive, Presto, Athena, Spectrum", "BI Tableau"},
 		Syllabus: []string{"Module 1: Lorem ipsum dolor sit amet consectetur adipisicing elit.",
@@ -126,14 +136,16 @@ var courseList = []*Course{
 			"Module 8: Lorem ipsum dolor sit amet consectetur adipisicing elit.",
 			"Module 9: Lorem ipsum dolor sit amet consectetur adipisicing elit.",
 			"Module 10: Lorem ipsum dolor sit amet consectetur adipisicing elit."},
-		CreatedOn: time.Now().UTC().String(),
-		UpdatedOn: time.Now().UTC().String(),
+		Beneficiars: []string{"Analysts", "Marketologs", "Engineers", "Entrepreneurs", "Newcomers"},
+		CreatedOn:   time.Now().UTC().String(),
+		UpdatedOn:   time.Now().UTC().String(),
 	},
 	{
 		ID:          3,
 		Title:       "Very Big Data for Dummies",
 		Description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
 		Author:      "Dima Anoshin",
+		AuthorID:    1,
 		TechStack: []string{"Excel", "SQL: Postgres/MySQL", "Amazon Redshift", "ETL Pentaho DI",
 			"BigData Elastic Map Reduce (Hadoop), Hive, Presto, Athena, Spectrum", "BI Tableau"},
 		Syllabus: []string{"Module 1: Lorem ipsum dolor sit amet consectetur adipisicing elit.",
@@ -146,14 +158,16 @@ var courseList = []*Course{
 			"Module 8: Lorem ipsum dolor sit amet consectetur adipisicing elit.",
 			"Module 9: Lorem ipsum dolor sit amet consectetur adipisicing elit.",
 			"Module 10: Lorem ipsum dolor sit amet consectetur adipisicing elit."},
-		CreatedOn: time.Now().UTC().String(),
-		UpdatedOn: time.Now().UTC().String(),
+		Beneficiars: []string{"Marketologs", "Engineers", "Entrepreneurs", "Newcomers"},
+		CreatedOn:   time.Now().UTC().String(),
+		UpdatedOn:   time.Now().UTC().String(),
 	},
 	{
 		ID:          4,
 		Title:       "So So Data for Dummies",
 		Description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
 		Author:      "Dima Anoshin",
+		AuthorID:    1,
 		TechStack: []string{"Excel", "SQL: Postgres/MySQL", "Amazon Redshift", "ETL Pentaho DI",
 			"BigData Elastic Map Reduce (Hadoop), Hive, Presto, Athena, Spectrum", "BI Tableau"},
 		Syllabus: []string{"Module 1: Lorem ipsum dolor sit amet consectetur adipisicing elit.",
@@ -166,7 +180,8 @@ var courseList = []*Course{
 			"Module 8: Lorem ipsum dolor sit amet consectetur adipisicing elit.",
 			"Module 9: Lorem ipsum dolor sit amet consectetur adipisicing elit.",
 			"Module 10: Lorem ipsum dolor sit amet consectetur adipisicing elit."},
-		CreatedOn: time.Now().UTC().String(),
-		UpdatedOn: time.Now().UTC().String(),
+		Beneficiars: []string{"Marketologs", "Engineers", "Entrepreneurs", "Newcomers"},
+		CreatedOn:   time.Now().UTC().String(),
+		UpdatedOn:   time.Now().UTC().String(),
 	},
 }

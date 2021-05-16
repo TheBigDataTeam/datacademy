@@ -1,5 +1,5 @@
 export { AuthorSection } from './AuthorSection';
 export { SyllabusSection } from './SyllabusSection';
-export { BenefitsSection } from './BenefitsSection';
+export { BeneficiarsSection } from './BeneficiarsSection';
 export { TechStackSection } from './TechStackSection';
 export { SubscribeSection } from './SubscribeSection';
