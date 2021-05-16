@@ -3,6 +3,7 @@ export { SignUpPage } from './Authentication';
 export { LoginPage } from './Authentication';
 export { ForgetPassPage } from './Authentication';
 export { CatalogPage } from './Catalog';
+export { CoursePage } from './Course';
 export { AuthorsPage } from './Authors';
 export { PricingPage } from './Pricing';
 export { ProjectInfoPage } from './ProjectInfo';

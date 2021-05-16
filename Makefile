@@ -1,5 +1,8 @@
+dev:
+	ENV=development docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+
 api:
-	docker run --name data-api -d -p 3100:3100 data-api:1.0.0
+	docker run --name data-api -d -p 3100:3100 data-api:latest
 
 postgres:
 	docker run --name data-db -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=spartak1 -d postgres:13.1-alpine
@@ -16,4 +19,4 @@ migrateup:
 migratedown:
 	migrate -path migrations/migrations -database "postgresql://root:spartak1@localhost:5432/datalearn?sslmode=disable" down
 
-.PHONY: api postgres createdb dropdb migrateup migratedown
+.PHONY: dev api postgres createdb dropdb migrateup migratedown

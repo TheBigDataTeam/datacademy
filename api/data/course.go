@@ -6,16 +6,19 @@ import (
 
 // Course defines the structure for an API
 type Course struct {
-	ID          int    `json:"id"`
-	Title       string `json:"title" validate:"required"`
-	Description string `json:"description" validate:"required"`
-	Theme       string `json:"theme"`
-	Author      string `json:"author" validate:"required,author"`
-	TechStack   string `json:"techstack"`
-	Duration    string `json:"duration"`
-	Difficulty  string `json:"difficulty"`
-	CreatedOn   string `json:"-"`
-	UpdatedOn   string `json:"-"`
+	ID          int      `json:"id"`
+	Title       string   `json:"title" validate:"required"`
+	Description string   `json:"description" validate:"required"`
+	Theme       string   `json:"theme"`
+	Author      string   `json:"author" validate:"required,author"`
+	AuthorID    int      `json:"authorid"`
+	TechStack   []string `json:"techstack"`
+	Syllabus    []string `json:"syllabus"`
+	Duration    string   `json:"-"`
+	Beneficiars []string `json:"beneficiars"`
+	Difficulty  string   `json:"-"`
+	CreatedOn   string   `json:"-"`
+	UpdatedOn   string   `json:"-"`
 }
 
 // Courses is a slice of Course(s)
@@ -90,17 +93,94 @@ var courseList = []*Course{
 		ID:          1,
 		Title:       "Big Data for Dummies",
 		Description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+		Author:      "Dmitry Anoshin",
+		AuthorID:    1,
+		TechStack: []string{"Excel", "SQL: Postgres/MySQL", "Amazon Redshift", "ETL Pentaho DI",
+			"BigData Elastic Map Reduce (Hadoop), Hive, Presto, Athena, Spectrum", "BI Tableau"},
+		Syllabus: []string{"Module 1: Roles of analytics and data engineer in an organization",
+			"Module 2: Databases and SQL",
+			"Module 3: Data visualization, dashboards and reporting - Business Intelligence",
+			"Module 4: Data integration and data pipelines",
+			"Module 4: Cloud Computing",
+			"Module 6: Cloud data storage",
+			"Module 7: Introduction to Apache Spark",
+			"Module 8: Big Data problem solving with Hadoop and Spark",
+			"Module 9: Introduction to Data Lake and how to make it with AWS",
+			"Module 10: Data streaming task completion",
+			"Module 11: Machine Learning tasks from data engineer's point of view",
+			"Module 12: Data engineer's best practices"},
+		Beneficiars: []string{"Analysts: Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+			"Market managers: Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+			"Engineers: Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+			"Entrepreneurs: Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+			"Financiers: Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+			"And of course - Novices"},
+		CreatedOn: time.Now().UTC().String(),
+		UpdatedOn: time.Now().UTC().String(),
+	},
+	{
+		ID:          2,
+		Title:       "Small Data for Dummies",
+		Description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
 		Author:      "Dima Anoshin",
-		TechStack:   "SQL",
+		AuthorID:    1,
+		TechStack: []string{"Excel", "SQL: Postgres/MySQL", "Amazon Redshift", "ETL Pentaho DI",
+			"BigData Elastic Map Reduce (Hadoop), Hive, Presto, Athena, Spectrum", "BI Tableau"},
+		Syllabus: []string{"Module 1: Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+			"Module 2: Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+			"Module 3: Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+			"Module 4: Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+			"Module 4: Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+			"Module 6: Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+			"Module 7: Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+			"Module 8: Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+			"Module 9: Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+			"Module 10: Lorem ipsum dolor sit amet consectetur adipisicing elit."},
+		Beneficiars: []string{"Analysts", "Marketologs", "Engineers", "Entrepreneurs", "Newcomers"},
 		CreatedOn:   time.Now().UTC().String(),
 		UpdatedOn:   time.Now().UTC().String(),
 	},
 	{
-		ID:          2,
-		Title:       "Big Data for Dummies",
+		ID:          3,
+		Title:       "Very Big Data for Dummies",
 		Description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
 		Author:      "Dima Anoshin",
-		TechStack:   "SQL",
+		AuthorID:    1,
+		TechStack: []string{"Excel", "SQL: Postgres/MySQL", "Amazon Redshift", "ETL Pentaho DI",
+			"BigData Elastic Map Reduce (Hadoop), Hive, Presto, Athena, Spectrum", "BI Tableau"},
+		Syllabus: []string{"Module 1: Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+			"Module 2: Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+			"Module 3: Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+			"Module 4: Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+			"Module 4: Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+			"Module 6: Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+			"Module 7: Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+			"Module 8: Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+			"Module 9: Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+			"Module 10: Lorem ipsum dolor sit amet consectetur adipisicing elit."},
+		Beneficiars: []string{"Marketologs", "Engineers", "Entrepreneurs", "Newcomers"},
+		CreatedOn:   time.Now().UTC().String(),
+		UpdatedOn:   time.Now().UTC().String(),
+	},
+	{
+		ID:          4,
+		Title:       "So So Data for Dummies",
+		Description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+		Author:      "Dima Anoshin",
+		AuthorID:    1,
+		TechStack: []string{"Excel", "SQL: Postgres/MySQL", "Amazon Redshift", "ETL Pentaho DI",
+			"BigData Elastic Map Reduce (Hadoop), Hive, Presto, Athena, Spectrum", "BI Tableau"},
+		Syllabus: []string{"Module 1: Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+			"Module 2: Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+			"Module 3: Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+			"Module 4: Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+			"Module 4: Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+			"Module 6: Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+			"Module 7: Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+			"Module 8: Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+			"Module 9: Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+			"Module 10: Lorem ipsum dolor sit amet consectetur adipisicing elit."},
+		Beneficiars: []string{"Marketologs", "Engineers", "Entrepreneurs", "Newcomers"},
 		CreatedOn:   time.Now().UTC().String(),
 		UpdatedOn:   time.Now().UTC().String(),
 	},

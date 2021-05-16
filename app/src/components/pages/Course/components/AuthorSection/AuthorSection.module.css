@@ -1,0 +1,24 @@
+.wrapper {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.list {
+    margin: 0;
+    padding: 0.5rem;
+}
+
+.list_item {
+    margin-bottom: 0.75rem;
+    list-style-type: '# ';
+}
+
+.img {
+    width: 100%;
+    height: 500px;
+    margin: auto;
+    background-image: url("./images_temp_for_dev/anoshin_foto.png");
+    background-repeat: no-repeat;
+    background-position: top;
+}

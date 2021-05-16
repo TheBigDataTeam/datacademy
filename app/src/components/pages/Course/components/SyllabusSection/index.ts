@@ -1,0 +1,1 @@
+export { SyllabusSection } from './SyllabusSection';

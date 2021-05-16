@@ -19,7 +19,7 @@ export const Footer: React.FunctionComponent<Props> = ({ withPadding }) => {
 				<Grid.Row>
 					<Grid.Col align='center'>
 						<div>
-							<Paragraph align='center'>© {getYears()} DataLearn</Paragraph>
+							<Paragraph align='center'>© {getYears()} Datacademy</Paragraph>
 						</div>
 					</Grid.Col>
 				</Grid.Row>

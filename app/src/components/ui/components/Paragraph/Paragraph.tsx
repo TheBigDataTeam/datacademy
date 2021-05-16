@@ -1,9 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Color, Size, Text } from '../Text/Text';
-import { Margin } from '../../common/margins';
-import marginStyles from '../../styles/margins.module.css';
-import lineHeightStyles from '../../styles/line-heights.module.css';
+import { Margin } from 'components/ui/common/margins';
+import marginStyles from 'components/ui/styles/margins.module.css';
+import lineHeightStyles from 'components/ui/styles/line-heights.module.css';
 import styles from './Paragraph.module.css';
 
 export type Align = 'left' | 'center' | 'right';
