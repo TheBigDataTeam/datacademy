@@ -2,26 +2,22 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Paragraph } from 'components/ui';
 import styles from './AuthorsCard.module.css';
+import { Author } from 'models';
 
 interface Props {
-    fullName: string,
-    firstName: string,
-    location: string,
-    photo: string,
-    description: string,
-    authorOf: string[],
+    author: Author
 }
 
-export const AuthorsCard: React.FunctionComponent<Props> = (props): JSX.Element => {
+export const AuthorsCard: React.FunctionComponent<Props> = ({ author }): JSX.Element => {
     return (
         <div className={styles.root}>
             <div className={styles.img}/>
             <div className={styles.text_block}>
-                <Paragraph size="l">{props.fullName}</Paragraph>
-                <Paragraph size="l">{props.location}</Paragraph>
-                <Paragraph size="l">{props.description}</Paragraph>
-                <Paragraph size="l" marginBottom="l">Author of: {props.authorOf}</Paragraph>
-                <Paragraph size="l">More Info about {props.firstName} <Link to="/authors">here</Link></Paragraph>
+                <Paragraph size="l">{author.fullname}</Paragraph>
+                <Paragraph size="l">{author.location}</Paragraph>
+                <Paragraph size="l">{author.shortdescription}</Paragraph>
+                <Paragraph size="l" marginBottom="l">Author of: {/* {props.authorOf} */}</Paragraph>
+                <Paragraph size="l">More Info about {author.fullname} <Link to={`/authors/${author.id}`}>here</Link></Paragraph>
             </div>
         </div>
     )

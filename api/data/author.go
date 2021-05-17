@@ -4,13 +4,15 @@ import "time"
 
 // Author defines the structure of the author api
 type Author struct {
-	ID         int      `json:"id"`
-	CourseID   []int    `json:"courseid"`
-	Email      string   `json:"email"`
-	Fullname   string   `json:"fullname"`
-	Speciality string   `json:"speciality"`
-	Features   []string `json:"features"`
-	CreatedOn  string   `json:"-"`
+	ID               int      `json:"id"`
+	CourseID         []int    `json:"courseid"`
+	Email            string   `json:"email"`
+	Location         string   `json:"location"`
+	Fullname         string   `json:"fullname"`
+	ShortDescription string   `json:"shortdescription"`
+	Speciality       string   `json:"speciality"`
+	Features         []string `json:"features"`
+	CreatedOn        string   `json:"-"`
 }
 
 // Authors is a slice of authors
@@ -19,11 +21,13 @@ type Authors []*Author
 // courseList is a hard coded list of courses / test data source
 var authorsList = []*Author{
 	{
-		ID:         1,
-		CourseID:   []int{1, 2, 3},
-		Email:      "topless@datacademy.net",
-		Fullname:   "Dmitry Anoshin",
-		Speciality: "Big data",
+		ID:               1,
+		CourseID:         []int{1, 2, 3},
+		Email:            "topless@datacademy.net",
+		Location:         "Vancouver, Canada",
+		Fullname:         "Dmitry Anoshin",
+		ShortDescription: "Founder and CEO of Datacademy",
+		Speciality:       "Big data",
 		Features: []string{"Data Engineer in Amazon, Alexa AI",
 			"10+ years of experience in Analytics (Russia, Europe, Canada and USA)",
 			"Organizer of Vancouver Tableau User Group, Snowflake Canada User Group, Amazon Tableau User Group and Amazon BI Tech Talks",
@@ -35,11 +39,13 @@ var authorsList = []*Author{
 		CreatedOn: time.Now().UTC().String(),
 	},
 	{
-		ID:         2,
-		CourseID:   []int{4, 5},
-		Email:      "bottomless@datacademy.net",
-		Fullname:   "Roman Ponomarev",
-		Speciality: "Small data",
+		ID:               2,
+		CourseID:         []int{4, 5},
+		Email:            "bottomless@datacademy.net",
+		Location:         "Moscow, Russia",
+		Fullname:         "Roman Ponomarev",
+		ShortDescription: "Co-founder and admin of the project",
+		Speciality:       "Small data",
 		Features: []string{"Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, ipsum?",
 			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, ipsum?",
 			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, ipsum?",
@@ -49,13 +55,15 @@ var authorsList = []*Author{
 		CreatedOn: time.Now().UTC().String(),
 	},
 	{
-		ID:         3,
-		CourseID:   []int{1, 2, 3},
-		Email:      "fullydressed@datacademy.net",
-		Fullname:   "Sergei Isaev",
-		Speciality: "Doing nothing",
-		Features:   []string{"Lorem ipsum dolor sit amet.", "Lorem ipsum dolor sit amet.", "Lorem ipsum dolor sit amet."},
-		CreatedOn:  time.Now().UTC().String(),
+		ID:               3,
+		CourseID:         []int{1, 2, 3},
+		Email:            "fullydressed@datacademy.net",
+		Location:         "Moscow, Russia",
+		Fullname:         "Sergei Isaev",
+		ShortDescription: "Just a random guy",
+		Speciality:       "Doing nothing",
+		Features:         []string{"Lorem ipsum dolor sit amet.", "Lorem ipsum dolor sit amet.", "Lorem ipsum dolor sit amet."},
+		CreatedOn:        time.Now().UTC().String(),
 	},
 }
 

@@ -5,6 +5,7 @@ export { ForgetPassPage } from './Authentication';
 export { CatalogPage } from './Catalog';
 export { CoursePage } from './Course';
 export { AuthorsPage } from './Authors';
+export { AuthorPage } from './Author';
 export { PricingPage } from './Pricing';
 export { ProjectInfoPage } from './ProjectInfo';
 export { PaymentPage } from './Payment';

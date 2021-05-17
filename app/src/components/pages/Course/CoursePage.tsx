@@ -14,9 +14,10 @@ type ParamsType = {
 export const CoursePage: React.FunctionComponent = (): JSX.Element => {
 
     const [course, setCourse] = useState<Course>(null);
-    const [author, setAuthor] = useState<Author>(null);
 
     const [authorIdToFetch, setAuthorIdToFetch] = useState<number>(null);
+
+    const [author, setAuthor] = useState<Author>(null);
 
     const params: ParamsType = useParams();
 

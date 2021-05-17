@@ -1,23 +1,21 @@
 import React from 'react';
 import { AuthorsCard} from './components';
-import { listOfAuthors } from 'redux/store';
 import { Grid } from 'components/ui';
+import { Author } from 'models';
 
-export const AuthorsList: React.FunctionComponent = (): JSX.Element => {
+interface Props {
+    authors: Array<Author>
+}
+
+export const AuthorsList: React.FunctionComponent<Props> = ({ authors }): JSX.Element => {
+
     return (
         <Grid.Row>
-            { listOfAuthors.map((author) => (
+            { authors ? authors.map((author) => (
                 <Grid.Col key={author.id} cols={12} colsSM={12} colsMD={12} marginBottom='xl'>
-                    <AuthorsCard
-                        firstName={author.firstName}
-                        fullName={author.fullName}
-                        location={author.location}
-                        photo={author.photo}
-                        description={author.description}
-                        authorOf={author.authorOf}
-                    />
+                    <AuthorsCard author={author} />
                 </Grid.Col>
-            ))}
+            )) : <h2>Loading...</h2> }
         </Grid.Row>
     )
 }
