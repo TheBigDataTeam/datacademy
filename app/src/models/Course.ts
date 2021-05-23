@@ -5,7 +5,7 @@ export type Course = {
     theme: string
     author: string
     authorId: number
-    techstack: Array<string>
+    techstack: string[]
     syllabus: Array<string>
     beneficiars: Array<string>
     duration: string

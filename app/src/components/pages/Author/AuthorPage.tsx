@@ -5,6 +5,7 @@ import { PageLayout } from 'components/layouts';
 import { Header, Footer } from 'components/common';
 import { Author } from 'models';
 import { Grid } from 'components/ui';
+import { SocialSection, BioSection } from './components';
 
 interface ParamsType {
     id: string
@@ -26,11 +27,25 @@ export const AuthorPage: React.FunctionComponent = (): JSX.Element => {
 
     return (
         <PageLayout header={<Header /> } footer={<Footer />} topOffset>
-            <Grid.Row>
-                <Grid.Col>
-                    <h2>{author && author.shortdescription}</h2>
-                </Grid.Col>
-            </Grid.Row>
+            {author ?
+            <>
+                <Grid.Row>
+                    <Grid.Col>
+                        <h2>{author.shortdescription}</h2>
+                    </Grid.Col>
+                </Grid.Row>
+                <Grid.Row>
+                    <Grid.Col>
+                        <BioSection />
+                    </Grid.Col>
+                </Grid.Row>
+                <Grid.Row>
+                    <Grid.Col colsLG={12} colsSM={6}>
+                        <SocialSection author={author} />
+                    </Grid.Col>
+                </Grid.Row>
+            </>
+            : <h2>Loading...</h2>}  
         </PageLayout>
     )
 }

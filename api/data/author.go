@@ -7,6 +7,9 @@ type Author struct {
 	ID               int      `json:"id"`
 	CourseID         []int    `json:"courseid"`
 	Email            string   `json:"email"`
+	Twitter          string   `json:"twitter"`
+	Facebook         string   `json:"facebook"`
+	Instagram        string   `json:"instagram"`
 	Location         string   `json:"location"`
 	Fullname         string   `json:"fullname"`
 	ShortDescription string   `json:"shortdescription"`
@@ -24,6 +27,9 @@ var authorsList = []*Author{
 		ID:               1,
 		CourseID:         []int{1, 2, 3},
 		Email:            "topless@datacademy.net",
+		Twitter:          "twitter.com",
+		Facebook:         "facebook.com",
+		Instagram:        "instagram.com",
 		Location:         "Vancouver, Canada",
 		Fullname:         "Dmitry Anoshin",
 		ShortDescription: "Founder and CEO of Datacademy",
@@ -42,6 +48,9 @@ var authorsList = []*Author{
 		ID:               2,
 		CourseID:         []int{4, 5},
 		Email:            "bottomless@datacademy.net",
+		Twitter:          "twitter.com",
+		Facebook:         "facebook.com",
+		Instagram:        "instagram.com",
 		Location:         "Moscow, Russia",
 		Fullname:         "Roman Ponomarev",
 		ShortDescription: "Co-founder and admin of the project",
@@ -58,6 +67,9 @@ var authorsList = []*Author{
 		ID:               3,
 		CourseID:         []int{1, 2, 3},
 		Email:            "fullydressed@datacademy.net",
+		Twitter:          "twitter.com",
+		Facebook:         "facebook.com",
+		Instagram:        "instagram.com",
 		Location:         "Moscow, Russia",
 		Fullname:         "Sergei Isaev",
 		ShortDescription: "Just a random guy",
