@@ -31,16 +31,13 @@ export const AuthorPage: React.FunctionComponent = (): JSX.Element => {
             <>
                 <Grid.Row>
                     <Grid.Col>
-                        <h2>{author.shortdescription}</h2>
+                        <h2>{author.fullname}</h2>
+                        <h3>{author.shortdescription}</h3>
                     </Grid.Col>
                 </Grid.Row>
-                <Grid.Row>
-                    <Grid.Col>
-                        <BioSection />
-                    </Grid.Col>
-                </Grid.Row>
-                <Grid.Row>
-                    <Grid.Col colsLG={12} colsSM={6}>
+                <BioSection bio={author.bio}/>
+                <Grid.Row marginBottom="xl" marginTop="xl">
+                    <Grid.Col colsLG={12} colsSM={6} align="center">
                         <SocialSection author={author} />
                     </Grid.Col>
                 </Grid.Row>

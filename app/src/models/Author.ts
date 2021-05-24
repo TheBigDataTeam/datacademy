@@ -7,6 +7,7 @@ export type Author = {
     instagram: string
     location: string
     fullname: string
+    bio: string
     shortdescription: string
     speciality: string
     features: Array<string>

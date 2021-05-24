@@ -1,9 +1,20 @@
 import React from 'react';
+import { Paragraph, Grid } from 'components/ui';
+import styles from './BioSection.module.css';
 
-export const BioSection: React.FunctionComponent = (): JSX.Element => {
+interface Props {
+    bio: string
+}
+
+export const BioSection: React.FunctionComponent<Props> = ({ bio }): JSX.Element => {
     return (
-        <div>
-            <h2>Here is bio section</h2>
-        </div>
+        <Grid.Row>
+            <Grid.Col>
+                <div className={styles.wrapper}>
+                    <div className={styles.img}></div>
+                    <Paragraph size="ml" marginTop="none">{bio}</Paragraph>
+                </div>
+            </Grid.Col>
+        </Grid.Row>
     )
 }
