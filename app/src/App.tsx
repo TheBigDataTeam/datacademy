@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { LandingPage, SignUpPage, LoginPage, 
 		ForgetPassPage, CatalogPage, AuthorsPage, 
 		ProjectInfoPage, PricingPage, PaymentPage,
-		CoursePage 
+		CoursePage, AuthorPage
 } from 'components/pages';
 
 export const App: React.FunctionComponent = () => {
@@ -16,7 +16,8 @@ export const App: React.FunctionComponent = () => {
 			<Route path="/auth/forget" component={ForgetPassPage} />
 			<Route exact path="/courses" component={CatalogPage} />
 			<Route path="/courses/:id" component={CoursePage}/>
-			<Route path="/authors" component={AuthorsPage}/>
+			<Route exact path="/authors" component={AuthorsPage}/>
+			<Route path="/authors/:id" component={AuthorPage}/>
 			<Route path="/pricing" component={PricingPage}/>
 			<Route path="/project" component={ProjectInfoPage}/>
 			<Route path="/payment" component={PaymentPage}/>

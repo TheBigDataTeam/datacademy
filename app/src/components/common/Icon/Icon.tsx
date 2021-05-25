@@ -14,6 +14,7 @@ import { ReactComponent as Dollar } from './resources/dollar.svg';
 import { ReactComponent as Motobike } from './resources/motobike.svg';
 import { ReactComponent as Airplane } from './resources/airplane.svg';
 import { ReactComponent as Helicopter } from './resources/helicopter.svg';
+import { ReactComponent as Instagram } from './resources/instagram.svg';
 
 /* TODO augment import of svg components => list is too long */
 
@@ -50,6 +51,9 @@ export const Icon: React.FunctionComponent<Props> = ({type, size='m', color, inv
         }
         case 'facebook': {
             return <Facebook className={className}/>
+        }
+        case 'instagram': {
+            return <Instagram className={className}/>
         }
         case 'google': {
             return <Google className={className}/>
