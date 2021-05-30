@@ -10,11 +10,18 @@ import (
 
 	"github.com/Serj1c/datalearn/api/data"
 	"github.com/Serj1c/datalearn/api/handlers"
+	"github.com/Serj1c/datalearn/api/util"
 	gohandlers "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
 
 func main() {
+
+	// read configuration from config.env
+	config, err := util.LoadConfig(".")
+	if err != nil {
+		log.Fatal("unable to read configuration:", err)
+	}
 
 	// create a logger for a server
 	l := log.New(os.Stdout, "API ", log.LstdFlags)
@@ -51,7 +58,7 @@ func main() {
 
 	// create a new server
 	server := &http.Server{
-		Addr:         ":3100",
+		Addr:         config.ServerPort,
 		Handler:      corsHandler(sm),   // set the default handler
 		ErrorLog:     l,                 // set the logger for the server
 		IdleTimeout:  120 * time.Second, // max time for connections using TCP Keep-Alive

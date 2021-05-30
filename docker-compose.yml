@@ -1,6 +1,15 @@
 version: "3.7"
 
 services:
+  db:
+    image: postgres:13.1-alpine
+    environment: 
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=spartak1
+      - POSTGRES_DB=datacademy
+    networks:
+      - backend
+
   app:
     build:
       context: './app'
@@ -8,6 +17,7 @@ services:
       - "3000:3000"
     environment:
       - ENV=${ENV}
+      - DB_SOURCE=postgresql://root:spartak1@localhost:5432/datacademy?sslmode=disable
     networks:
       - backend
 
@@ -16,6 +26,8 @@ services:
       context: './api'
     ports:
       - "3100:3100"
+    depends_on: 
+      - db
     networks:
       - backend
     environment:
