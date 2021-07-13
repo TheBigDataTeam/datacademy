@@ -24,6 +24,8 @@ type Course struct {
 // Courses is a slice of Course(s)
 type Courses []*Course
 
+/* TODO: all functions are not concurrently safe - mutexes or something! */
+
 // GetCourses returns a list of courses
 func GetCourses() Courses {
 	return courseList
@@ -54,7 +56,7 @@ func UpdateCourse(c Course) error {
 
 // AddCourse adds new course to the DB
 func AddCourse(c Course) {
-	c.ID = getNextCourseID()
+	c.ID = getNextCourseID() // TODO handle possible mistakes
 	courseList = append(courseList, &c)
 }
 

@@ -3,8 +3,8 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/Serj1c/datalearn/api/data"
-	"github.com/Serj1c/datalearn/api/util"
+	"github.com/Serj1c/datalearn/api/pkg/data"
+	"github.com/Serj1c/datalearn/api/pkg/util"
 )
 
 // ListAllCourses handles GET requests and returns all current courses

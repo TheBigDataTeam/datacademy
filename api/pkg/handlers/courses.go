@@ -3,7 +3,7 @@ package handlers
 import (
 	"log"
 
-	"github.com/Serj1c/datalearn/api/data"
+	"github.com/Serj1c/datalearn/api/pkg/data"
 )
 
 // KeyCourse is a key used for the Course object in the context

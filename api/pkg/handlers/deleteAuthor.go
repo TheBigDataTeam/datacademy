@@ -3,8 +3,8 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/Serj1c/datalearn/api/data"
-	"github.com/Serj1c/datalearn/api/util"
+	"github.com/Serj1c/datalearn/api/pkg/data"
+	"github.com/Serj1c/datalearn/api/pkg/util"
 )
 
 // DelAuthor ...

@@ -4,8 +4,8 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/Serj1c/datalearn/api/data"
-	"github.com/Serj1c/datalearn/api/util"
+	"github.com/Serj1c/datalearn/api/pkg/data"
+	"github.com/Serj1c/datalearn/api/pkg/util"
 )
 
 // MiddlewareValidateCourse validates the course in the request and calls next if ok

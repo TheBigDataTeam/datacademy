@@ -3,7 +3,7 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/Serj1c/datalearn/api/data"
+	"github.com/Serj1c/datalearn/api/pkg/data"
 )
 
 // CreateAuthor handles POST requests to add new authors
