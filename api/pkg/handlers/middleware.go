@@ -4,6 +4,7 @@ import (
 	"context"
 	"net/http"
 
+	"github.com/Serj1c/datalearn/api/pkg/courses"
 	"github.com/Serj1c/datalearn/api/pkg/data"
 	"github.com/Serj1c/datalearn/api/pkg/util"
 )
@@ -11,7 +12,7 @@ import (
 // MiddlewareValidateCourse validates the course in the request and calls next if ok
 func (c *Courses) MiddlewareValidateCourse(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
-		course := &data.Course{}
+		course := &courses.Course{}
 
 		err := data.FromJSON(course, r.Body)
 		if err != nil {

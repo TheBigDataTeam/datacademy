@@ -1,6 +1,9 @@
 package data
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
 // Author defines the structure of the author api
 type Author struct {
@@ -18,6 +21,9 @@ type Author struct {
 	Features         []string `json:"features"`
 	CreatedOn        string   `json:"-"`
 }
+
+// ErrorAuthorNotFound is an error raised when a author can not be found
+var ErrorAuthorNotFound = fmt.Errorf("Author not found")
 
 // Authors is a slice of authors
 type Authors []*Author

@@ -7,6 +7,7 @@ api:
 postgres:
 	docker run --name data-db -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=spartak1 -d postgres:13.1-alpine
 
+# Container names in commands postgres, createdb and dropdb are not right
 createdb:
 	docker exec -it data-db createdb --username=root --owner=root datacademy
 

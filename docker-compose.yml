@@ -7,6 +7,8 @@ services:
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=spartak1
       - POSTGRES_DB=datacademy
+    ports:
+      - "5432:5432"
     networks:
       - backend
 
@@ -17,7 +19,6 @@ services:
       - "3000:3000"
     environment:
       - ENV=${ENV}
-      - DB_SOURCE=postgresql://root:spartak1@localhost:5432/datacademy?sslmode=disable
     networks:
       - backend
 
@@ -32,6 +33,7 @@ services:
       - backend
     environment:
       - ENV=${ENV}
+      - DB_SOURCE=postgresql://root:spartak1@localhost:5432/datacademy?sslmode=disable
     restart: always
 
 networks:

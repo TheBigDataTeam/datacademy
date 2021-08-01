@@ -1,17 +1,20 @@
-package data
+package courses
 
 import (
 	"bytes"
 	"testing"
 
+	"github.com/Serj1c/datalearn/api/pkg/data"
 	"github.com/stretchr/testify/assert"
 )
+
+/* TODO tests to be reworked */
 
 func TestCourseMissingTitleReturnsError(t *testing.T) {
 	c := Course{
 		Description: "dummies love SQL",
 	}
-	v := NewValidation()
+	v := data.NewValidation()
 	err := v.Validate(c)
 	assert.Len(t, err, 1)
 }
@@ -21,7 +24,7 @@ func TestCourseMissingAuthorReturnsError(t *testing.T) {
 		Title:       "SQL for dummies",
 		Description: "dummies love SQL",
 	}
-	v := NewValidation()
+	v := data.NewValidation()
 	err := v.Validate(c)
 	assert.Len(t, err, 1)
 }
@@ -33,7 +36,7 @@ func TestValidProductDoesNotReturnError(t *testing.T) {
 		Author:      "Sergei Isaev",
 	}
 
-	v := NewValidation()
+	v := data.NewValidation()
 	err := v.Validate(c)
 	assert.Len(t, err, 1)
 }
@@ -45,6 +48,6 @@ func TestCourseToJSON(t *testing.T) {
 		},
 	}
 	b := bytes.NewBufferString("")
-	err := ToJSON(cs, b)
+	err := data.ToJSON(cs, b)
 	assert.NoError(t, err)
 }

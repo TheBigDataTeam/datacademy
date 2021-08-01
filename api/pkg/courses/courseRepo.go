@@ -1,39 +1,36 @@
-package data
+package courses
 
 import (
+	"database/sql"
+	"fmt"
 	"time"
 )
 
-// Course defines the structure for an API
-type Course struct {
-	ID          int      `json:"id"`
-	Title       string   `json:"title" validate:"required"`
-	Description string   `json:"description" validate:"required"`
-	Theme       string   `json:"theme"`
-	Author      string   `json:"author" validate:"required,author"` // TODO author is to be Autor struct
-	AuthorID    int      `json:"authorid"`
-	TechStack   []string `json:"techstack"`
-	Syllabus    []string `json:"syllabus"`
-	Duration    string   `json:"-"`
-	Beneficiars []string `json:"beneficiars"`
-	Difficulty  string   `json:"-"`
-	CreatedOn   string   `json:"-"`
-	UpdatedOn   string   `json:"-"`
+// Repo represents DB
+type Repo struct {
+	db *sql.DB
 }
 
-// Courses is a slice of Course(s)
-type Courses []*Course
+// NewRepo returns
+func NewRepo(db *sql.DB) *Repo {
+	return &Repo{
+		db: db,
+	}
+}
+
+// ErrorCourseNotFound is an error raised when a course can not be found
+var ErrorCourseNotFound = fmt.Errorf("Course not found")
 
 /* TODO: all functions are not concurrently safe - mutexes or something! */
 
 // GetCourses returns a list of courses
-func GetCourses() Courses {
+func (r *Repo) GetCourses() []*Course {
 	return courseList
 }
 
 // GetCourseByID returns a single course which matches the id from the DB
 // if a course is not found this function returns a CourseNotFound error
-func GetCourseByID(id int) (*Course, error) {
+func (r *Repo) GetCourseByID(id int) (*Course, error) {
 	index := findIndexByCourseID(id)
 	if id == -1 {
 		return nil, ErrorCourseNotFound
@@ -45,7 +42,7 @@ func GetCourseByID(id int) (*Course, error) {
 // If a course with the given id does not exist in th DB
 // this function returns CourseNotFound error
 /* TODO: currently if some filds are comming empty - it makes corresponding fields in data set empty as well - needs to be fixed */
-func UpdateCourse(c Course) error {
+func (r *Repo) UpdateCourse(c Course) error {
 	index := findIndexByCourseID(c.ID)
 	if index == -1 {
 		return ErrorCourseNotFound
@@ -55,13 +52,13 @@ func UpdateCourse(c Course) error {
 }
 
 // AddCourse adds new course to the DB
-func AddCourse(c Course) {
+func (r *Repo) AddCourse(c Course) {
 	c.ID = getNextCourseID() // TODO handle possible mistakes
 	courseList = append(courseList, &c)
 }
 
 // DeleteCourse deletes a course from the DB
-func DeleteCourse(id int) error {
+func (r *Repo) DeleteCourse(id int) error {
 	index := findIndexByCourseID(id)
 	if index == -1 {
 		return ErrorCourseNotFound
