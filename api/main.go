@@ -15,13 +15,19 @@ import (
 	"github.com/Serj1c/datalearn/api/pkg/util"
 	gohandlers "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+	_ "github.com/lib/pq"
 )
 
 func main() {
 	/* TODO move this file to cmd folder and update Dockerfile accordingly */
 
-	dsn := "root:spartak1@tcp(127.0.0.1:5432/datacademy?charset=utf8&interpolateParams=true)"
-	db, err := sql.Open("postgres", dsn)
+	// read configuration from api.env
+	config, err := util.LoadConfig("./") // TODO address of a config file
+	if err != nil {
+		log.Fatal("unable to read configuration: ", err)
+	}
+
+	db, err := sql.Open(config.DBDriver, config.DBSource)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -30,12 +36,6 @@ func main() {
 	err = db.Ping()
 	if err != nil {
 		log.Fatalf("Cannot connect to db, err: %v\n", err)
-	}
-
-	// read configuration from api.env
-	config, err := util.LoadConfig("./") // TODO address of a config file
-	if err != nil {
-		log.Fatal("unable to read configuration: ", err)
 	}
 
 	// init logger
