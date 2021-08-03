@@ -2,18 +2,18 @@ CREATE TABLE "users" (
   "id" bigserial PRIMARY KEY,
   "email" varchar UNIQUE NOT NULL,
   "fullname" varchar NOT NULL,
-  "subscribe_to" bigint,
+  "subscribe_to" varchar,
   "created_on" timestamptz NOT NULL DEFAULT (now()),
   "isAdmin" boolean DEFAULT false
 );
 
 CREATE TABLE "courses" (
-  "id" bigserial PRIMARY KEY,
+  "id" varchar PRIMARY KEY,
   "title" varchar NOT NULL,
   "description" varchar NOT NULL,
   "theme" varchar,
   "author" varchar NOT NULL,
-  "author_id" bigint NOT NULL,
+  "author_id" varchar NOT NULL,
   "tech_stack" varchar NOT NULL,
   "syllabus" varchar NOT NULL,
   "duration" varchar NOT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE "courses" (
 
 CREATE TABLE "authors" (
   "id" bigserial PRIMARY KEY,
-  "course_id" bigint NOT NULL,
+  "course_id" varchar NOT NULL,
   "email" varchar UNIQUE NOT NULL,
   "twitter" varchar NOT NULL,
   "facebook" varchar NOT NULL,
@@ -40,6 +40,6 @@ CREATE TABLE "authors" (
 
 ALTER TABLE "users" ADD FOREIGN KEY ("subscribe_to") REFERENCES "courses" ("id");
 
-ALTER TABLE "courses" ADD FOREIGN KEY ("author_id") REFERENCES "authors" ("id");
+/* ALTER TABLE "courses" ADD FOREIGN KEY ("author_id") REFERENCES "authors" ("id"); */
 
 ALTER TABLE "authors" ADD FOREIGN KEY ("course_id") REFERENCES "courses" ("id");
