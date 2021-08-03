@@ -2,26 +2,51 @@ package main
 
 import (
 	"context"
+	"database/sql"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"time"
 
-	"github.com/Serj1c/datalearn/api/data"
-	"github.com/Serj1c/datalearn/api/handlers"
+	"github.com/Serj1c/datalearn/api/pkg/courses"
+	"github.com/Serj1c/datalearn/api/pkg/data"
+	"github.com/Serj1c/datalearn/api/pkg/handlers"
+	"github.com/Serj1c/datalearn/api/pkg/util"
 	gohandlers "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+	_ "github.com/lib/pq"
 )
 
 func main() {
+	/* TODO move this file to cmd folder and update Dockerfile accordingly */
 
-	// create a logger for a server
+	// read configuration from api.env
+	config, err := util.LoadConfig("./") // TODO address of a config file
+	if err != nil {
+		log.Fatal("unable to read configuration: ", err)
+	}
+
+	db, err := sql.Open(config.DBDriver, config.DBSource)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+
+	err = db.Ping()
+	if err != nil {
+		log.Fatalf("Cannot connect to db, err: %v\n", err)
+	}
+
+	// init logger
 	l := log.New(os.Stdout, "API ", log.LstdFlags)
+	//init validation
 	v := data.NewValidation()
+	// init courses repo
+	cr := courses.NewRepo(db)
 
 	// create the handlers
-	coursesHandler := handlers.NewCourses(l, v)
+	coursesHandler := handlers.NewCourses(l, v, cr)
 	authorsHandler := handlers.NewAuthors(l, v)
 
 	// register handlers
@@ -29,21 +54,21 @@ func main() {
 
 	// handlers for API
 	getRouter := sm.Methods(http.MethodGet).Subrouter()
-	getRouter.HandleFunc("/courses", coursesHandler.ListAllCourses)
+	getRouter.HandleFunc("/courses", coursesHandler.ListAll)
 	getRouter.HandleFunc("/authors", authorsHandler.ListAllAuthors)
-	getRouter.HandleFunc("/courses/{id:[0-9]+}", coursesHandler.ListSingleCourse)
+	getRouter.HandleFunc("/courses/{id:[0-9]+}", coursesHandler.ListOne)
 	getRouter.HandleFunc("/authors/{id:[0-9]+}", authorsHandler.ListSingleAuthor)
 
 	putRouter := sm.Methods(http.MethodPut).Subrouter()
-	putRouter.HandleFunc("/courses/{id:[0-9]+}", coursesHandler.UpdCourse)
+	putRouter.HandleFunc("/courses/{id:[0-9]+}", coursesHandler.Update)
 	putRouter.Use(coursesHandler.MiddlewareValidateCourse)
 
 	postRouter := sm.Methods(http.MethodPost).Subrouter()
-	postRouter.HandleFunc("/courses", coursesHandler.CreateCourse)
+	postRouter.HandleFunc("/courses", coursesHandler.Create)
 	postRouter.Use(coursesHandler.MiddlewareValidateCourse)
 
 	deleteRouter := sm.Methods(http.MethodDelete).Subrouter()
-	deleteRouter.HandleFunc("/courses/{id:[0-9]+}", coursesHandler.DelCourse)
+	deleteRouter.HandleFunc("/courses/{id:[0-9]+}", coursesHandler.Delete)
 	deleteRouter.HandleFunc("/authors/{id:[0-9]+}", authorsHandler.DelAuthor)
 
 	// CORS
@@ -51,7 +76,7 @@ func main() {
 
 	// create a new server
 	server := &http.Server{
-		Addr:         ":3100",
+		Addr:         config.ServerPort,
 		Handler:      corsHandler(sm),   // set the default handler
 		ErrorLog:     l,                 // set the logger for the server
 		IdleTimeout:  120 * time.Second, // max time for connections using TCP Keep-Alive
