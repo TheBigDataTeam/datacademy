@@ -11,6 +11,8 @@ services:
       - "5432:5432"
     networks:
       - backend
+    volumes: 
+      - ./api/.database/postgres/data:/var/lib/postgresql/data
 
   app:
     build:
@@ -33,7 +35,7 @@ services:
       - backend
     environment:
       - ENV=${ENV}
-      - DB_SOURCE=postgresql://root:spartak1@localhost:5432/datacademy?sslmode=disable
+      - DB_SOURCE=postgresql://root:spartak1@db:5432/datacademy?sslmode=disable
     restart: always
 
 networks:

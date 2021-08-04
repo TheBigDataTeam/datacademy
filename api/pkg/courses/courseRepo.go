@@ -184,29 +184,3 @@ var courseList = []*Course{
 		UpdatedOn:   time.Now().UTC().String(),
 	},
 }
-
-/*
-
-var (
-	id          = "1"
-	title       = "Big Data for Dummies"
-	description = "Lorem ipsum dolor sit amet, consectetur adipisicing elit."
-	theme       = "juicy pussy"
-	author      = "Dmitry Anoshin"
-	authorID    = "1"
-	techStack   = "Excel" + "SQL: Postgres/MySQL" + "Amazon Redshift"
-	syllabus    = "Module 1: Roles of analytics and data engineer in an organization"
-	duration    = "1 hour"
-	beneficiars = "Analysts: Lorem ipsum dolor sit amet, consectetur adipisicing elit."
-	difficulty  = "very hard"
-	createdOn   = time.Now().UTC()
-)
-
-	result, err := db.Exec(`INSERT INTO courses (id, title, description, theme, author, author_id, tech_stack, syllabus, duration, beneficiars, difficulty, created_on)
-	VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`, id, title, description, theme, author, authorID, techStack, syllabus, duration, beneficiars, difficulty, createdOn)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println(result)
-
-*/
