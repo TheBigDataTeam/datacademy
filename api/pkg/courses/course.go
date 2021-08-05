@@ -7,7 +7,7 @@ type Course struct {
 	Description string   `json:"description" validate:"required"`
 	Theme       string   `json:"theme"`
 	Author      string   `json:"author" validate:"required,author"` // TODO author is to be Autor struct
-	AuthorID    int      `json:"authorid"`
+	AuthorID    string   `json:"authorid"`
 	TechStack   []string `json:"techstack"`
 	Syllabus    []string `json:"syllabus"`
 	Duration    string   `json:"-"`

@@ -58,11 +58,11 @@ func main() {
 	getRouter := sm.Methods(http.MethodGet).Subrouter()
 	getRouter.HandleFunc("/courses", coursesHandler.ListAll)
 	getRouter.HandleFunc("/authors", authorsHandler.ListAll)
-	getRouter.HandleFunc("/courses/{id:[0-9]+}", coursesHandler.ListOne)
-	getRouter.HandleFunc("/authors/{id:[0-9]+}", authorsHandler.ListOne)
+	getRouter.HandleFunc("/courses/{id}", coursesHandler.ListOne)
+	getRouter.HandleFunc("/authors/{id}", authorsHandler.ListOne)
 
 	putRouter := sm.Methods(http.MethodPut).Subrouter()
-	putRouter.HandleFunc("/courses/{id:[0-9]+}", coursesHandler.Update)
+	putRouter.HandleFunc("/courses/{id}", coursesHandler.Update)
 	putRouter.HandleFunc("/courses/{id}", authorsHandler.Update)
 	putRouter.Use(coursesHandler.MiddlewareValidateCourse)
 
@@ -71,8 +71,8 @@ func main() {
 	postRouter.Use(coursesHandler.MiddlewareValidateCourse)
 
 	deleteRouter := sm.Methods(http.MethodDelete).Subrouter()
-	deleteRouter.HandleFunc("/courses/{id:[0-9]+}", coursesHandler.Delete)
-	deleteRouter.HandleFunc("/authors/{id:[0-9]+}", authorsHandler.Delete)
+	deleteRouter.HandleFunc("/courses/{id}", coursesHandler.Delete)
+	deleteRouter.HandleFunc("/authors/{id}", authorsHandler.Delete)
 
 	// CORS - TODO: how to set container pors as an origin?
 	corsHandler := gohandlers.CORS(gohandlers.AllowedOrigins([]string{"http://localhost:3000"}))

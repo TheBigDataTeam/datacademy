@@ -14,7 +14,7 @@ interface ParamsType {
 export const AuthorPage: React.FunctionComponent = (): JSX.Element => {
 
     const params: ParamsType = useParams();
-    const [author, setAuthor] = useState<Author>(null);
+    const [author, setAuthor] = useState<Author>();
 
     useEffect(() => {
         const fetchAuthor = async () => {
