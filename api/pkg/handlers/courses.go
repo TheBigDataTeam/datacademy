@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/Serj1c/datalearn/api/pkg/courses"
-	"github.com/Serj1c/datalearn/api/pkg/data"
+	"github.com/Serj1c/datalearn/api/pkg/middleware"
 	"github.com/Serj1c/datalearn/api/pkg/util"
 )
 
@@ -15,12 +15,12 @@ type KeyCourse struct{}
 // Courses is a handler for getting and updating courses
 type Courses struct {
 	l *log.Logger
-	v *data.Validation
+	v *middleware.Validation
 	r *courses.Repo
 }
 
 // NewCourses creates a courses handler with the given logger
-func NewCourses(l *log.Logger, v *data.Validation, r *courses.Repo) *Courses {
+func NewCourses(l *log.Logger, v *middleware.Validation, r *courses.Repo) *Courses {
 	return &Courses{l, v, r}
 }
 
@@ -30,7 +30,7 @@ func (c *Courses) ListAll(rw http.ResponseWriter, r *http.Request) {
 
 	courses := c.r.GetCourses()
 
-	err := data.ToJSON(courses, rw)
+	err := util.ToJSON(courses, rw)
 	if err != nil {
 		c.l.Println("[ERROR] serializing course", err)
 	}
@@ -50,15 +50,15 @@ func (c *Courses) ListOne(rw http.ResponseWriter, r *http.Request) {
 	case courses.ErrorCourseNotFound:
 		c.l.Println("[ERROR] fetching course", err)
 		rw.WriteHeader(http.StatusNotFound)
-		data.ToJSON(&util.GenericError{Message: err.Error()}, rw)
+		util.ToJSON(&util.GenericError{Message: err.Error()}, rw)
 		return
 	default:
 		c.l.Println("[ERROR] fetching course", err)
 		rw.WriteHeader(http.StatusInternalServerError)
-		data.ToJSON(&util.GenericError{Message: err.Error()}, rw)
+		util.ToJSON(&util.GenericError{Message: err.Error()}, rw)
 		return
 	}
-	err = data.ToJSON(course, rw)
+	err = util.ToJSON(course, rw)
 	if err != nil {
 		c.l.Println("[ERROR] serializing course", err)
 	}
@@ -74,13 +74,13 @@ func (c *Courses) Delete(rw http.ResponseWriter, r *http.Request) {
 	if err == courses.ErrorCourseNotFound {
 		c.l.Println("[ERROR] deleting record id does not exist")
 		rw.WriteHeader(http.StatusNotFound)
-		data.ToJSON(&util.GenericError{Message: err.Error()}, rw)
+		util.ToJSON(&util.GenericError{Message: err.Error()}, rw)
 		return
 	}
 	if err != nil {
 		c.l.Println("[ERROR] deleting record", err)
 		rw.WriteHeader(http.StatusInternalServerError)
-		data.ToJSON(&util.GenericError{Message: err.Error()}, rw)
+		util.ToJSON(&util.GenericError{Message: err.Error()}, rw)
 		return
 	}
 	rw.WriteHeader(http.StatusNoContent)
@@ -105,7 +105,7 @@ func (c *Courses) Update(rw http.ResponseWriter, r *http.Request) {
 	if err == courses.ErrorCourseNotFound {
 		c.l.Println("[ERROR] course not found", err)
 		rw.WriteHeader(http.StatusNotFound)
-		data.ToJSON(&util.GenericError{Message: "Product not found in database"}, rw)
+		util.ToJSON(&util.GenericError{Message: "Product not found in database"}, rw)
 		return
 	}
 	// write the no content success header

@@ -2,7 +2,7 @@ package courses
 
 // Course defines the structure for an API
 type Course struct {
-	ID          int      `json:"id"`
+	ID          string   `json:"id"`
 	Title       string   `json:"title" validate:"required"`
 	Description string   `json:"description" validate:"required"`
 	Theme       string   `json:"theme"`

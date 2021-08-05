@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 	"time"
+
+	"github.com/Serj1c/datalearn/api/pkg/util"
 )
 
 // Repo represents DB
@@ -11,7 +13,7 @@ type Repo struct {
 	db *sql.DB
 }
 
-// NewRepo returns
+// NewRepo returns an instance of a Repo
 func NewRepo(db *sql.DB) *Repo {
 	return &Repo{
 		db: db,
@@ -21,7 +23,7 @@ func NewRepo(db *sql.DB) *Repo {
 // ErrorCourseNotFound is an error raised when a course can not be found
 var ErrorCourseNotFound = fmt.Errorf("Course not found")
 
-/* TODO: all functions are not concurrently safe - mutexes or something! */
+/* TODO: all functions are not concurrently safe - add mutexes or something! */
 
 // GetCourses returns a list of courses
 func (r *Repo) GetCourses() []*Course {
@@ -30,9 +32,9 @@ func (r *Repo) GetCourses() []*Course {
 
 // GetCourseByID returns a single course which matches the id from the DB
 // if a course is not found this function returns a CourseNotFound error
-func (r *Repo) GetCourseByID(id int) (*Course, error) {
+func (r *Repo) GetCourseByID(id string) (*Course, error) {
 	index := findIndexByCourseID(id)
-	if id == -1 {
+	if index == -1 {
 		return nil, ErrorCourseNotFound
 	}
 	return courseList[index], nil
@@ -58,7 +60,7 @@ func (r *Repo) AddCourse(c Course) {
 }
 
 // DeleteCourse deletes a course from the DB
-func (r *Repo) DeleteCourse(id int) error {
+func (r *Repo) DeleteCourse(id string) error {
 	index := findIndexByCourseID(id)
 	if index == -1 {
 		return ErrorCourseNotFound
@@ -70,14 +72,14 @@ func (r *Repo) DeleteCourse(id int) error {
 /* TODO: make this function available for all handlers */
 
 // getNextId generates a new id for a product being inserted into db
-func getNextCourseID() int {
-	lastItemInDB := courseList[len(courseList)-1]
-	return lastItemInDB.ID + 1
+func getNextCourseID() string {
+	newID := util.RandString()
+	return newID
 }
 
 // findIndexByCourseID finds the index of a course in the DB
-// returns -1 when no course isfound
-func findIndexByCourseID(id int) int {
+// returns -1 when no course is found
+func findIndexByCourseID(id string) int {
 	for i, c := range courseList {
 		if c.ID == id {
 			return i
@@ -89,7 +91,7 @@ func findIndexByCourseID(id int) int {
 // courseList is a hard coded list of courses / test data source
 var courseList = []*Course{
 	{
-		ID:          1,
+		ID:          "aaaaaaaaaa",
 		Title:       "Big Data for Dummies",
 		Description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
 		Author:      "Dmitry Anoshin",
@@ -118,7 +120,7 @@ var courseList = []*Course{
 		UpdatedOn: time.Now().UTC().String(),
 	},
 	{
-		ID:          2,
+		ID:          "bbbbbbbbb",
 		Title:       "Small Data for Dummies",
 		Description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
 		Author:      "Dima Anoshin",
@@ -140,7 +142,7 @@ var courseList = []*Course{
 		UpdatedOn:   time.Now().UTC().String(),
 	},
 	{
-		ID:          3,
+		ID:          "cccccccc",
 		Title:       "Very Big Data for Dummies",
 		Description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
 		Author:      "Dima Anoshin",
@@ -162,7 +164,7 @@ var courseList = []*Course{
 		UpdatedOn:   time.Now().UTC().String(),
 	},
 	{
-		ID:          4,
+		ID:          "dddddddddd",
 		Title:       "So So Data for Dummies",
 		Description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
 		Author:      "Dima Anoshin",
