@@ -28,11 +28,14 @@ func NewCourses(l *log.Logger, v *middleware.Validation, r *courses.Repo) *Cours
 func (c *Courses) ListAll(rw http.ResponseWriter, r *http.Request) {
 	c.l.Println("[SUCCESS] get all records")
 
-	courses := c.r.GetCourses()
-
-	err := util.ToJSON(courses, rw)
+	courses, err := c.r.GetCourses()
 	if err != nil {
-		c.l.Println("[ERROR] serializing course", err)
+		c.l.Println("[ERROR] receiving courses from db: ", err)
+	}
+
+	err = util.ToJSON(courses, rw)
+	if err != nil {
+		c.l.Println("[ERROR] serializing courses ", err)
 	}
 }
 

@@ -3,7 +3,6 @@ package courses
 import (
 	"database/sql"
 	"fmt"
-	"time"
 
 	"github.com/Serj1c/datalearn/api/pkg/util"
 )
@@ -26,8 +25,23 @@ var ErrorCourseNotFound = fmt.Errorf("Course not found")
 /* TODO: all functions are not concurrently safe - add mutexes or something! */
 
 // GetCourses returns a list of courses
-func (r *Repo) GetCourses() []*Course {
-	return courseList
+func (r *Repo) GetCourses() ([]*Course, error) {
+	courses := make([]*Course, 0, 10)
+	rows, err := r.db.Query("SELECT id, title, description, theme, author, author_id, tech_stack, syllabus, duration, beneficiars, difficulty, created_on FROM courses")
+	defer rows.Close()
+	if err != nil {
+		return nil, err
+	}
+	for rows.Next() {
+		item := &Course{}
+		err := rows.Scan(&item.ID, &item.Title, &item.Description, &item.Theme, &item.Author, &item.AuthorID, &item.TechStack,
+			&item.Syllabus, &item.Duration, &item.Beneficiars, &item.Difficulty, &item.CreatedOn)
+		if err != nil {
+			return nil, err
+		}
+		courses = append(courses, item)
+	}
+	return courses, nil
 }
 
 // GetCourseByID returns a single course which matches the id from the DB
@@ -95,7 +109,7 @@ var courseList = []*Course{
 		Title:       "Big Data for Dummies",
 		Description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
 		Author:      "Dmitry Anoshin",
-		AuthorID:    "qqqqq",
+		/* AuthorID:    "qqqqq",
 		TechStack: []string{"Excel", "SQL: Postgres/MySQL", "Amazon Redshift", "ETL Pentaho DI",
 			"BigData Elastic Map Reduce (Hadoop), Hive, Presto, Athena, Spectrum", "BI Tableau"},
 		Syllabus: []string{"Module 1: Roles of analytics and data engineer in an organization",
@@ -117,14 +131,14 @@ var courseList = []*Course{
 			"Financiers: Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
 			"And of course - Novices"},
 		CreatedOn: time.Now().UTC().String(),
-		UpdatedOn: time.Now().UTC().String(),
+		UpdatedOn: time.Now().UTC().String(), */
 	},
 	{
 		ID:          "bbbbbbbbb",
 		Title:       "Small Data for Dummies",
 		Description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
 		Author:      "Dima Anoshin",
-		AuthorID:    "qqqqq",
+		/* AuthorID:    "qqqqq",
 		TechStack: []string{"Excel", "SQL: Postgres/MySQL", "Amazon Redshift", "ETL Pentaho DI",
 			"BigData Elastic Map Reduce (Hadoop), Hive, Presto, Athena, Spectrum", "BI Tableau"},
 		Syllabus: []string{"Module 1: Lorem ipsum dolor sit amet consectetur adipisicing elit.",
@@ -139,14 +153,14 @@ var courseList = []*Course{
 			"Module 10: Lorem ipsum dolor sit amet consectetur adipisicing elit."},
 		Beneficiars: []string{"Analysts", "Marketologs", "Engineers", "Entrepreneurs", "Newcomers"},
 		CreatedOn:   time.Now().UTC().String(),
-		UpdatedOn:   time.Now().UTC().String(),
+		UpdatedOn:   time.Now().UTC().String(), */
 	},
 	{
 		ID:          "cccccccc",
 		Title:       "Very Big Data for Dummies",
 		Description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
 		Author:      "Dima Anoshin",
-		AuthorID:    "qqqqq",
+		/* AuthorID:    "qqqqq",
 		TechStack: []string{"Excel", "SQL: Postgres/MySQL", "Amazon Redshift", "ETL Pentaho DI",
 			"BigData Elastic Map Reduce (Hadoop), Hive, Presto, Athena, Spectrum", "BI Tableau"},
 		Syllabus: []string{"Module 1: Lorem ipsum dolor sit amet consectetur adipisicing elit.",
@@ -161,14 +175,14 @@ var courseList = []*Course{
 			"Module 10: Lorem ipsum dolor sit amet consectetur adipisicing elit."},
 		Beneficiars: []string{"Marketologs", "Engineers", "Entrepreneurs", "Newcomers"},
 		CreatedOn:   time.Now().UTC().String(),
-		UpdatedOn:   time.Now().UTC().String(),
+		UpdatedOn:   time.Now().UTC().String(), */
 	},
 	{
 		ID:          "dddddddddd",
 		Title:       "So So Data for Dummies",
 		Description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
 		Author:      "Dima Anoshin",
-		AuthorID:    "qqqqq",
+		/* AuthorID:    "qqqqq",
 		TechStack: []string{"Excel", "SQL: Postgres/MySQL", "Amazon Redshift", "ETL Pentaho DI",
 			"BigData Elastic Map Reduce (Hadoop), Hive, Presto, Athena, Spectrum", "BI Tableau"},
 		Syllabus: []string{"Module 1: Lorem ipsum dolor sit amet consectetur adipisicing elit.",
@@ -183,6 +197,6 @@ var courseList = []*Course{
 			"Module 10: Lorem ipsum dolor sit amet consectetur adipisicing elit."},
 		Beneficiars: []string{"Marketologs", "Engineers", "Entrepreneurs", "Newcomers"},
 		CreatedOn:   time.Now().UTC().String(),
-		UpdatedOn:   time.Now().UTC().String(),
+		UpdatedOn:   time.Now().UTC().String(), */
 	},
 }
