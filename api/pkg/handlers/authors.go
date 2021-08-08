@@ -26,11 +26,12 @@ func NewAuthors(l *log.Logger, v *middleware.Validation, r *authors.Repo) *Autho
 
 // ListAll handles GET requests and returns all current authors
 func (a *Authors) ListAll(rw http.ResponseWriter, r *http.Request) {
-	a.l.Println("[SUCCESS] get all records")
-
-	authors := a.r.GetAuthors()
-
-	err := util.ToJSON(authors, rw)
+	a.l.Println("[SUCCESS] get all authors")
+	authors, err := a.r.GetAuthors()
+	if err != nil {
+		a.l.Println("[ERROR] receiving authors from db: ", err)
+	}
+	err = util.ToJSON(authors, rw)
 	if err != nil {
 		a.l.Println("[ERROR] serializing author", err)
 	}

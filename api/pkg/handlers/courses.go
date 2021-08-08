@@ -27,7 +27,6 @@ func NewCourses(l *log.Logger, v *middleware.Validation, r *courses.Repo) *Cours
 // ListAll handles GET requests and returns all current courses
 func (c *Courses) ListAll(rw http.ResponseWriter, r *http.Request) {
 	c.l.Println("[SUCCESS] get all records")
-
 	courses, err := c.r.GetCourses()
 	if err != nil {
 		c.l.Println("[ERROR] receiving courses from db: ", err)
@@ -42,20 +41,17 @@ func (c *Courses) ListAll(rw http.ResponseWriter, r *http.Request) {
 // ListOne handles GET requests for a single course
 func (c *Courses) ListOne(rw http.ResponseWriter, r *http.Request) {
 	id := util.GetIDfromRequest(r)
-
 	c.l.Println("[SUCCESS] get record id", id)
 
 	course, err := c.r.GetCourseByID(id)
-
-	switch err {
-	case nil:
-
-	case courses.ErrorCourseNotFound:
-		c.l.Println("[ERROR] fetching course", err)
+	c.l.Println(course)
+	if err == courses.ErrorCourseNotFound {
+		c.l.Println("[ERROR]", err)
 		rw.WriteHeader(http.StatusNotFound)
 		util.ToJSON(&util.GenericError{Message: err.Error()}, rw)
 		return
-	default:
+	}
+	if err != nil {
 		c.l.Println("[ERROR] fetching course", err)
 		rw.WriteHeader(http.StatusInternalServerError)
 		util.ToJSON(&util.GenericError{Message: err.Error()}, rw)

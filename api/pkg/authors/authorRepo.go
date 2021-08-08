@@ -24,8 +24,23 @@ func NewRepo(db *sql.DB) *Repo {
 var ErrorAuthorNotFound = fmt.Errorf("Author not found")
 
 // GetAuthors returns list of authors
-func (r *Repo) GetAuthors() []*Author {
-	return authorsList
+func (r *Repo) GetAuthors() ([]*Author, error) {
+	/* authors := make([]*Author, 0, 10)
+	rows, err := r.db.Query("SELECT id, courseid, email, twitter, facebook, instagram, location, fullname, bio, shortdescription, speciality, features FROM authors")
+	defer rows.Close()
+	if err != nil {
+		return nil, err
+	}
+	for rows.Next() {
+		author := &Author{}
+		err := rows.Scan(&author.ID, &author.CourseID, &author.Email, &author.Twitter, &author.Facebook, &author.Instagram, &author.Location,
+			&author.Fullname, &author.Bio, &author.ShortDescription, &author.Speciality, &author.Features)
+		if err != nil {
+			return nil, err
+		}
+		authors = append(authors, author)
+	} */
+	return authorsList, nil
 }
 
 // findIndexByAuthorID finds the index of a course in the DB
@@ -91,8 +106,8 @@ func (r *Repo) DeleteAuthor(id string) error {
 var authorsList = []*Author{
 	{
 		ID:        "qqqqq",
-		CourseID:  []int{1, 2, 3},
-		Email:     "topless@datacademy.net",
+		CourseID:  "1",
+		Email:     "topless@datalearn.biz",
 		Twitter:   "twitter.com",
 		Facebook:  "facebook.com",
 		Instagram: "instagram.com",
@@ -111,20 +126,20 @@ var authorsList = []*Author{
 		чат в Slack для каждого из них, где участники смогут помогать друг другу. Такой вот community driven.`,
 		ShortDescription: "Founder and CEO of Datacademy",
 		Speciality:       "Big data",
-		Features: []string{"Data Engineer in Amazon, Alexa AI",
-			"10+ years of experience in Analytics (Russia, Europe, Canada and USA)",
-			"Organizer of Vancouver Tableau User Group, Snowflake Canada User Group, Amazon Tableau User Group and Amazon BI Tech Talks",
-			"University of Victoria lecturer - Cloud Computing",
-			"Author of 6 books about Analytics",
-			"Develops consaltyng in North America - rockyourdata.cloud",
-			"Speaker on conferences and meetups in Russia and North America",
-			"Courses are being developed on the West Coast"},
+		Features: `#Data Engineer in Amazon, Alexa AI,
+			#10+ years of experience in Analytics (Russia, Europe, Canada and USA),
+			#Organizer of Vancouver Tableau User Group, Snowflake Canada User Group, Amazon Tableau User Group and Amazon BI Tech Talks,
+			#University of Victoria lecturer - Cloud Computing,
+			#Author of 6 books about Analytics,
+			#Develops consaltyng in North America - rockyourdata.cloud,
+			#Speaker on conferences and meetups in Russia and North America,
+			#Courses are being developed on the West Coast`,
 		CreatedOn: time.Now().UTC().String(),
 	},
 	{
 		ID:               "www",
-		CourseID:         []int{4, 5},
-		Email:            "bottomless@datacademy.net",
+		CourseID:         "2",
+		Email:            "bottomless@datalearn.biz",
 		Twitter:          "twitter.com",
 		Facebook:         "facebook.com",
 		Instagram:        "instagram.com",
@@ -133,18 +148,18 @@ var authorsList = []*Author{
 		Bio:              "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum numquam quaerat magnam unde necessitatibus cum, nesciunt error earum optio molestias, laborum aliquam illum sint quo architecto minus magni culpa? Aspernatur explicabo mollitia, quae atque quidem error aperiam, perferendis nostrum recusandae, culpa molestiae. Ab assumenda saepe amet, optio, maxime incidunt commodi corporis totam recusandae provident corrupti! Enim sit suscipit optio voluptates recusandae quos at. Perspiciatis ut inventore corporis nostrum sit quas aliquam omnis natus neque quidem, delectus qui commodi dolorem quae dolore cumque, quisquam pariatur unde. Cum quam, autem provident deserunt explicabo unde earum blanditiis tenetur quis aspernatur quisquam. Aliquam, ducimus!",
 		ShortDescription: "Co-founder and admin of the project",
 		Speciality:       "Small data",
-		Features: []string{"Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, ipsum?",
-			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, ipsum?",
-			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, ipsum?",
-			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, ipsum?",
-			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, ipsum?",
-			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, ipsum?"},
+		Features: `#Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, ipsum?
+					#Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, ipsum?,
+			#Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, ipsum?,
+			#Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, ipsum?,
+			#Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, ipsum?,
+			#Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, ipsum?`,
 		CreatedOn: time.Now().UTC().String(),
 	},
 	{
 		ID:               "eee",
-		CourseID:         []int{1, 2, 3},
-		Email:            "fullydressed@datacademy.net",
+		CourseID:         "3",
+		Email:            "fullydressed@datalearn.biz",
 		Twitter:          "twitter.com",
 		Facebook:         "facebook.com",
 		Instagram:        "instagram.com",
@@ -153,7 +168,7 @@ var authorsList = []*Author{
 		Bio:              "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum numquam quaerat magnam unde necessitatibus cum, nesciunt error earum optio molestias, laborum aliquam illum sint quo architecto minus magni culpa? Aspernatur explicabo mollitia, quae atque quidem error aperiam, perferendis nostrum recusandae, culpa molestiae. Ab assumenda saepe amet, optio, maxime incidunt commodi corporis totam recusandae provident corrupti! Enim sit suscipit optio voluptates recusandae quos at. Perspiciatis ut inventore corporis nostrum sit quas aliquam omnis natus neque quidem, delectus qui commodi dolorem quae dolore cumque, quisquam pariatur unde. Cum quam, autem provident deserunt explicabo unde earum blanditiis tenetur quis aspernatur quisquam. Aliquam, ducimus!",
 		ShortDescription: "Just a random guy",
 		Speciality:       "Doing nothing",
-		Features:         []string{"Lorem ipsum dolor sit amet.", "Lorem ipsum dolor sit amet.", "Lorem ipsum dolor sit amet."},
+		Features:         "#Lorem ipsum dolor sit amet. #Lorem ipsum dolor sit amet. #Lorem ipsum dolor sit amet.",
 		CreatedOn:        time.Now().UTC().String(),
 	},
 }

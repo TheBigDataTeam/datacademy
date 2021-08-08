@@ -27,7 +27,7 @@ var ErrorCourseNotFound = fmt.Errorf("Course not found")
 // GetCourses returns a list of courses
 func (r *Repo) GetCourses() ([]*Course, error) {
 	courses := make([]*Course, 0, 10)
-	rows, err := r.db.Query("SELECT id, title, description, theme, author, author_id, tech_stack, syllabus, duration, beneficiars, difficulty, created_on FROM courses")
+	rows, err := r.db.Query("SELECT id, title, description, theme, author, author_id, tech_stack, syllabus, duration, beneficiars, created_on, version FROM courses")
 	defer rows.Close()
 	if err != nil {
 		return nil, err
@@ -35,7 +35,7 @@ func (r *Repo) GetCourses() ([]*Course, error) {
 	for rows.Next() {
 		item := &Course{}
 		err := rows.Scan(&item.ID, &item.Title, &item.Description, &item.Theme, &item.Author, &item.AuthorID, &item.TechStack,
-			&item.Syllabus, &item.Duration, &item.Beneficiars, &item.Difficulty, &item.CreatedOn)
+			&item.Syllabus, &item.Duration, &item.Beneficiars, &item.CreatedOn, &item.Version)
 		if err != nil {
 			return nil, err
 		}
@@ -47,11 +47,14 @@ func (r *Repo) GetCourses() ([]*Course, error) {
 // GetCourseByID returns a single course which matches the id from the DB
 // if a course is not found this function returns a CourseNotFound error
 func (r *Repo) GetCourseByID(id string) (*Course, error) {
-	index := findIndexByCourseID(id)
-	if index == -1 {
-		return nil, ErrorCourseNotFound
+	course := &Course{}
+	row := r.db.QueryRow("SELECT id, title, description, theme, author, author_id, tech_stack, syllabus, duration, beneficiars, created_on, version FROM courses WHERE id=$1;", id)
+	err := row.Scan(&course.ID, &course.Title, &course.Description, &course.Theme, &course.Author, &course.AuthorID, &course.TechStack,
+		&course.Syllabus, &course.Duration, &course.Beneficiars, &course.CreatedOn, &course.Version)
+	if err == sql.ErrNoRows {
+		return nil, err
 	}
-	return courseList[index], nil
+	return course, nil
 }
 
 // UpdateCourse replaces a course in the DB with the given item.

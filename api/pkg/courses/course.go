@@ -12,7 +12,6 @@ type Course struct {
 	Syllabus    string `json:"syllabus"`
 	Duration    string `json:"-"`
 	Beneficiars string `json:"beneficiars"`
-	Difficulty  string `json:"-"`
-	CreatedOn   string `json:"-"`
-	UpdatedOn   string `json:"-"`
+	CreatedOn   string `json:"createdon"`
+	Version     int    `json:"version"`
 }
