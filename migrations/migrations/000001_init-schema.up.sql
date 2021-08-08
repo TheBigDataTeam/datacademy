@@ -1,10 +1,10 @@
 CREATE TABLE "users" (
-  "id" bigserial PRIMARY KEY,
+  "id" varchar PRIMARY KEY,
   "email" varchar UNIQUE NOT NULL,
   "fullname" varchar NOT NULL,
-  "subscribe_to" varchar,
+  "isAdmin" boolean DEFAULT false,
   "created_on" timestamptz NOT NULL DEFAULT (now()),
-  "isAdmin" boolean DEFAULT false
+  "version" integer NOT NULL DEFAULT 1
 );
 
 CREATE TABLE "courses" (
@@ -14,32 +14,48 @@ CREATE TABLE "courses" (
   "theme" varchar,
   "author" varchar NOT NULL,
   "author_id" varchar NOT NULL,
-  "tech_stack" varchar NOT NULL,
+  "techstack" varchar NOT NULL,
   "syllabus" varchar NOT NULL,
   "duration" varchar NOT NULL,
   "beneficiars" varchar NOT NULL,
-  "difficulty" varchar NOT NULL,
-  "created_on" timestamptz NOT NULL DEFAULT (now())
+  "created_on" timestamptz NOT NULL DEFAULT (now()),
+  "version" integer NOT NULL DEFAULT 1
 );
 
 CREATE TABLE "authors" (
-  "id" bigserial PRIMARY KEY,
+  "id" varchar PRIMARY KEY,
   "course_id" varchar NOT NULL,
   "email" varchar UNIQUE NOT NULL,
-  "twitter" varchar NOT NULL,
-  "facebook" varchar NOT NULL,
-  "instagram" varchar NOT NULL,
-  "location" varchar NOT NULL,
   "fullname" varchar NOT NULL,
+  "twitter_acc" varchar,
+  "facebook_acc" varchar,
+  "instagram_acc" varchar,
+  "location" varchar,
   "bio" varchar NOT NULL,
-  "shortdescription" varchar NOT NULL,
+  "shortdescription" varchar,
   "speciality" varchar,
   "features" varchar NOT NULL,
-  "created_on" timestamptz NOT NULL DEFAULT (now())
+  "created_on" timestamptz NOT NULL DEFAULT (now()),
+  "version" integer NOT NULL DEFAULT 1
 );
 
-ALTER TABLE "users" ADD FOREIGN KEY ("subscribe_to") REFERENCES "courses" ("id");
+CREATE TABLE "subscriptions" (
+  "id" varchar PRIMARY KEY,
+  "course_id" varchar NOT NULL,
+  "user_id" varchar NOT NULL
+);
 
-/* ALTER TABLE "courses" ADD FOREIGN KEY ("author_id") REFERENCES "authors" ("id"); */
+CREATE TABLE "sessions" (
+  "id" varchar PRIMARY KEY,
+  "user_id" varchar NOT NULL
+);
+
+ALTER TABLE "courses" ADD FOREIGN KEY ("author_id") REFERENCES "authors" ("id");
 
 ALTER TABLE "authors" ADD FOREIGN KEY ("course_id") REFERENCES "courses" ("id");
+
+ALTER TABLE "subscriptions" ADD FOREIGN KEY ("course_id") REFERENCES "courses" ("id");
+
+ALTER TABLE "subscriptions" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
+
+ALTER TABLE "sessions" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");

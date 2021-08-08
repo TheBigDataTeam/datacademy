@@ -1,8 +1,9 @@
 package util
 
 import (
+	"encoding/json"
+	"io"
 	"net/http"
-	"strconv"
 
 	"github.com/gorilla/mux"
 )
@@ -16,14 +17,27 @@ func getNextID() /* int */ {
 }
 
 // GetIDfromRequest returns the ID from the URL
-func GetIDfromRequest(r *http.Request) int {
+func GetIDfromRequest(r *http.Request) string {
 	// parse the id from the url
 	vars := mux.Vars(r)
 
 	// convert the id into an integer and return
-	id, err := strconv.Atoi(vars["id"])
-	if err != nil {
-		panic(err) /* TODO must be no panic! */
-	}
+	id := vars["id"]
 	return id
+}
+
+// ToJSON serializes the contents of the collection to JSON
+// NewEncoder provides better performance than json.Unmarshal
+// as it does not have to buffer the output into an in memory slice of bytes
+// this reduces allocations and the overheads of the service
+func ToJSON(i interface{}, w io.Writer) error {
+	encoder := json.NewEncoder(w)
+	return encoder.Encode(i)
+}
+
+// FromJSON deserializes the object from JSON string
+// in an io.Reader to the given interface
+func FromJSON(i interface{}, r io.Reader) error {
+	decoder := json.NewDecoder(r)
+	return decoder.Decode(i)
 }

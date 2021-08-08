@@ -7,7 +7,7 @@ import axios, { AxiosResponse } from 'axios';
 
 export const CoursesSection: React.FunctionComponent = (): JSX.Element => {
 
-    const [courses, setCourses] = useState<Array<Course>>(null);
+    const [courses, setCourses] = useState<Array<Course>>();
 
     useEffect(() => {
         const fetchCourses = async (): Promise<void> => {

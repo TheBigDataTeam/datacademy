@@ -9,9 +9,10 @@ import (
 	"os/signal"
 	"time"
 
+	"github.com/Serj1c/datalearn/api/pkg/authors"
 	"github.com/Serj1c/datalearn/api/pkg/courses"
-	"github.com/Serj1c/datalearn/api/pkg/data"
 	"github.com/Serj1c/datalearn/api/pkg/handlers"
+	"github.com/Serj1c/datalearn/api/pkg/middleware"
 	"github.com/Serj1c/datalearn/api/pkg/util"
 	gohandlers "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -41,13 +42,14 @@ func main() {
 	// init logger
 	l := log.New(os.Stdout, "API ", log.LstdFlags)
 	//init validation
-	v := data.NewValidation()
-	// init courses repo
+	v := middleware.NewValidation()
+	// init repos
 	cr := courses.NewRepo(db)
+	ar := authors.NewRepo(db)
 
 	// create the handlers
 	coursesHandler := handlers.NewCourses(l, v, cr)
-	authorsHandler := handlers.NewAuthors(l, v)
+	authorsHandler := handlers.NewAuthors(l, v, ar)
 
 	// register handlers
 	sm := mux.NewRouter()
@@ -55,12 +57,13 @@ func main() {
 	// handlers for API
 	getRouter := sm.Methods(http.MethodGet).Subrouter()
 	getRouter.HandleFunc("/courses", coursesHandler.ListAll)
-	getRouter.HandleFunc("/authors", authorsHandler.ListAllAuthors)
-	getRouter.HandleFunc("/courses/{id:[0-9]+}", coursesHandler.ListOne)
-	getRouter.HandleFunc("/authors/{id:[0-9]+}", authorsHandler.ListSingleAuthor)
+	getRouter.HandleFunc("/authors", authorsHandler.ListAll)
+	getRouter.HandleFunc("/courses/{id}", coursesHandler.ListOne)
+	getRouter.HandleFunc("/authors/{id}", authorsHandler.ListOne)
 
 	putRouter := sm.Methods(http.MethodPut).Subrouter()
-	putRouter.HandleFunc("/courses/{id:[0-9]+}", coursesHandler.Update)
+	putRouter.HandleFunc("/courses/{id}", coursesHandler.Update)
+	putRouter.HandleFunc("/courses/{id}", authorsHandler.Update)
 	putRouter.Use(coursesHandler.MiddlewareValidateCourse)
 
 	postRouter := sm.Methods(http.MethodPost).Subrouter()
@@ -68,10 +71,10 @@ func main() {
 	postRouter.Use(coursesHandler.MiddlewareValidateCourse)
 
 	deleteRouter := sm.Methods(http.MethodDelete).Subrouter()
-	deleteRouter.HandleFunc("/courses/{id:[0-9]+}", coursesHandler.Delete)
-	deleteRouter.HandleFunc("/authors/{id:[0-9]+}", authorsHandler.DelAuthor)
+	deleteRouter.HandleFunc("/courses/{id}", coursesHandler.Delete)
+	deleteRouter.HandleFunc("/authors/{id}", authorsHandler.Delete)
 
-	// CORS
+	// CORS - TODO: how to set container pors as an origin?
 	corsHandler := gohandlers.CORS(gohandlers.AllowedOrigins([]string{"http://localhost:3000"}))
 
 	// create a new server

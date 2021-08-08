@@ -5,7 +5,7 @@ import styles from './AuthorSection.module.css';
 import { Author } from 'models/Author';
 
 interface Props {
-    author: Author
+    author: Author | undefined /* TODO: rework types */
 }
 
 export const AuthorSection: React.FunctionComponent<Props> = ({ author }): JSX.Element => {

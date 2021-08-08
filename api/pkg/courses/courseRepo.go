@@ -3,7 +3,8 @@ package courses
 import (
 	"database/sql"
 	"fmt"
-	"time"
+
+	"github.com/Serj1c/datalearn/api/pkg/util"
 )
 
 // Repo represents DB
@@ -11,7 +12,7 @@ type Repo struct {
 	db *sql.DB
 }
 
-// NewRepo returns
+// NewRepo returns an instance of a Repo
 func NewRepo(db *sql.DB) *Repo {
 	return &Repo{
 		db: db,
@@ -21,21 +22,39 @@ func NewRepo(db *sql.DB) *Repo {
 // ErrorCourseNotFound is an error raised when a course can not be found
 var ErrorCourseNotFound = fmt.Errorf("Course not found")
 
-/* TODO: all functions are not concurrently safe - mutexes or something! */
+/* TODO: all functions are not concurrently safe - add mutexes or something! */
 
 // GetCourses returns a list of courses
-func (r *Repo) GetCourses() []*Course {
-	return courseList
+func (r *Repo) GetCourses() ([]*Course, error) {
+	courses := make([]*Course, 0, 10)
+	rows, err := r.db.Query("SELECT id, title, description, theme, author, author_id, tech_stack, syllabus, duration, beneficiars, created_on, version FROM courses")
+	defer rows.Close()
+	if err != nil {
+		return nil, err
+	}
+	for rows.Next() {
+		item := &Course{}
+		err := rows.Scan(&item.ID, &item.Title, &item.Description, &item.Theme, &item.Author, &item.AuthorID, &item.TechStack,
+			&item.Syllabus, &item.Duration, &item.Beneficiars, &item.CreatedOn, &item.Version)
+		if err != nil {
+			return nil, err
+		}
+		courses = append(courses, item)
+	}
+	return courses, nil
 }
 
 // GetCourseByID returns a single course which matches the id from the DB
 // if a course is not found this function returns a CourseNotFound error
-func (r *Repo) GetCourseByID(id int) (*Course, error) {
-	index := findIndexByCourseID(id)
-	if id == -1 {
-		return nil, ErrorCourseNotFound
+func (r *Repo) GetCourseByID(id string) (*Course, error) {
+	course := &Course{}
+	row := r.db.QueryRow("SELECT id, title, description, theme, author, author_id, tech_stack, syllabus, duration, beneficiars, created_on, version FROM courses WHERE id=$1;", id)
+	err := row.Scan(&course.ID, &course.Title, &course.Description, &course.Theme, &course.Author, &course.AuthorID, &course.TechStack,
+		&course.Syllabus, &course.Duration, &course.Beneficiars, &course.CreatedOn, &course.Version)
+	if err == sql.ErrNoRows {
+		return nil, err
 	}
-	return courseList[index], nil
+	return course, nil
 }
 
 // UpdateCourse replaces a course in the DB with the given item.
@@ -58,7 +77,7 @@ func (r *Repo) AddCourse(c Course) {
 }
 
 // DeleteCourse deletes a course from the DB
-func (r *Repo) DeleteCourse(id int) error {
+func (r *Repo) DeleteCourse(id string) error {
 	index := findIndexByCourseID(id)
 	if index == -1 {
 		return ErrorCourseNotFound
@@ -70,14 +89,14 @@ func (r *Repo) DeleteCourse(id int) error {
 /* TODO: make this function available for all handlers */
 
 // getNextId generates a new id for a product being inserted into db
-func getNextCourseID() int {
-	lastItemInDB := courseList[len(courseList)-1]
-	return lastItemInDB.ID + 1
+func getNextCourseID() string {
+	newID := util.RandString()
+	return newID
 }
 
 // findIndexByCourseID finds the index of a course in the DB
-// returns -1 when no course isfound
-func findIndexByCourseID(id int) int {
+// returns -1 when no course is found
+func findIndexByCourseID(id string) int {
 	for i, c := range courseList {
 		if c.ID == id {
 			return i
@@ -89,11 +108,11 @@ func findIndexByCourseID(id int) int {
 // courseList is a hard coded list of courses / test data source
 var courseList = []*Course{
 	{
-		ID:          1,
+		ID:          "aaaaaaaaaa",
 		Title:       "Big Data for Dummies",
 		Description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
 		Author:      "Dmitry Anoshin",
-		AuthorID:    1,
+		/* AuthorID:    "qqqqq",
 		TechStack: []string{"Excel", "SQL: Postgres/MySQL", "Amazon Redshift", "ETL Pentaho DI",
 			"BigData Elastic Map Reduce (Hadoop), Hive, Presto, Athena, Spectrum", "BI Tableau"},
 		Syllabus: []string{"Module 1: Roles of analytics and data engineer in an organization",
@@ -115,14 +134,14 @@ var courseList = []*Course{
 			"Financiers: Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
 			"And of course - Novices"},
 		CreatedOn: time.Now().UTC().String(),
-		UpdatedOn: time.Now().UTC().String(),
+		UpdatedOn: time.Now().UTC().String(), */
 	},
 	{
-		ID:          2,
+		ID:          "bbbbbbbbb",
 		Title:       "Small Data for Dummies",
 		Description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
 		Author:      "Dima Anoshin",
-		AuthorID:    1,
+		/* AuthorID:    "qqqqq",
 		TechStack: []string{"Excel", "SQL: Postgres/MySQL", "Amazon Redshift", "ETL Pentaho DI",
 			"BigData Elastic Map Reduce (Hadoop), Hive, Presto, Athena, Spectrum", "BI Tableau"},
 		Syllabus: []string{"Module 1: Lorem ipsum dolor sit amet consectetur adipisicing elit.",
@@ -137,14 +156,14 @@ var courseList = []*Course{
 			"Module 10: Lorem ipsum dolor sit amet consectetur adipisicing elit."},
 		Beneficiars: []string{"Analysts", "Marketologs", "Engineers", "Entrepreneurs", "Newcomers"},
 		CreatedOn:   time.Now().UTC().String(),
-		UpdatedOn:   time.Now().UTC().String(),
+		UpdatedOn:   time.Now().UTC().String(), */
 	},
 	{
-		ID:          3,
+		ID:          "cccccccc",
 		Title:       "Very Big Data for Dummies",
 		Description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
 		Author:      "Dima Anoshin",
-		AuthorID:    1,
+		/* AuthorID:    "qqqqq",
 		TechStack: []string{"Excel", "SQL: Postgres/MySQL", "Amazon Redshift", "ETL Pentaho DI",
 			"BigData Elastic Map Reduce (Hadoop), Hive, Presto, Athena, Spectrum", "BI Tableau"},
 		Syllabus: []string{"Module 1: Lorem ipsum dolor sit amet consectetur adipisicing elit.",
@@ -159,14 +178,14 @@ var courseList = []*Course{
 			"Module 10: Lorem ipsum dolor sit amet consectetur adipisicing elit."},
 		Beneficiars: []string{"Marketologs", "Engineers", "Entrepreneurs", "Newcomers"},
 		CreatedOn:   time.Now().UTC().String(),
-		UpdatedOn:   time.Now().UTC().String(),
+		UpdatedOn:   time.Now().UTC().String(), */
 	},
 	{
-		ID:          4,
+		ID:          "dddddddddd",
 		Title:       "So So Data for Dummies",
 		Description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
 		Author:      "Dima Anoshin",
-		AuthorID:    1,
+		/* AuthorID:    "qqqqq",
 		TechStack: []string{"Excel", "SQL: Postgres/MySQL", "Amazon Redshift", "ETL Pentaho DI",
 			"BigData Elastic Map Reduce (Hadoop), Hive, Presto, Athena, Spectrum", "BI Tableau"},
 		Syllabus: []string{"Module 1: Lorem ipsum dolor sit amet consectetur adipisicing elit.",
@@ -181,6 +200,6 @@ var courseList = []*Course{
 			"Module 10: Lorem ipsum dolor sit amet consectetur adipisicing elit."},
 		Beneficiars: []string{"Marketologs", "Engineers", "Entrepreneurs", "Newcomers"},
 		CreatedOn:   time.Now().UTC().String(),
-		UpdatedOn:   time.Now().UTC().String(),
+		UpdatedOn:   time.Now().UTC().String(), */
 	},
 }

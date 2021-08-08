@@ -4,7 +4,7 @@ import { Grid } from 'components/ui';
 import { Author } from 'models';
 
 interface Props {
-    authors: Array<Author>
+    authors: Array<Author> | null
 }
 
 export const AuthorsList: React.FunctionComponent<Props> = ({ authors }): JSX.Element => {

@@ -19,13 +19,13 @@ import { ReactComponent as Instagram } from './resources/instagram.svg';
 /* TODO augment import of svg components => list is too long */
 
 interface Props {
-    type: string /* TODO find a way to implement narrowing */
+    type: string | null /* TODO find a way to implement narrowing */
     size?: 's' | 'm' | 'l' | 'xl' | 'xxl';
     color?: boolean;
     inverted?: boolean;
 } 
 
-export const Icon: React.FunctionComponent<Props> = ({type, size='m', color, inverted}): JSX.Element => {
+export const Icon: React.FunctionComponent<Props> = ({type, size='m', color, inverted}): JSX.Element | null => {
 
     const className = classNames(styles[`root_size_${size}`], {
         [styles.root_color_facebook]: color && type === 'facebook',

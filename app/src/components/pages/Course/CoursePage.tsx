@@ -13,11 +13,11 @@ type ParamsType = {
 
 export const CoursePage: React.FunctionComponent = (): JSX.Element => {
 
-    const [course, setCourse] = useState<Course>(null);
+    const [course, setCourse] = useState<Course>();
 
-    const [authorIdToFetch, setAuthorIdToFetch] = useState<number>(null);
+    const [authorIdToFetch, setAuthorIdToFetch] = useState<string>();
 
-    const [author, setAuthor] = useState<Author>(null);
+    const [author, setAuthor] = useState<Author>();
 
     const params: ParamsType = useParams();
 
@@ -27,6 +27,7 @@ export const CoursePage: React.FunctionComponent = (): JSX.Element => {
             const result: AxiosResponse<any> = await axios.get(`http://localhost:3100/courses/${params.id}`);
             setCourse(result.data);
             setAuthorIdToFetch(result.data.authorid);
+
         }
         fetchData();
     }, [params.id]);

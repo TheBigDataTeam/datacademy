@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	"github.com/Serj1c/datalearn/api/pkg/courses"
-	"github.com/Serj1c/datalearn/api/pkg/data"
 	"github.com/Serj1c/datalearn/api/pkg/util"
 )
 
@@ -14,11 +13,11 @@ func (c *Courses) MiddlewareValidateCourse(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
 		course := &courses.Course{}
 
-		err := data.FromJSON(course, r.Body)
+		err := util.FromJSON(course, r.Body)
 		if err != nil {
 			c.l.Println("[ERROR] deserializing course", err)
 			rw.WriteHeader(http.StatusBadRequest)
-			data.ToJSON(&util.GenericError{Message: err.Error()}, rw)
+			util.ToJSON(&util.GenericError{Message: err.Error()}, rw)
 			return
 		}
 
@@ -29,7 +28,7 @@ func (c *Courses) MiddlewareValidateCourse(next http.Handler) http.Handler {
 
 			// return the validation messages
 			rw.WriteHeader(http.StatusUnprocessableEntity)
-			data.ToJSON(&util.ValidationError{Messages: errs.Errors()}, rw)
+			util.ToJSON(&util.ValidationError{Messages: errs.Errors()}, rw)
 			return
 		}
 		// add the course to the context
