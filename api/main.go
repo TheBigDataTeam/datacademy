@@ -13,6 +13,8 @@ import (
 	"github.com/Serj1c/datalearn/api/pkg/courses"
 	"github.com/Serj1c/datalearn/api/pkg/handlers"
 	"github.com/Serj1c/datalearn/api/pkg/middleware"
+	"github.com/Serj1c/datalearn/api/pkg/session"
+	"github.com/Serj1c/datalearn/api/pkg/users"
 	"github.com/Serj1c/datalearn/api/pkg/util"
 	gohandlers "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -46,10 +48,13 @@ func main() {
 	// init repos
 	cr := courses.NewRepo(db)
 	ar := authors.NewRepo(db)
+	ur := users.NewRepo(db)
+	s := session.NewSessionDB(db)
 
 	// create the handlers
 	coursesHandler := handlers.NewCourses(l, v, cr)
 	authorsHandler := handlers.NewAuthors(l, v, ar)
+	usersHandler := handlers.NewUsers(l, v, ur, s)
 
 	// register handlers
 	sm := mux.NewRouter()
@@ -68,13 +73,14 @@ func main() {
 
 	postRouter := sm.Methods(http.MethodPost).Subrouter()
 	postRouter.HandleFunc("/courses", coursesHandler.Create)
-	postRouter.Use(coursesHandler.MiddlewareValidateCourse)
+	postRouter.HandleFunc("/api/user/signup", usersHandler.Signup)
+	//postRouter.Use(coursesHandler.MiddlewareValidateCourse)
 
 	deleteRouter := sm.Methods(http.MethodDelete).Subrouter()
 	deleteRouter.HandleFunc("/courses/{id}", coursesHandler.Delete)
 	deleteRouter.HandleFunc("/authors/{id}", authorsHandler.Delete)
 
-	// CORS - TODO: how to set container pors as an origin?
+	// CORS - TODO: how to set container port as an origin?
 	corsHandler := gohandlers.CORS(gohandlers.AllowedOrigins([]string{"http://localhost:3000"}))
 
 	// create a new server
