@@ -24,9 +24,9 @@ func NewRepo(db *sql.DB) *Repo {
 var ErrorUserAlreadyExists = errors.New("User already exists")
 
 // Create creates a new user and adds her/him to the a data base
-func (r *Repo) Create(login string, email string, password []byte) (string, error) {
+func (r *Repo) Create(email string, name string, surname string, password string) (string, error) {
 	id := util.RandString()
-	row, err := r.db.Exec("INSERT into users(id, email, fullname, password) VALUES($1, $2, $3, $4)", id, email, login, password)
+	row, err := r.db.Exec("INSERT into users(id, email, name, surname, password) VALUES($1, $2, $3, $4, $5)", id, email, name, surname, password)
 	if err != nil {
 		return "", fmt.Errorf("Error while inserting of user in db: %s", err)
 	}

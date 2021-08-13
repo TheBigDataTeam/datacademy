@@ -1,10 +1,11 @@
 import React, { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Input, Button, Grid, Paragraph } from '../../../ui';
-import { AuthLayout } from '../../../layouts';
-import {SocialButtons} from "../../../common";
+import { Input, Button, Grid, Paragraph } from 'components/ui';
+import { AuthLayout } from 'components/layouts';
+import { SocialButtons } from "components/common";
+import axios from 'axios';
 
-interface FormData {
+/* interface FormData {
   name: string,
   surname: string,
   email: string;
@@ -16,20 +17,26 @@ const initialFormData: FormData = {
   surname: '',
   email: '',
   password: '',
-};
+}; */
 
 export const SignUpPage: React.FunctionComponent = (): JSX.Element => {
-  const [formData, setFormData] = useState<FormData>(initialFormData);
+  //const [formData, setFormData] = useState<FormData>(initialFormData);
+  const [email, setEmail] = useState<string>()
+  const [name, setName] = useState<string>()
+  const [surname, setSurname] = useState<string>()
+  const [password, setPassword] = useState<string>()
 
-  const handleChange = () => {
-    console.log('TODO')
-  }
 
   const handleSubmit = useCallback(
-    (event) => {
+    async (event) => {
       event.preventDefault();
+      try {
+        await axios.post("http://localhost:3100/api/user/signup", {email, name, surname, password})
+      } catch (error) {
+        console.error(error) /* TODO: handle error properly */
+      }
     },
-    []
+    [email, name, surname, password]
   );
 
   return (
@@ -38,41 +45,39 @@ export const SignUpPage: React.FunctionComponent = (): JSX.Element => {
         <Grid.Row>
           <Input
               name='name'
-              value={formData.name}
+              value={name}
               placeholder='Name'
-              onChange={handleChange}
+              onChange={(event) => setName(event.target.value)}
               autoFocus
           />
         </Grid.Row>
         <Grid.Row>
           <Input
               name='surname'
-              value={formData.surname}
+              value={surname}
               placeholder='Surname'
-              onChange={handleChange}
+              onChange={(event) => setSurname(event.target.value)}
           />
         </Grid.Row>
         <Grid.Row>
           <Input
             name='email'
-            value={formData.email}
+            value={email}
             placeholder='Email'
-            onChange={handleChange}
+            onChange={(event) => setEmail(event.target.value)}
           />
         </Grid.Row>
         <Grid.Row>
           <Input
             type='password'
             name='password'
-            value={formData.password}
+            value={password}
             placeholder='Password'
-            onChange={handleChange}
+            onChange={(event) => setPassword(event.target.value)}
           />
         </Grid.Row>
         <Grid.Row>
-          <Button type='submit' fullWidth design='secondary' rounded>
-            Sign Up
-          </Button>
+          <Button type='submit' fullWidth design='secondary' rounded>Sign Up</Button>
         </Grid.Row>
         <Grid.Row>
           <SocialButtons />

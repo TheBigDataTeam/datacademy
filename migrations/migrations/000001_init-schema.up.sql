@@ -1,7 +1,8 @@
 CREATE TABLE "users" (
   "id" varchar PRIMARY KEY,
   "email" varchar UNIQUE NOT NULL,
-  "fullname" varchar NOT NULL,
+  "name" varchar NOT NULL,
+  "surname" varchar NOT NULL,
   "password" varchar NOT NULL,
   "isAdmin" boolean DEFAULT false,
   "created_on" timestamptz NOT NULL DEFAULT (now()),

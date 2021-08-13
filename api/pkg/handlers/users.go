@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"encoding/json"
+	"io/ioutil"
 	"log"
 	"net/http"
 
@@ -31,15 +33,31 @@ func (u *Users) hashPassword(password string, salt string) []byte {
 	return append(temp, hashedPassword...)
 }
 
+type signUpInfo struct {
+	Email    string `json:"email"`
+	Name     string `json:"name"`
+	Surname  string `json:"surname"`
+	Password string `json:"password"`
+}
+
 // Signup handles request for creating new users
 func (u *Users) Signup(w http.ResponseWriter, r *http.Request) {
-	login := r.FormValue("login")       /* TODO check that login is valid */
-	password := r.FormValue("password") /* TODO check that password is valid */
-	email := r.FormValue("email")       /* TODO check that email is valid */
-	salt := util.RandString()
-	hashedPassword := u.hashPassword(password, salt)
+	u.l.Println("[SUCCESS] post request has come")
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		http.Error(w, "Cannot read body", http.StatusInternalServerError)
+	}
+	newUser := &signUpInfo{}
+	err = json.Unmarshal(body, newUser)
+	if err != nil {
+		http.Error(w, "Error unmarshaling request body", http.StatusInternalServerError)
+	}
 
-	userID, err := u.r.Create(login, email, hashedPassword)
+	salt := util.RandString()
+	hashedPassword := string(u.hashPassword(newUser.Password, salt))
+	u.l.Println(hashedPassword)
+
+	userID, err := u.r.Create(newUser.Email, newUser.Name, newUser.Surname, newUser.Password)
 	if err != nil {
 		http.Error(w, "Internal error", http.StatusInternalServerError)
 	}

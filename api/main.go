@@ -16,15 +16,14 @@ import (
 	"github.com/Serj1c/datalearn/api/pkg/session"
 	"github.com/Serj1c/datalearn/api/pkg/users"
 	"github.com/Serj1c/datalearn/api/pkg/util"
-	gohandlers "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	_ "github.com/lib/pq"
+	"github.com/rs/cors"
 )
 
 func main() {
 	/* TODO move this file to cmd folder and update Dockerfile accordingly */
 
-	// read configuration from api.env
 	config, err := util.LoadConfig("./") // TODO address of a config file
 	if err != nil {
 		log.Fatal("unable to read configuration: ", err)
@@ -56,41 +55,35 @@ func main() {
 	authorsHandler := handlers.NewAuthors(l, v, ar)
 	usersHandler := handlers.NewUsers(l, v, ur, s)
 
-	// register handlers
 	sm := mux.NewRouter()
 
 	// handlers for API
-	getRouter := sm.Methods(http.MethodGet).Subrouter()
-	getRouter.HandleFunc("/courses", coursesHandler.ListAll)
-	getRouter.HandleFunc("/authors", authorsHandler.ListAll)
-	getRouter.HandleFunc("/courses/{id}", coursesHandler.ListOne)
-	getRouter.HandleFunc("/authors/{id}", authorsHandler.ListOne)
+	sm.HandleFunc("/courses", coursesHandler.ListAll).Methods("GET")
+	sm.HandleFunc("/authors", authorsHandler.ListAll).Methods("GET")
+	sm.HandleFunc("/courses/{id}", coursesHandler.ListOne).Methods("GET")
+	sm.HandleFunc("/authors/{id}", authorsHandler.ListOne).Methods("GET")
 
-	putRouter := sm.Methods(http.MethodPut).Subrouter()
-	putRouter.HandleFunc("/courses/{id}", coursesHandler.Update)
-	putRouter.HandleFunc("/courses/{id}", authorsHandler.Update)
-	putRouter.Use(coursesHandler.MiddlewareValidateCourse)
+	sm.HandleFunc("/courses/{id}", coursesHandler.Update).Methods("PUT")
+	sm.HandleFunc("/courses/{id}", authorsHandler.Update).Methods("PUT")
 
-	postRouter := sm.Methods(http.MethodPost).Subrouter()
-	postRouter.HandleFunc("/courses", coursesHandler.Create)
-	postRouter.HandleFunc("/api/user/signup", usersHandler.Signup)
-	//postRouter.Use(coursesHandler.MiddlewareValidateCourse)
+	sm.HandleFunc("/courses", coursesHandler.Create).Methods("POST")
+	sm.HandleFunc("/api/user/signup", usersHandler.Signup).Methods("POST")
 
-	deleteRouter := sm.Methods(http.MethodDelete).Subrouter()
-	deleteRouter.HandleFunc("/courses/{id}", coursesHandler.Delete)
-	deleteRouter.HandleFunc("/authors/{id}", authorsHandler.Delete)
+	//sm.Use(coursesHandler.MiddlewareValidateCourse)
 
-	// CORS - TODO: how to set container port as an origin?
-	corsHandler := gohandlers.CORS(gohandlers.AllowedOrigins([]string{"http://localhost:3000"}))
+	sm.HandleFunc("/courses/{id}", coursesHandler.Delete).Methods("DELETE")
+	sm.HandleFunc("/authors/{id}", authorsHandler.Delete).Methods("DELETE")
 
-	// create a new server
+	// Add middleware to handle CORS
+	corsHandler := cors.Default().Handler(sm)
+
 	server := &http.Server{
 		Addr:         config.ServerPort,
-		Handler:      corsHandler(sm),   // set the default handler
-		ErrorLog:     l,                 // set the logger for the server
-		IdleTimeout:  120 * time.Second, // max time for connections using TCP Keep-Alive
-		ReadTimeout:  1 * time.Second,   // max time to read request for the client
-		WriteTimeout: 1 * time.Second,   // max time to write response to the client
+		Handler:      corsHandler,
+		ErrorLog:     l,
+		IdleTimeout:  120 * time.Second,
+		ReadTimeout:  1 * time.Second,
+		WriteTimeout: 1 * time.Second,
 	}
 
 	// start the server
