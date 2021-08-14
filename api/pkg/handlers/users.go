@@ -58,6 +58,12 @@ func (u *Users) Signup(w http.ResponseWriter, r *http.Request) {
 	u.l.Println(hashedPassword)
 
 	userID, err := u.r.Create(newUser.Email, newUser.Name, newUser.Surname, newUser.Password)
+	if err == users.ErrorBadRequest {
+		http.Error(w, "Wrong data provided", http.StatusBadRequest)
+	}
+	if err == users.ErrorUserAlreadyExists {
+		http.Error(w, "Such user already exists", http.StatusForbidden)
+	}
 	if err != nil {
 		http.Error(w, "Internal error", http.StatusInternalServerError)
 	}

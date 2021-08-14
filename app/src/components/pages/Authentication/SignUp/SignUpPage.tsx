@@ -1,43 +1,43 @@
 import React, { useCallback, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Input, Button, Grid, Paragraph } from 'components/ui';
 import { AuthLayout } from 'components/layouts';
 import { SocialButtons } from "components/common";
 import axios from 'axios';
 
-/* interface FormData {
-  name: string,
-  surname: string,
-  email: string;
-  password: string;
-}
-
-const initialFormData: FormData = {
-  name: '',
-  surname: '',
-  email: '',
-  password: '',
-}; */
-
 export const SignUpPage: React.FunctionComponent = (): JSX.Element => {
-  //const [formData, setFormData] = useState<FormData>(initialFormData);
+
   const [email, setEmail] = useState<string>()
   const [name, setName] = useState<string>()
   const [surname, setSurname] = useState<string>()
   const [password, setPassword] = useState<string>()
+  //const [disabled, setDisabled] = useState<boolean>(false)
 
+  const history = useHistory()
 
-  const handleSubmit = useCallback(
+  const handleSubmit = useCallback<React.FormEventHandler<HTMLFormElement>>(
     async (event) => {
       event.preventDefault();
+
+      /* if (!email || !name || !surname || !password) {
+        setFormErrors({
+          email: !email ? 'Enter your email address' : undefined,
+          name: !name ? 'Enter your name' : undefined,
+          surname: !surname ? 'Enter your surname' : undefined,
+          password: !password ? 'Come up with a strong password' : undefined,
+        })
+      } */
+      //setDisabled(true)
       try {
         await axios.post("http://localhost:3100/api/user/signup", {email, name, surname, password})
       } catch (error) {
         console.error(error) /* TODO: handle error properly */
       }
+      //setDisabled(false)
+      history.push("/courses")
     },
-    [email, name, surname, password]
-  );
+    [history, email, name, surname, password]
+  )
 
   return (
     <AuthLayout>
@@ -77,7 +77,7 @@ export const SignUpPage: React.FunctionComponent = (): JSX.Element => {
           />
         </Grid.Row>
         <Grid.Row>
-          <Button type='submit' fullWidth design='secondary' rounded>Sign Up</Button>
+          <Button type='submit' fullWidth design='secondary' rounded /* disabled={disabled} */>Sign Up</Button>
         </Grid.Row>
         <Grid.Row>
           <SocialButtons />
@@ -91,5 +91,5 @@ export const SignUpPage: React.FunctionComponent = (): JSX.Element => {
         </Grid.Row>
       </form>
     </AuthLayout>
-  );
-};
+  )
+}
