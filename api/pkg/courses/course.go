@@ -3,10 +3,10 @@ package courses
 // Course defines the structure for an API
 type Course struct {
 	ID          string `json:"id"`
-	Title       string `json:"title" validate:"required"`
-	Description string `json:"description" validate:"required"`
+	Title       string `json:"title"`
+	Description string `json:"description"`
 	Theme       string `json:"theme"`
-	Author      string `json:"author" validate:"required,author"` // TODO author is to be Author struct
+	Author      string `json:"author"` // TODO author is to be Author struct
 	AuthorID    string `json:"authorid"`
 	TechStack   string `json:"techstack"`
 	Syllabus    string `json:"syllabus"`

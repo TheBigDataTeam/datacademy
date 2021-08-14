@@ -1,36 +1,43 @@
 import React, { useCallback, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Input, Button, Grid, Paragraph } from '../../../ui';
-import { AuthLayout } from '../../../layouts';
-import {SocialButtons} from "../../../common";
-
-interface FormData {
-  name: string,
-  surname: string,
-  email: string;
-  password: string;
-}
-
-const initialFormData: FormData = {
-  name: '',
-  surname: '',
-  email: '',
-  password: '',
-};
+import { Link, useHistory } from 'react-router-dom';
+import { Input, Button, Grid, Paragraph } from 'components/ui';
+import { AuthLayout } from 'components/layouts';
+import { SocialButtons } from "components/common";
+import axios from 'axios';
 
 export const SignUpPage: React.FunctionComponent = (): JSX.Element => {
-  const [formData, setFormData] = useState<FormData>(initialFormData);
 
-  const handleChange = () => {
-    console.log('TODO')
-  }
+  const [email, setEmail] = useState<string>()
+  const [name, setName] = useState<string>()
+  const [surname, setSurname] = useState<string>()
+  const [password, setPassword] = useState<string>()
+  //const [disabled, setDisabled] = useState<boolean>(false)
 
-  const handleSubmit = useCallback(
-    (event) => {
+  const history = useHistory()
+
+  const handleSubmit = useCallback<React.FormEventHandler<HTMLFormElement>>(
+    async (event) => {
       event.preventDefault();
+
+      /* if (!email || !name || !surname || !password) {
+        setFormErrors({
+          email: !email ? 'Enter your email address' : undefined,
+          name: !name ? 'Enter your name' : undefined,
+          surname: !surname ? 'Enter your surname' : undefined,
+          password: !password ? 'Come up with a strong password' : undefined,
+        })
+      } */
+      //setDisabled(true)
+      try {
+        await axios.post("http://localhost:3100/api/user/signup", {email, name, surname, password})
+      } catch (error) {
+        console.error(error) /* TODO: handle error properly */
+      }
+      //setDisabled(false)
+      history.push("/courses")
     },
-    []
-  );
+    [history, email, name, surname, password]
+  )
 
   return (
     <AuthLayout>
@@ -38,41 +45,39 @@ export const SignUpPage: React.FunctionComponent = (): JSX.Element => {
         <Grid.Row>
           <Input
               name='name'
-              value={formData.name}
+              value={name}
               placeholder='Name'
-              onChange={handleChange}
+              onChange={(event) => setName(event.target.value)}
               autoFocus
           />
         </Grid.Row>
         <Grid.Row>
           <Input
               name='surname'
-              value={formData.surname}
+              value={surname}
               placeholder='Surname'
-              onChange={handleChange}
+              onChange={(event) => setSurname(event.target.value)}
           />
         </Grid.Row>
         <Grid.Row>
           <Input
             name='email'
-            value={formData.email}
+            value={email}
             placeholder='Email'
-            onChange={handleChange}
+            onChange={(event) => setEmail(event.target.value)}
           />
         </Grid.Row>
         <Grid.Row>
           <Input
             type='password'
             name='password'
-            value={formData.password}
+            value={password}
             placeholder='Password'
-            onChange={handleChange}
+            onChange={(event) => setPassword(event.target.value)}
           />
         </Grid.Row>
         <Grid.Row>
-          <Button type='submit' fullWidth design='secondary' rounded>
-            Sign Up
-          </Button>
+          <Button type='submit' fullWidth design='secondary' rounded /* disabled={disabled} */>Sign Up</Button>
         </Grid.Row>
         <Grid.Row>
           <SocialButtons />
@@ -86,5 +91,5 @@ export const SignUpPage: React.FunctionComponent = (): JSX.Element => {
         </Grid.Row>
       </form>
     </AuthLayout>
-  );
-};
+  )
+}

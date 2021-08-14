@@ -1,15 +1,16 @@
 export type Author = {
-    id: number
-    courseId: Array<number>
+    id: string
+    courseId: string
     email: string
+    fullname: string
     twitter: string
     facebook: string
     instagram: string
     location: string
-    fullname: string
     bio: string
     shortdescription: string
     speciality: string
-    features: Array<string>
+    features: string
     createdOn: string
+    version: number
 }

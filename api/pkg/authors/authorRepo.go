@@ -8,7 +8,7 @@ import (
 	"github.com/Serj1c/datalearn/api/pkg/util"
 )
 
-// Repo represents DB
+// Repo represents a data base
 type Repo struct {
 	db *sql.DB
 }

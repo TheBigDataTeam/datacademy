@@ -1,15 +1,14 @@
 export type Course = {
-    id: number
+    id: string
     title: string
     description: string
     theme: string
     author: string
-    authorId: number
+    authorId: string
     techstack: string
     syllabus: string
-    beneficiars: string
     duration: string
-    difficulty: string
+    beneficiars: string
     createdOn: string
-    updatedOn: string
+    version: number
 }
