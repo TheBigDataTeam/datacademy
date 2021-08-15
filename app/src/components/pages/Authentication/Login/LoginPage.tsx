@@ -1,32 +1,44 @@
-import React, { useCallback, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { ChangeEventHandler, useCallback, useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import { SocialButtons} from 'components/common';
 import { Input, Button, Grid, Paragraph } from 'components/ui';
 import { AuthLayout } from 'components/layouts';
-
-interface FormData {
-    email: string;
-    password: string;
-}
-
-const initialFormData: FormData = {
-    email: '',
-    password: '',
-};
+import axios from 'axios';
 
 export const LoginPage: React.FunctionComponent = (): JSX.Element => {
-    const [formData, setFormData] = useState<FormData>(initialFormData);
 
-    const handleChange = () => {
-        console.log('TODO')
-    }
+    const [email, setEmail] = useState<string>("")
+    const [password, setPassword] = useState<string>("")
+    //const [disabled, setDisabled] = useState<boolean>(false)
 
-    const handleSubmit = useCallback(
+    const history = useHistory() /* TODO: types */
+
+    const handleChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
         (event) => {
-            event.preventDefault();
-        },
+            if (event.target.name === "email") {
+                setEmail(event.target.value)
+            }
+            if (event.target.name === "password") {
+                setPassword(event.target.value)
+            }
+        }, 
         []
-    );
+    )
+
+    const handleSubmit = useCallback<React.FormEventHandler<HTMLFormElement>>(
+        async (event) => {
+            event.preventDefault()
+            //setDisabled(true)
+            try {
+                await axios.post("http://localhost:3100/api/user/login", {email, password})
+                history.push("/courses") /* TODO: check that it works as intended */
+            } catch (error) {
+                console.log(error) /* TODO: handle errors properly */
+            }
+            //setDisabled(false)
+        },
+        [history, email, password]
+    )
 
     return (
         <AuthLayout>
@@ -34,7 +46,7 @@ export const LoginPage: React.FunctionComponent = (): JSX.Element => {
                 <Grid.Row>
                     <Input
                         name='email'
-                        value={formData.email}
+                        value={email}
                         placeholder='Email'
                         onChange={handleChange}
                         autoFocus
@@ -44,7 +56,7 @@ export const LoginPage: React.FunctionComponent = (): JSX.Element => {
                     <Input
                         type='password'
                         name='password'
-                        value={formData.password}
+                        value={password}
                         placeholder='Password'
                         onChange={handleChange}
                     />
@@ -57,7 +69,7 @@ export const LoginPage: React.FunctionComponent = (): JSX.Element => {
                     </Grid.Col>
                 </Grid.Row>
                 <Grid.Row>
-                    <Button type='submit' fullWidth design='primary' rounded>
+                    <Button type='submit' fullWidth design='primary' rounded /* disabled={disabled} */>
                         Log In
                     </Button>
                 </Grid.Row>
