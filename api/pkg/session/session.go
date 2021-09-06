@@ -10,22 +10,26 @@ import (
 	"github.com/Serj1c/datalearn/api/pkg/util"
 )
 
+// Session represents a session of a user
 type Session struct {
 	ID     string
 	UserID string
 }
 
-type SessionDB struct {
+// DBSession ...
+type DBSession struct {
 	DB *sql.DB
 }
 
-func NewSessionDB(db *sql.DB) *SessionDB {
-	return &SessionDB{
+// NewDBSession returns an instance of SessionDB
+func NewDBSession(db *sql.DB) *DBSession {
+	return &DBSession{
 		DB: db,
 	}
 }
 
-type SessionManager interface {
+// Manager ...
+type Manager interface {
 	Create(http.ResponseWriter, string) error
 	Check(*http.Request) (*Session, error)
 	DestroyCurrent(http.ResponseWriter, *http.Request) error
@@ -33,10 +37,12 @@ type SessionManager interface {
 }
 
 var (
+	// ErrorNoAuth is an error which is raised when there is no such a session in the database
 	ErrorNoAuth = errors.New("No session found")
 )
 
-func (sdb *SessionDB) Create(w http.ResponseWriter, aUserID string) error {
+// Create creates a session and stores it in the databse
+func (sdb *DBSession) Create(w http.ResponseWriter, aUserID string) error {
 	sessionID := util.RandString()
 	theUserID := aUserID
 	_, err := sdb.DB.Exec("INSERT into sessions(id, user_id) VALUES($1, $2)", sessionID, theUserID)
@@ -53,14 +59,17 @@ func (sdb *SessionDB) Create(w http.ResponseWriter, aUserID string) error {
 	return nil
 }
 
-func (sbd *SessionDB) Check(r *http.Request) (*Session, error) {
+// Check checks that a session exists in the database
+func (sdb *DBSession) Check(r *http.Request) (*Session, error) {
 	return &Session{}, nil
 }
 
-func (sbd *SessionDB) DestroyCurrent(w http.ResponseWriter, r *http.Request) error {
+// DestroyCurrent removes current user's session from the database
+func (sdb *DBSession) DestroyCurrent(w http.ResponseWriter, r *http.Request) error {
 	return nil
 }
 
-func (sbd *SessionDB) DestroyAll(w http.ResponseWriter, user *users.User) error {
+// DestroyAll removes all sessions of a current user from the databse
+func (sdb *DBSession) DestroyAll(w http.ResponseWriter, user *users.User) error {
 	return nil
 }

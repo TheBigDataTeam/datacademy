@@ -19,7 +19,7 @@ type Courses struct {
 	r *courses.Repo
 }
 
-// NewCourses creates a courses handler with the given logger
+// NewCourses creates a courses handler
 func NewCourses(l *log.Logger, v *middleware.Validation, r *courses.Repo) *Courses {
 	return &Courses{l, v, r}
 }

@@ -48,7 +48,7 @@ func main() {
 	cr := courses.NewRepo(db)
 	ar := authors.NewRepo(db)
 	ur := users.NewRepo(db)
-	s := session.NewSessionDB(db)
+	s := session.NewDBSession(db)
 
 	// create the handlers
 	coursesHandler := handlers.NewCourses(l, v, cr)
@@ -68,6 +68,7 @@ func main() {
 
 	sm.HandleFunc("/courses", coursesHandler.Create).Methods("POST")
 	sm.HandleFunc("/api/user/signup", usersHandler.Signup).Methods("POST")
+	sm.HandleFunc("/api/user/login", usersHandler.Login).Methods("POST")
 
 	//sm.Use(coursesHandler.MiddlewareValidateCourse)
 
