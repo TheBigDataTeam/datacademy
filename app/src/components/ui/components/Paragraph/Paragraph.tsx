@@ -1,14 +1,14 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Color, Size, Text } from '../Text/Text';
-import { Margin } from 'components/ui/common/margins';
-import marginStyles from 'components/ui/styles/margins.module.css';
-import lineHeightStyles from 'components/ui/styles/line-heights.module.css';
-import styles from './Paragraph.module.css';
+import { Color, Size, Text } from 'components/ui/components/Text/Text'
+import { Margin } from 'components/ui/common/margins'
+import marginStyles from 'components/ui/styles/margins.module.css'
+import lineHeightStyles from 'components/ui/styles/line-heights.module.css'
+import styles from './Paragraph.module.css'
 
-export type Align = 'left' | 'center' | 'right';
+export type Align = 'left' | 'center' | 'right'
 
-type WithoutClassName = Omit<React.HTMLAttributes<HTMLElement>, 'className'>;
+type WithoutClassName = Omit<React.HTMLAttributes<HTMLElement>, 'className'>
 
 export interface Props extends WithoutClassName {
   /** Text size */
@@ -50,5 +50,5 @@ export const Paragraph: React.FunctionComponent<Props> = ({
         {children}
       </Text>
     </p>
-  );
-};
+  )
+}

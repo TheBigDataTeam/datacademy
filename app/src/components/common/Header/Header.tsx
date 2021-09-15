@@ -11,6 +11,7 @@ interface Props {
 
 export const Header: React.FunctionComponent<Props> = ({ inverted }): JSX.Element => {
 
+	/* TODO */
 	const user = true;
 
 	return (

@@ -22,7 +22,7 @@ type Users struct {
 	s session.Manager
 }
 
-// NewUsers creates an authors handler with the given logger
+// NewUsers creates User's handler
 func NewUsers(l *log.Logger, v *middleware.Validation, r *users.Repo, s session.Manager) *Users {
 	return &Users{l, v, r, s}
 }
