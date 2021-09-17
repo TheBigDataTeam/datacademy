@@ -27,20 +27,20 @@ var ErrorCourseNotFound = fmt.Errorf("Course not found")
 // GetCourses returns a list of courses
 func (r *Repo) GetCourses() ([]*Course, error) {
 	courses := make([]*Course, 0, 10)
-	rows, err := r.db.Query("SELECT id, title, description, theme, author, author_id, tech_stack, syllabus, duration, beneficiars, created_on, version FROM courses")
-	defer rows.Close()
-	if err != nil {
-		return nil, err
-	}
-	for rows.Next() {
-		item := &Course{}
-		err := rows.Scan(&item.ID, &item.Title, &item.Description, &item.Theme, &item.Author, &item.AuthorID, &item.TechStack,
-			&item.Syllabus, &item.Duration, &item.Beneficiars, &item.CreatedOn, &item.Version)
-		if err != nil {
-			return nil, err
-		}
-		courses = append(courses, item)
-	}
+	/* 	rows, err := r.db.Query("SELECT id, title, description, theme, author, author_id, tech_stack, syllabus, duration, beneficiars, created_on, version FROM courses")
+	   	defer rows.Close()
+	   	if err != nil {
+	   		return nil, err
+	   	}
+	   	for rows.Next() {
+	   		item := &Course{}
+	   		err := rows.Scan(&item.ID, &item.Title, &item.Description, &item.Theme, &item.Author, &item.AuthorID, &item.TechStack,
+	   			&item.Syllabus, &item.Duration, &item.Beneficiars, &item.CreatedOn, &item.Version)
+	   		if err != nil {
+	   			return nil, err
+	   		}
+	   		courses = append(courses, item)
+	   	} */
 	return courses, nil
 }
 

@@ -41,11 +41,16 @@ var (
 	ErrorNoAuth = errors.New("No session found")
 )
 
+var noAuthUrls = map[string]struct{}{
+	"api/user/login":  {},
+	"api/user/signup": {},
+	"/":               {},
+}
+
 // Create creates a session and stores it in the databse
-func (sdb *DBSession) Create(w http.ResponseWriter, aUserID string) error {
+func (sdb *DBSession) Create(w http.ResponseWriter, UserID string) error {
 	sessionID := util.RandString()
-	theUserID := aUserID
-	_, err := sdb.DB.Exec("INSERT into sessions(id, user_id) VALUES($1, $2)", sessionID, theUserID)
+	_, err := sdb.DB.Exec("INSERT into sessions(id, user_id) VALUES($1, $2)", sessionID, UserID)
 	if err != nil {
 		return err
 	}

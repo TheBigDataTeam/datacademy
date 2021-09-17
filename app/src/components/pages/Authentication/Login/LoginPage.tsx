@@ -1,9 +1,9 @@
-import React, { ChangeEventHandler, useCallback, useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import { SocialButtons} from 'components/common';
-import { Input, Button, Grid, Paragraph } from 'components/ui';
-import { AuthLayout } from 'components/layouts';
-import axios from 'axios';
+import React, { ChangeEventHandler, useCallback, useState } from 'react'
+import { Link, useHistory } from 'react-router-dom'
+import { SocialButtons} from 'components/common'
+import { Input, Button, Grid, Paragraph } from 'components/ui'
+import { AuthLayout } from 'components/layouts'
+import axios from 'axios'
 
 export const LoginPage: React.FunctionComponent = (): JSX.Element => {
 
@@ -85,6 +85,6 @@ export const LoginPage: React.FunctionComponent = (): JSX.Element => {
                 </Grid.Row>
             </form>
         </AuthLayout>
-    );
-};
+    )
+}
 

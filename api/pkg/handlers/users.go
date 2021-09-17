@@ -14,7 +14,7 @@ import (
 	"github.com/Serj1c/datalearn/api/pkg/util"
 )
 
-// Users is a handler for getting and updating authors
+// Users is a handler for getting and updating users
 type Users struct {
 	l *log.Logger
 	v *middleware.Validation
@@ -73,8 +73,11 @@ func (u *Users) Signup(w http.ResponseWriter, r *http.Request) {
 	default:
 		http.Error(w, "Internal error", http.StatusInternalServerError)
 	}
-
+	if err != nil {
+		return
+	}
 	u.s.Create(w, userID)
+	w.WriteHeader(http.StatusCreated)
 }
 
 // Login handles requests for user's authorization
@@ -90,8 +93,14 @@ func (u *Users) Login(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, "Error unmarshaling request body", http.StatusInternalServerError)
 	}
-
 	userID, err := u.r.Authorize(userForAuth.Email, userForAuth.Password)
-
+	switch err {
+	case nil:
+	case users.ErrNoRecord:
+		http.Error(w, "Wrong email or password", http.StatusBadRequest)
+	}
+	if err != nil {
+		return
+	}
 	u.s.Create(w, userID)
 }
