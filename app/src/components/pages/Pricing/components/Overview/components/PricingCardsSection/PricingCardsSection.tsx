@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { PricingCard } from './components';
-import { listOfPricingCards } from 'redux/store';
+import { listOfPricingCards } from './components/data/data';
 import { Grid, Paragraph, Switch } from 'components/ui';
 import styles from './PricingCardsSection.module.css';
 

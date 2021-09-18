@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { PageLayout } from 'components/layouts';
-import { Header, Footer } from 'components/common';
-import { Grid, Paragraph } from 'components/ui';
-import { AuthorsList } from "./components";
-import axios, { AxiosResponse } from 'axios';
+import React, { useEffect, useState } from 'react'
+import { PageLayout } from 'components/layouts'
+import { Header, Footer } from 'components/common'
+import { Grid, Paragraph } from 'components/ui'
+import { AuthorsList } from "./components"
+import axios, { AxiosResponse } from 'axios'
 
 export const AuthorsPage: React.FunctionComponent = (): JSX.Element => {
 
@@ -14,8 +14,8 @@ export const AuthorsPage: React.FunctionComponent = (): JSX.Element => {
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			const results: AxiosResponse<any> = await axios.get("http://localhost:3100/authors");
 			setAuthors(results.data);
-		};
-		fetchAuthors();
+		}
+		fetchAuthors()
 	}, [])
 
 	return (
