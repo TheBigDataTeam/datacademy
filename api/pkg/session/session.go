@@ -1,6 +1,7 @@
 package session
 
 import (
+	"context"
 	"database/sql"
 	"errors"
 	"net/http"
@@ -44,6 +45,10 @@ var (
 var noAuthUrls = map[string]struct{}{
 	"api/user/login":  {},
 	"api/user/signup": {},
+	"/courses":        {},
+	"/authors":        {},
+	"/courses/{id}":   {},
+	"/authors/{id}":   {},
 	"/":               {},
 }
 
@@ -77,4 +82,34 @@ func (sdb *DBSession) DestroyCurrent(w http.ResponseWriter, r *http.Request) err
 // DestroyAll removes all sessions of a current user from the databse
 func (sdb *DBSession) DestroyAll(w http.ResponseWriter, user *users.User) error {
 	return nil
+}
+
+type ctxKey int
+
+const sessionKey ctxKey = 1
+
+// FromContext returns session if exists from context
+func FromContext(ctx context.Context) (*Session, error) {
+	sess, ok := ctx.Value(sessionKey).(*Session)
+	if !ok {
+		return nil, ErrorNoAuth
+	}
+	return sess, nil
+}
+
+// AuthMiddleware is responsible for checking whether or not a user has rights to access a resource
+func AuthMiddleware(sm Manager, next http.Handler) http.Handler {
+	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
+		if _, ok := noAuthUrls[r.URL.Path]; ok {
+			next.ServeHTTP(rw, r)
+			return
+		}
+		sess, err := sm.Check(r)
+		if err != nil {
+			http.Error(rw, "User is not authenticated", http.StatusUnauthorized)
+			return
+		}
+		ctx := context.WithValue(r.Context(), sessionKey, sess)
+		next.ServeHTTP(rw, r.WithContext(ctx))
+	})
 }

@@ -81,26 +81,28 @@ func (u *Users) Signup(w http.ResponseWriter, r *http.Request) {
 }
 
 // Login handles requests for user's authorization
-func (u *Users) Login(w http.ResponseWriter, r *http.Request) {
+func (u *Users) Login(rw http.ResponseWriter, r *http.Request) {
 	u.l.Println("[ATTENTION] request for user login has come")
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		http.Error(w, "Cannot read body", http.StatusInternalServerError)
+		http.Error(rw, "Cannot read body", http.StatusInternalServerError)
 	}
 	r.Body.Close()
 	userForAuth := &loginInfo{}
 	err = json.Unmarshal(body, userForAuth)
 	if err != nil {
-		http.Error(w, "Error unmarshaling request body", http.StatusInternalServerError)
+		http.Error(rw, "Error unmarshaling request body", http.StatusInternalServerError)
 	}
-	userID, err := u.r.Authorize(userForAuth.Email, userForAuth.Password)
+	userID, err := u.r.Authenticate(userForAuth.Email, userForAuth.Password)
 	switch err {
 	case nil:
 	case users.ErrNoRecord:
-		http.Error(w, "Wrong email or password", http.StatusBadRequest)
+		http.Error(rw, "User does not exist", http.StatusBadRequest)
+	case users.ErrWrongPassword:
+		http.Error(rw, "Password is not correct", http.StatusBadRequest)
 	}
 	if err != nil {
 		return
 	}
-	u.s.Create(w, userID)
+	u.s.Create(rw, userID)
 }
