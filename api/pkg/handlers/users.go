@@ -14,16 +14,16 @@ import (
 	"github.com/Serj1c/datalearn/api/pkg/util"
 )
 
-// Users is a handler for getting and updating authors
+// Users is a handler for getting and updating users
 type Users struct {
 	l *log.Logger
 	v *middleware.Validation
 	r *users.Repo
-	s session.SessionManager
+	s session.Manager
 }
 
-// NewUsers creates an authors handler with the given logger
-func NewUsers(l *log.Logger, v *middleware.Validation, r *users.Repo, s session.SessionManager) *Users {
+// NewUsers creates User's handler
+func NewUsers(l *log.Logger, v *middleware.Validation, r *users.Repo, s session.Manager) *Users {
 	return &Users{l, v, r, s}
 }
 
@@ -40,13 +40,19 @@ type signUpInfo struct {
 	Password string `json:"password"`
 }
 
+type loginInfo struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
 // Signup handles request for creating new users
 func (u *Users) Signup(w http.ResponseWriter, r *http.Request) {
-	u.l.Println("[SUCCESS] post request has come")
+	u.l.Println("[ATTENTION] request to create a new user has come")
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		http.Error(w, "Cannot read body", http.StatusInternalServerError)
 	}
+	r.Body.Close()
 	newUser := &signUpInfo{}
 	err = json.Unmarshal(body, newUser)
 	if err != nil {
@@ -54,18 +60,49 @@ func (u *Users) Signup(w http.ResponseWriter, r *http.Request) {
 	}
 
 	salt := util.RandString()
-	hashedPassword := string(u.hashPassword(newUser.Password, salt))
+	hashedPassword := string(u.hashPassword(newUser.Password, salt)) /* TODO: now passwords are not hashed!! */
 	u.l.Println(hashedPassword)
 
 	userID, err := u.r.Create(newUser.Email, newUser.Name, newUser.Surname, newUser.Password)
-	if err == users.ErrorBadRequest {
+	switch err {
+	case nil:
+	case users.ErrorBadRequest:
 		http.Error(w, "Wrong data provided", http.StatusBadRequest)
-	}
-	if err == users.ErrorUserAlreadyExists {
+	case users.ErrorUserAlreadyExists:
 		http.Error(w, "Such user already exists", http.StatusForbidden)
-	}
-	if err != nil {
+	default:
 		http.Error(w, "Internal error", http.StatusInternalServerError)
 	}
+	if err != nil {
+		return
+	}
 	u.s.Create(w, userID)
+	w.WriteHeader(http.StatusCreated)
+}
+
+// Login handles requests for user's authorization
+func (u *Users) Login(rw http.ResponseWriter, r *http.Request) {
+	u.l.Println("[ATTENTION] request for user login has come")
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		http.Error(rw, "Cannot read body", http.StatusInternalServerError)
+	}
+	r.Body.Close()
+	userForAuth := &loginInfo{}
+	err = json.Unmarshal(body, userForAuth)
+	if err != nil {
+		http.Error(rw, "Error unmarshaling request body", http.StatusInternalServerError)
+	}
+	userID, err := u.r.Authenticate(userForAuth.Email, userForAuth.Password)
+	switch err {
+	case nil:
+	case users.ErrNoRecord:
+		http.Error(rw, "User does not exist", http.StatusBadRequest)
+	case users.ErrWrongPassword:
+		http.Error(rw, "Password is not correct", http.StatusBadRequest)
+	}
+	if err != nil {
+		return
+	}
+	u.s.Create(rw, userID)
 }

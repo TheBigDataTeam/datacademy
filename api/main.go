@@ -48,7 +48,7 @@ func main() {
 	cr := courses.NewRepo(db)
 	ar := authors.NewRepo(db)
 	ur := users.NewRepo(db)
-	s := session.NewSessionDB(db)
+	s := session.NewDBSession(db)
 
 	// create the handlers
 	coursesHandler := handlers.NewCourses(l, v, cr)
@@ -63,16 +63,20 @@ func main() {
 	sm.HandleFunc("/courses/{id}", coursesHandler.ListOne).Methods("GET")
 	sm.HandleFunc("/authors/{id}", authorsHandler.ListOne).Methods("GET")
 
-	sm.HandleFunc("/courses/{id}", coursesHandler.Update).Methods("PUT")
-	sm.HandleFunc("/courses/{id}", authorsHandler.Update).Methods("PUT")
+	sm.HandleFunc("/api/courses/{id}", coursesHandler.Update).Methods("PUT")
+	sm.HandleFunc("/api/courses/{id}", authorsHandler.Update).Methods("PUT")
 
-	sm.HandleFunc("/courses", coursesHandler.Create).Methods("POST")
+	sm.HandleFunc("/api/courses", coursesHandler.Create).Methods("POST")
 	sm.HandleFunc("/api/user/signup", usersHandler.Signup).Methods("POST")
+	sm.HandleFunc("/api/user/login", usersHandler.Login).Methods("POST")
 
 	//sm.Use(coursesHandler.MiddlewareValidateCourse)
 
-	sm.HandleFunc("/courses/{id}", coursesHandler.Delete).Methods("DELETE")
-	sm.HandleFunc("/authors/{id}", authorsHandler.Delete).Methods("DELETE")
+	sm.HandleFunc("/api/courses/{id}", coursesHandler.Delete).Methods("DELETE")
+	sm.HandleFunc("/api/authors/{id}", authorsHandler.Delete).Methods("DELETE")
+
+	handler := session.AuthMiddleware(s, sm)
+	http.Handle("/", handler)
 
 	// Add middleware to handle CORS
 	corsHandler := cors.Default().Handler(sm)

@@ -1,11 +1,11 @@
-import React from 'react';
-import classNames from 'classnames';
-import styles from './Text.module.css';
+import React from 'react'
+import classNames from 'classnames'
+import styles from './Text.module.css'
 
-export type Color = 'default' | 'noaccent' | 'inverted' | 'caution' | 'inherit';
-export type Size = 'xxl' | 'xl' | 'ml' | 'l' | 'm' | 's' | 'xs' | 'xxs';
+export type Color = 'default' | 'noaccent' | 'inverted' | 'caution' | 'inherit'
+export type Size = 'xxl' | 'xl' | 'ml' | 'l' | 'm' | 's' | 'xs' | 'xxs'
 
-type WithoutClassname = Omit<React.HTMLAttributes<HTMLElement>, 'className'>;
+type WithoutClassname = Omit<React.HTMLAttributes<HTMLElement>, 'className'>
 
 export interface Props extends WithoutClassname {
   /** Text color */
@@ -30,5 +30,5 @@ export const Text: React.FunctionComponent<Props> = ({
     <span {...props} className={className}>
       {children}
     </span>
-  );
-};
+  )
+}

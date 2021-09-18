@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { ChangeEventHandler, useCallback, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Input, Button, Grid, Paragraph } from 'components/ui';
 import { AuthLayout } from 'components/layouts';
@@ -7,13 +7,31 @@ import axios from 'axios';
 
 export const SignUpPage: React.FunctionComponent = (): JSX.Element => {
 
-  const [email, setEmail] = useState<string>()
-  const [name, setName] = useState<string>()
-  const [surname, setSurname] = useState<string>()
-  const [password, setPassword] = useState<string>()
+  const [email, setEmail] = useState<string>("")
+  const [name, setName] = useState<string>("")
+  const [surname, setSurname] = useState<string>("")
+  const [password, setPassword] = useState<string>("")
   //const [disabled, setDisabled] = useState<boolean>(false)
 
   const history = useHistory()
+
+  const handleChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
+    (event) => {
+        if (event.target.name === "email") {
+          setEmail(event.target.value)
+        }
+        if (event.target.name === "name") {
+          setName(event.target.value)
+        }
+        if (event.target.name === "surname") {
+        setSurname(event.target.value)
+        }
+        if (event.target.name === "password") {
+        setPassword(event.target.value)
+        }
+    },
+    []
+  )
 
   const handleSubmit = useCallback<React.FormEventHandler<HTMLFormElement>>(
     async (event) => {
@@ -47,7 +65,7 @@ export const SignUpPage: React.FunctionComponent = (): JSX.Element => {
               name='name'
               value={name}
               placeholder='Name'
-              onChange={(event) => setName(event.target.value)}
+              onChange={handleChange}
               autoFocus
           />
         </Grid.Row>
@@ -56,7 +74,7 @@ export const SignUpPage: React.FunctionComponent = (): JSX.Element => {
               name='surname'
               value={surname}
               placeholder='Surname'
-              onChange={(event) => setSurname(event.target.value)}
+              onChange={handleChange}
           />
         </Grid.Row>
         <Grid.Row>
@@ -64,7 +82,7 @@ export const SignUpPage: React.FunctionComponent = (): JSX.Element => {
             name='email'
             value={email}
             placeholder='Email'
-            onChange={(event) => setEmail(event.target.value)}
+            onChange={handleChange}
           />
         </Grid.Row>
         <Grid.Row>
@@ -73,7 +91,7 @@ export const SignUpPage: React.FunctionComponent = (): JSX.Element => {
             name='password'
             value={password}
             placeholder='Password'
-            onChange={(event) => setPassword(event.target.value)}
+            onChange={handleChange}
           />
         </Grid.Row>
         <Grid.Row>
