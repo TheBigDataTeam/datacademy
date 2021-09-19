@@ -1,5 +1,5 @@
 import React from 'react';
-import { Paragraph, Header, Grid } from 'components/ui';
+import { Paragraph, Heading, Grid } from 'components/ui';
 //import styles from './SyllabusSection.module.css';
 //import { v4 as uuidv4 } from 'uuid';
 
@@ -12,7 +12,7 @@ export const SyllabusSection: React.FunctionComponent<Props> = ({ syllabus }): J
     return (
         <Grid.Row>
             <Grid.Col>
-                <Header>Course content:</Header>
+                <Heading>Course content:</Heading>
                 {/* <ul className={styles.list}>
                     {syllabus?.map((item) => (
                         <li key={uuidv4()} className={styles.list_item}>

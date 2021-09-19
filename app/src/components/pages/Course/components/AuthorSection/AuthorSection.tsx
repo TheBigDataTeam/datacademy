@@ -1,6 +1,6 @@
 import React from 'react';
 //import { v4 as uuidv4 } from 'uuid';
-import { Grid, Paragraph, Header } from 'components/ui';
+import { Grid, Paragraph, Heading } from 'components/ui';
 import styles from './AuthorSection.module.css';
 import { Author } from 'models/Author';
 
@@ -13,7 +13,7 @@ export const AuthorSection: React.FunctionComponent<Props> = ({ author }): JSX.E
         <>
             <Grid.Row marginBottom="none">
                 <Grid.Col marginBottom="none">
-                    <Header>Your teacher: {author?.fullname}</Header>
+                    <Heading>Your teacher: {author?.fullname}</Heading>
                 </Grid.Col>
             </Grid.Row>
             <Grid.Row marginTop="none">

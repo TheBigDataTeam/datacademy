@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { LandingPage, SignUpPage, LoginPage, 
 		ForgetPassPage, CatalogPage, AuthorsPage, 
 		ProjectInfoPage, PricingPage, PaymentPage,
-		CoursePage, AuthorPage
+		CoursePage, AuthorPage, DashboardPage
 } from 'components/pages'
 
 export const App: React.FunctionComponent = (): JSX.Element => {
@@ -21,6 +21,7 @@ export const App: React.FunctionComponent = (): JSX.Element => {
 			<Route path="/pricing" component={PricingPage}/>
 			<Route path="/project" component={ProjectInfoPage}/>
 			<Route path="/payment" component={PaymentPage}/>
+			<Route path="/dashboard" component={DashboardPage}/>
 		</Router>
 	)
 }
