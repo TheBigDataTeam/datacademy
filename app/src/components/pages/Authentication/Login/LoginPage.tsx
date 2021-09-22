@@ -31,7 +31,7 @@ export const LoginPage: React.FunctionComponent = (): JSX.Element => {
             //setDisabled(true)
             try {
                 await axios.post("http://localhost:3100/api/user/login", {email, password})
-                history.push("/courses") /* TODO: check that it works as intended */
+                history.push("/dashboard") /* TODO: check that it works as intended */
             } catch (error) {
                 console.log(error) /* TODO: handle errors properly */
             }

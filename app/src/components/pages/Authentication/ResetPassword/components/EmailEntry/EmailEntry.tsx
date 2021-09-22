@@ -1,20 +1,20 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, /* useState  */} from 'react';
 import { Input, Button, Grid, Paragraph } from '../../../../../ui';
 
-interface FormData {
+/* interface FormData {
     email: string;
 }
 
 const initialFormData: FormData = {
     email: '',
-}
+} */
 
 interface Props {
     handlePageChangeState: () => void
 }
 
 export const EmailEntry: React.FunctionComponent<Props> = ({ handlePageChangeState }): JSX.Element => {
-    const [formData, setFormData] = useState<FormData>(initialFormData); // TODO
+    //const [formData, setFormData] = useState<FormData>(initialFormData); // TODO
 
     const handleChange = () => {
         console.log('TODO')
@@ -37,7 +37,7 @@ export const EmailEntry: React.FunctionComponent<Props> = ({ handlePageChangeSta
                 <Grid.Row marginBottom="l" marginTop="l">
                     <Input
                         name='email'
-                        value={formData.email}
+                        /* value={formData.email} */
                         placeholder='Email'
                         onChange={handleChange}
                         autoFocus

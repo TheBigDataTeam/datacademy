@@ -62,6 +62,7 @@ func main() {
 	sm.HandleFunc("/authors", authorsHandler.ListAll).Methods("GET")
 	sm.HandleFunc("/courses/{id}", coursesHandler.ListOne).Methods("GET")
 	sm.HandleFunc("/authors/{id}", authorsHandler.ListOne).Methods("GET")
+	sm.HandleFunc("/api/user/{id}", usersHandler.Get).Methods("GET")
 
 	sm.HandleFunc("/api/courses/{id}", coursesHandler.Update).Methods("PUT")
 	sm.HandleFunc("/api/courses/{id}", authorsHandler.Update).Methods("PUT")
