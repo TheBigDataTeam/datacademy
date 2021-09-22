@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { FETCH_USER_REQUEST, FETCH_USER_SUCCESS, FETCH_USER_FAILURE } from './userAuthTypes'
 import { BASE_URL } from 'constants/common'
+import { User } from 'models'
 import axios from 'axios'
 
-type User = string
-type Error = string
+type Error = any
 
 export type UserRequest = {
     type: typeof FETCH_USER_REQUEST,
@@ -39,9 +41,16 @@ export const fetchUserFailure = (error: Error): UserFailure => {
     }
 }
 
-export const fetchUser = () => {
+export const fetchUser = (userID: string) => {
     return (dispatch: any): any => {
         dispatch(fetchUserRequest)
-        axios.get(BASE_URL)
+        axios.get(BASE_URL + `api/users?user=${userID}`).then(response => {
+            console.log(response.data)
+            const user = response.data
+            dispatch(fetchUserSuccess(user))
+        }).catch(error => {
+            const errMsg = error.message
+            dispatch(fetchUserFailure(errMsg))
+        })
     }
 }

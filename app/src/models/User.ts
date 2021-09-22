@@ -3,7 +3,7 @@ export type User = {
     email: string
     name: string
     surname: string
-    isAdmin: boolean
-    createdOn: string
+    //isAdmin: boolean
+    createdon: string
     version: number
 }

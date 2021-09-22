@@ -1,18 +1,18 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Logo } from 'components/common';
-import { Menu } from './components';
-import { Login } from './components';
-import styles from './Header.module.css';
+import React from 'react'
+import { Link } from 'react-router-dom'
+import { Logo } from 'components/common'
+import { Menu } from './components'
+import { Login } from './components'
+import styles from './Header.module.css'
 
 interface Props {
-	inverted?: boolean;
+	inverted?: boolean
 }
 
 export const Header: React.FunctionComponent<Props> = ({ inverted }): JSX.Element => {
 
 	/* TODO */
-	const user = true;
+	const user = true
 
 	return (
 		<div className={styles.root}>
@@ -25,5 +25,5 @@ export const Header: React.FunctionComponent<Props> = ({ inverted }): JSX.Elemen
 				{ inverted ? <Login inverted /> : <Login /> }
 			</Link>}
 		</div>
-	);
+	)
 }
