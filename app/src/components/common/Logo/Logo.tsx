@@ -6,8 +6,8 @@ import styles from './Logo.module.css'
 import classNames from 'classnames'
 
 interface Props {
-  inverted?: boolean;
-  size?: 's' | 'm' | 'l';
+  inverted?: boolean
+  size?: 's' | 'm' | 'l'
 }
 
 export const Logo: React.FunctionComponent<Props> = ({ inverted, size = 'm' }): JSX.Element => {

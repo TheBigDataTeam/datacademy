@@ -13,7 +13,7 @@ export const DashboardPage: React.FunctionComponent = (): JSX.Element => {
 		try {
 			dispatch(fetchUser(userID))
 		} catch (error) {
-			console.log(error)
+			console.log(error) /* TODO handle errors properly */
 		}
 	}, [userID, dispatch])
 
