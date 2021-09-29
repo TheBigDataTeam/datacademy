@@ -35,6 +35,7 @@ type Manager interface {
 	Check(*http.Request) (*Session, error)
 	DestroyCurrent(http.ResponseWriter, *http.Request) error
 	DestroyAll(http.ResponseWriter, *users.User) error
+	//GetBySessID() (string, error)
 }
 
 var (
@@ -64,6 +65,7 @@ func (sdb *DBSession) Create(w http.ResponseWriter, UserID string) error {
 		Value:   sessionID,
 		Expires: time.Now().Add(30 * 24 * time.Hour),
 		Path:    "/",
+		Domain:  "localhost",
 	}
 	http.SetCookie(w, cookie)
 	return nil
@@ -71,7 +73,18 @@ func (sdb *DBSession) Create(w http.ResponseWriter, UserID string) error {
 
 // Check checks that a session exists in the database
 func (sdb *DBSession) Check(r *http.Request) (*Session, error) {
-	return &Session{}, nil
+	sessID, err := r.Cookie("session_id")
+	if err == http.ErrNoCookie {
+		return nil, ErrorNoAuth
+	}
+	sess := &Session{}
+	row := sdb.DB.QueryRow("SELECT user_id from sessions WHERE id=$1", sessID)
+	err = row.Scan(&sess.UserID)
+	if err == sql.ErrNoRows {
+		return nil, ErrorNoAuth
+	}
+	sess.ID = sessID.Value
+	return sess, nil
 }
 
 // DestroyCurrent removes current user's session from the database
@@ -112,4 +125,15 @@ func AuthMiddleware(sm Manager, next http.Handler) http.Handler {
 		ctx := context.WithValue(r.Context(), sessionKey, sess)
 		next.ServeHTTP(rw, r.WithContext(ctx))
 	})
+}
+
+// GetBySessID returns a userID based on sessionID
+func (sdb *DBSession) GetBySessID(sessID string) (string, error) {
+	sess := &Session{}
+	row := sdb.DB.QueryRow("SELECT id, user_id FROM sessions WHERE id=$1", sessID)
+	err := row.Scan(&sess.ID, &sess.UserID)
+	if err == sql.ErrNoRows {
+		return "", ErrorNoAuth
+	}
+	return sess.UserID, nil
 }

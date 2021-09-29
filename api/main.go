@@ -64,23 +64,32 @@ func main() {
 	sm.HandleFunc("/authors/{id}", authorsHandler.ListOne).Methods("GET")
 	sm.HandleFunc("/api/users", usersHandler.Get).Methods("GET")
 
-	sm.HandleFunc("/api/courses/{id}", coursesHandler.Update).Methods("PUT")
-	sm.HandleFunc("/api/courses/{id}", authorsHandler.Update).Methods("PUT")
+	sm.HandleFunc("/courses/{id}", coursesHandler.Update).Methods("PUT")
+	sm.HandleFunc("/courses/{id}", authorsHandler.Update).Methods("PUT")
 
-	sm.HandleFunc("/api/courses", coursesHandler.Create).Methods("POST")
+	sm.HandleFunc("/courses", coursesHandler.Create).Methods("POST")
 	sm.HandleFunc("/api/user/signup", usersHandler.Signup).Methods("POST")
 	sm.HandleFunc("/api/user/login", usersHandler.Login).Methods("POST")
 
 	//sm.Use(coursesHandler.MiddlewareValidateCourse)
 
-	sm.HandleFunc("/api/courses/{id}", coursesHandler.Delete).Methods("DELETE")
-	sm.HandleFunc("/api/authors/{id}", authorsHandler.Delete).Methods("DELETE")
+	sm.HandleFunc("/courses/{id}", coursesHandler.Delete).Methods("DELETE")
+	sm.HandleFunc("/authors/{id}", authorsHandler.Delete).Methods("DELETE")
 
-	handler := session.AuthMiddleware(s, sm)
-	http.Handle("/", handler)
+	/* handler := session.AuthMiddleware(s, sm)
+	http.Handle("/", handler) */
+
+	//corsHandler := cors.AllowAll().Handler(sm)
 
 	// Add middleware to handle CORS
-	corsHandler := cors.Default().Handler(sm)
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"http://localhost:3000"},
+		AllowedMethods:   []string{http.MethodGet, http.MethodPost, http.MethodDelete, http.MethodPut},
+		AllowCredentials: true,
+		MaxAge:           10000,
+		ExposedHeaders:   []string{"set-cookie"},
+	})
+	corsHandler := c.Handler(sm)
 
 	server := &http.Server{
 		Addr:         config.ServerPort,

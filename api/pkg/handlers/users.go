@@ -123,3 +123,9 @@ func (u *Users) Get(rw http.ResponseWriter, r *http.Request) {
 	}
 	rw.Write(response)
 }
+
+func (u *Users) GetBySessionID(rw http.ResponseWriter, r *http.Request) {
+	queryParams := r.URL.Query()
+	sessID := queryParams["sess"][0]
+	userID, err := 
+}
