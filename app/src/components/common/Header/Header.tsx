@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Logo } from 'components/common'
 import { Menu, Login, Logout } from './components'
 import styles from './Header.module.css'
+import { useSelector } from 'react-redux'
 
 interface Props {
 	inverted?: boolean
@@ -10,8 +11,8 @@ interface Props {
 
 export const Header: React.FunctionComponent<Props> = ({ inverted }): JSX.Element => {
 
-	/* TODO */
-	const user = false
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const user = useSelector((state: any) => state.userAuth.user)
 
 	return (
 		<div className={styles.root}>
@@ -23,7 +24,7 @@ export const Header: React.FunctionComponent<Props> = ({ inverted }): JSX.Elemen
 			<Link to="/auth/login" className={styles.right}>
 				{ inverted ? <Logout inverted /> : <Logout /> }
 			</Link>
-			: <Link to="/" className={styles.right}>
+			: <Link to="/auth/logout" className={styles.right}>
 			{ inverted ? <Login inverted /> : <Login /> }
 			</Link>
 			}

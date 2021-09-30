@@ -124,8 +124,27 @@ func (u *Users) Get(rw http.ResponseWriter, r *http.Request) {
 	rw.Write(response)
 }
 
+// GetBySessionID ...
 func (u *Users) GetBySessionID(rw http.ResponseWriter, r *http.Request) {
-	queryParams := r.URL.Query()
-	sessID := queryParams["sess"][0]
-	userID, err := 
+	sess, err := u.s.Check(r)
+	u.l.Println(sess)
+	switch {
+	case err == nil:
+	case err == session.ErrorNoAuth:
+		http.Error(rw, "Not authorized", http.StatusUnauthorized)
+	case err != nil:
+		http.Error(rw, "Internal error", http.StatusInternalServerError)
+	}
+	userID := sess.UserID
+	user, err := u.r.Get(userID)
+	switch err {
+	case nil:
+	case users.ErrNoRecord:
+		http.Error(rw, "User does not exist", http.StatusBadRequest)
+	}
+	response, err := json.Marshal(user)
+	if err != nil {
+		http.Error(rw, "Cannot marshal response", http.StatusInternalServerError)
+	}
+	rw.Write(response)
 }

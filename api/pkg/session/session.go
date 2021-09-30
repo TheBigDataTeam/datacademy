@@ -35,23 +35,12 @@ type Manager interface {
 	Check(*http.Request) (*Session, error)
 	DestroyCurrent(http.ResponseWriter, *http.Request) error
 	DestroyAll(http.ResponseWriter, *users.User) error
-	//GetBySessID() (string, error)
 }
 
 var (
 	// ErrorNoAuth is an error which is raised when there is no such a session in the database
 	ErrorNoAuth = errors.New("No session found")
 )
-
-var noAuthUrls = map[string]struct{}{
-	"api/user/login":  {},
-	"api/user/signup": {},
-	"/courses":        {},
-	"/authors":        {},
-	"/courses/{id}":   {},
-	"/authors/{id}":   {},
-	"/":               {},
-}
 
 // Create creates a session and stores it in the databse
 func (sdb *DBSession) Create(w http.ResponseWriter, UserID string) error {
@@ -78,10 +67,12 @@ func (sdb *DBSession) Check(r *http.Request) (*Session, error) {
 		return nil, ErrorNoAuth
 	}
 	sess := &Session{}
-	row := sdb.DB.QueryRow("SELECT user_id from sessions WHERE id=$1", sessID)
+	row := sdb.DB.QueryRow("SELECT user_id from sessions WHERE id=$1", sessID.Value)
 	err = row.Scan(&sess.UserID)
 	if err == sql.ErrNoRows {
 		return nil, ErrorNoAuth
+	} else if err != nil {
+		return nil, err
 	}
 	sess.ID = sessID.Value
 	return sess, nil
@@ -110,6 +101,16 @@ func FromContext(ctx context.Context) (*Session, error) {
 	return sess, nil
 }
 
+var noAuthUrls = map[string]struct{}{
+	"api/user/login":  {},
+	"api/user/signup": {},
+	"/courses":        {},
+	"/authors":        {},
+	"/courses/{id}":   {},
+	"/authors/{id}":   {},
+	"/":               {},
+}
+
 // AuthMiddleware is responsible for checking whether or not a user has rights to access a resource
 func AuthMiddleware(sm Manager, next http.Handler) http.Handler {
 	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
@@ -122,6 +123,7 @@ func AuthMiddleware(sm Manager, next http.Handler) http.Handler {
 			http.Error(rw, "User is not authenticated", http.StatusUnauthorized)
 			return
 		}
+
 		ctx := context.WithValue(r.Context(), sessionKey, sess)
 		next.ServeHTTP(rw, r.WithContext(ctx))
 	})
