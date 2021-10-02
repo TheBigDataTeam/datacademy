@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import './App.module.css'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
-import { LandingPage, SignUpPage, LoginPage, 
+import { LandingPage, SignUpPage, LoginPage, LogoutPage,
 		ForgetPassPage, CatalogPage, AuthorsPage, 
 		ProjectInfoPage, PricingPage, PaymentPage,
 		CoursePage, AuthorPage, DashboardPage
@@ -27,7 +27,7 @@ export const App: React.FunctionComponent = (): JSX.Element => {
 			<Route exact path="/" component={LandingPage} />
 			<Route path="/auth/signup" component={SignUpPage} />
 			<Route path="/auth/login" component={LoginPage} />
-			{/* TODO /auth/logout path */}
+			<Route path="/auth/logout" component={LogoutPage} />
 			<Route path="/auth/forget" component={ForgetPassPage} />
 			<Route exact path="/courses" component={CatalogPage} />
 			<Route path="/courses/:id" component={CoursePage}/>

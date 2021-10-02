@@ -1,3 +1,4 @@
-export { LoginPage } from './Login';
-export { SignUpPage } from './SignUp';
-export { ForgetPassPage } from './ResetPassword';
+export { LoginPage } from './Login'
+export { LogoutPage } from './Logout'
+export { SignUpPage } from './SignUp'
+export { ForgetPassPage } from './ResetPassword'

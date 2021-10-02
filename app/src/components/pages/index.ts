@@ -1,6 +1,7 @@
 export { LandingPage } from './Landing'
 export { SignUpPage } from './Authentication'
 export { LoginPage } from './Authentication'
+export { LogoutPage } from './Authentication'
 export { ForgetPassPage } from './Authentication'
 export { CatalogPage } from './Catalog'
 export { CoursePage } from './Course'

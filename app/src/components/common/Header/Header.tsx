@@ -21,10 +21,10 @@ export const Header: React.FunctionComponent<Props> = ({ inverted }): JSX.Elemen
 			</div>
 			{ inverted ? <Menu inverted /> : <Menu /> }
 			{ isLoaded ?
-			<Link to="/auth/login" className={styles.right}>
+			<Link to="/auth/logout" className={styles.right}>
 				{ inverted ? <Logout inverted /> : <Logout /> }
 			</Link>
-			: <Link to="/auth/logout" className={styles.right}>
+			: <Link to="/auth/login" className={styles.right}>
 			{ inverted ? <Login inverted /> : <Login /> }
 			</Link>
 			}

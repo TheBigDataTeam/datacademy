@@ -51,7 +51,7 @@ export const userAuthReducer = (state = initialState, action: UserAuthActions): 
                 isLoading: false,
                 user: null,
                 error: '',
-                isLoaded: true
+                isLoaded: false
             }
         }
         case UserAuthActionTypes.FETCH_USER_LOGOUT_FAILURE: {
@@ -59,7 +59,6 @@ export const userAuthReducer = (state = initialState, action: UserAuthActions): 
                 ...state,
                 isLoading: false,
                 error: action.payload,
-                isLoaded: true
             }
         }
         default: return state
