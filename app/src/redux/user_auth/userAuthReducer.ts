@@ -1,5 +1,5 @@
 import { UserAuthActionTypes } from './userAuthActionTypes'
-import { UserAuthAction } from './userAuthActions'
+import { UserAuthActions } from './userAuthActions'
 import { User } from 'models/User'
 
 export type initialStateType = {
@@ -16,7 +16,7 @@ export const initialState: initialStateType = {
     isLoaded: false
 }
 
-export const userAuthReducer = (state = initialState, action: UserAuthAction): initialStateType => {
+export const userAuthReducer = (state = initialState, action: UserAuthActions): initialStateType => {
     switch(action.type) {
         case UserAuthActionTypes.FETCH_USER_AUTH_REQUEST:
             return {

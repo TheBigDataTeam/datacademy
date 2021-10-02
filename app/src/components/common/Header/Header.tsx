@@ -4,6 +4,7 @@ import { Logo } from 'components/common'
 import { Menu, Login, Logout } from './components'
 import styles from './Header.module.css'
 import { useSelector } from 'react-redux'
+import { AppStateType } from 'redux/rootReducer'
 
 interface Props {
 	inverted?: boolean
@@ -11,8 +12,7 @@ interface Props {
 
 export const Header: React.FunctionComponent<Props> = ({ inverted }): JSX.Element => {
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const isLoaded: boolean = useSelector((state: any) => state.userAuth.isLoaded)
+	const isLoaded = useSelector((state: AppStateType) => state.userAuth.isLoaded)
 
 	return (
 		<div className={styles.root}>
@@ -20,7 +20,7 @@ export const Header: React.FunctionComponent<Props> = ({ inverted }): JSX.Elemen
 				<Logo inverted={inverted} />
 			</div>
 			{ inverted ? <Menu inverted /> : <Menu /> }
-			{isLoaded ?
+			{ isLoaded ?
 			<Link to="/auth/login" className={styles.right}>
 				{ inverted ? <Logout inverted /> : <Logout /> }
 			</Link>
