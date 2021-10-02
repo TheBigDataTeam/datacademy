@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { UserAuthActionTypes } from './userAuthActionTypes'
 import { BASE_URL } from 'constants/common'
+import { User } from 'models/User'
 import axios from 'axios'
 
 /* TODO Error type */
@@ -13,7 +14,7 @@ export type UserAuthRequest = {
 
 export type UserAuthSuccess = {
     type: UserAuthActionTypes.FETCH_USER_AUTH_SUCCESS,
-    payload: string
+    payload: User
 }
 
 export type UserAuthFailure = {
@@ -29,10 +30,10 @@ export const fetchUserAuthRequest = (): UserAuthRequest => {
     }
 }
 
-export const fetchUserAuthSuccess = (userId: string): UserAuthSuccess => {
+export const fetchUserAuthSuccess = (user: User): UserAuthSuccess => {
     return {
         type: UserAuthActionTypes.FETCH_USER_AUTH_SUCCESS,
-        payload: userId
+        payload: user
     }
 }
 
@@ -46,9 +47,8 @@ export const fetchUserAuthFailure = (error: Error): UserAuthFailure => {
 export const fetchUserAuth = () => {
     return (dispatch: any): any => {
         dispatch(fetchUserAuthRequest())
-        axios.get<string>(BASE_URL + `api/auth/user`, {withCredentials: true}).then(response => {
+        axios.get<User>(BASE_URL + `api/auth/user`, {withCredentials: true}).then(response => {
             const user = response.data
-            console.log(user)
             dispatch(fetchUserAuthSuccess(user))
         }).catch(error => {
             const errMsg = error.message

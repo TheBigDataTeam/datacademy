@@ -102,13 +102,13 @@ func FromContext(ctx context.Context) (*Session, error) {
 }
 
 var noAuthUrls = map[string]struct{}{
-	"api/user/login":  {},
-	"api/user/signup": {},
-	"/courses":        {},
-	"/authors":        {},
-	"/courses/{id}":   {},
-	"/authors/{id}":   {},
-	"/":               {},
+	"/api/auth/login":  {},
+	"/api/auth/signup": {},
+	"/courses":         {},
+	"/authors":         {},
+	"/courses/{id}":    {},
+	"/authors/{id}":    {},
+	"/":                {},
 }
 
 // AuthMiddleware is responsible for checking whether or not a user has rights to access a resource

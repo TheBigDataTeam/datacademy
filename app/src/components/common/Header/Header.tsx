@@ -12,7 +12,7 @@ interface Props {
 export const Header: React.FunctionComponent<Props> = ({ inverted }): JSX.Element => {
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const user = useSelector((state: any) => state.userAuth.user)
+	const isLoaded: boolean = useSelector((state: any) => state.userAuth.isLoaded)
 
 	return (
 		<div className={styles.root}>
@@ -20,7 +20,7 @@ export const Header: React.FunctionComponent<Props> = ({ inverted }): JSX.Elemen
 				<Logo inverted={inverted} />
 			</div>
 			{ inverted ? <Menu inverted /> : <Menu /> }
-			{user ?
+			{isLoaded ?
 			<Link to="/auth/login" className={styles.right}>
 				{ inverted ? <Logout inverted /> : <Logout /> }
 			</Link>

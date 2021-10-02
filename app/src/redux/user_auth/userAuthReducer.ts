@@ -1,16 +1,17 @@
 import { UserAuthActionTypes } from './userAuthActionTypes'
 import { UserAuthAction } from './userAuthActions'
+import { User } from 'models/User'
 
 export type initialStateType = {
     isLoading: boolean,
-    userId: string,
+    user: User | null,
     error: string,
     isLoaded: boolean
 }
 
 export const initialState: initialStateType = {
     isLoading: false,
-    userId: '',
+    user: null,
     error: '',
     isLoaded: false
 }
@@ -25,7 +26,7 @@ export const userAuthReducer = (state = initialState, action: UserAuthAction): i
         case UserAuthActionTypes.FETCH_USER_AUTH_SUCCESS: {
             return {
                 isLoading: false,
-                userId: action.payload,
+                user: action.payload,
                 error: '',
                 isLoaded: true
             }
@@ -34,7 +35,7 @@ export const userAuthReducer = (state = initialState, action: UserAuthAction): i
             return {
                 ...state,
                 isLoading: false,
-                userId: '',
+                user: null,
                 error: action.payload,
                 isLoaded: false
             }
