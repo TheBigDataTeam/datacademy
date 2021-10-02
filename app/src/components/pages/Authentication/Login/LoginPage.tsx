@@ -11,7 +11,7 @@ export const LoginPage: React.FunctionComponent = (): JSX.Element => {
     const [password, setPassword] = useState<string>("")
     //const [disabled, setDisabled] = useState<boolean>(false)
 
-    const history = useHistory() /* TODO: types */
+    const history = useHistory()
 
     const handleChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
         (event) => {
@@ -30,8 +30,8 @@ export const LoginPage: React.FunctionComponent = (): JSX.Element => {
             event.preventDefault()
             //setDisabled(true)
             try {
-                await axios.post("http://localhost:3100/api/user/login", {email, password})
-                history.push("/courses") /* TODO: check that it works as intended */
+                await axios.post("http://localhost:3100/api/auth/login", {email, password}, {withCredentials: true})
+                history.push("/dashboard")
             } catch (error) {
                 console.log(error) /* TODO: handle errors properly */
             }

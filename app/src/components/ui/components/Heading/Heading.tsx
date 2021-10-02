@@ -1,16 +1,16 @@
-import React from 'react';
-import classNames from 'classnames';
-import { Margin } from '../../common/margins';
-import { Color, Size, Text } from '../Text/Text';
-import marginStyles from '../../styles/margins.module.css';
-import lineHeightStyles from '../../styles/line-heights.module.css';
-import styles from './Header.module.css';
+import React from 'react'
+import classNames from 'classnames'
+import { Margin } from 'components/ui/common/margins'
+import { Color, Size, Text } from 'components/ui/components/Text/Text'
+import marginStyles from 'components/ui/styles/margins.module.css'
+import lineHeightStyles from 'components/ui/styles/line-heights.module.css'
+import styles from './Heading.module.css'
 
-export type Level = 1 | 2 | 3;
-export type Align = 'left' | 'center' | 'right';
-export type Weight = 'bold' | 'normal';
+export type Level = 1 | 2 | 3
+export type Align = 'left' | 'center' | 'right'
+export type Weight = 'bold' | 'normal'
 
-type WithoutClassName = Omit<React.HTMLAttributes<HTMLElement>, 'className'>;
+type WithoutClassName = Omit<React.HTMLAttributes<HTMLElement>, 'className'>
 
 interface LevelParams {
   size: Size;
@@ -38,7 +38,7 @@ const paramsByLevel: ParamsByLevel = {
     marginTop: 'm',
     marginBottom: 's',
   },
-};
+}
 
 export interface Props extends WithoutClassName {
   /** Header level */
@@ -61,7 +61,7 @@ export interface Props extends WithoutClassName {
   marginBottom?: Margin;
 }
 
-export const Header: React.FunctionComponent<Props> = ({
+export const Heading: React.FunctionComponent<Props> = ({
   level = 2,
   size,
   color,
@@ -90,17 +90,17 @@ export const Header: React.FunctionComponent<Props> = ({
     {
       [styles.root_nowrap]: noWrap,
     }
-  );
+  )
   const headerProps = {
     ...props,
     className,
-  };
+  }
   const textProps = {
     weight,
     color,
     size: sizeValue,
     children,
-  };
+  }
 
-  return React.createElement(tagName, headerProps, <Text {...textProps} />);
-};
+  return React.createElement(tagName, headerProps, <Text {...textProps} />)
+}

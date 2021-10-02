@@ -1,28 +1,28 @@
-import React from 'react';
-import styles from './Icon.module.css';
-import classNames from 'classnames';
-import { ReactComponent as LoginIcon } from './resources/login.svg';
-import { ReactComponent as LogoutIcon } from './resources/logout.svg';
-import { ReactComponent as BurgerIcon } from './resources/burger.svg';
-import { ReactComponent as CloseIcon} from './resources/close.svg';
-import { ReactComponent as Twitter } from './resources/twitter.svg';
-import { ReactComponent as Facebook } from './resources/facebook.svg';
-import { ReactComponent as Google } from './resources/google.svg';
-import { ReactComponent as Github } from './resources/github.svg';
-import { ReactComponent as Linkedin} from './resources/linkedin.svg';
-import { ReactComponent as Dollar } from './resources/dollar.svg';
-import { ReactComponent as Motobike } from './resources/motobike.svg';
-import { ReactComponent as Airplane } from './resources/airplane.svg';
-import { ReactComponent as Helicopter } from './resources/helicopter.svg';
-import { ReactComponent as Instagram } from './resources/instagram.svg';
+import React from 'react'
+import styles from './Icon.module.css'
+import classNames from 'classnames'
+import { ReactComponent as LoginIcon } from './resources/login.svg'
+import { ReactComponent as LogoutIcon } from './resources/logout.svg'
+import { ReactComponent as BurgerIcon } from './resources/burger.svg'
+import { ReactComponent as CloseIcon} from './resources/close.svg'
+import { ReactComponent as Twitter } from './resources/twitter.svg'
+import { ReactComponent as Facebook } from './resources/facebook.svg'
+import { ReactComponent as Google } from './resources/google.svg'
+import { ReactComponent as Github } from './resources/github.svg'
+import { ReactComponent as Linkedin} from './resources/linkedin.svg'
+import { ReactComponent as Dollar } from './resources/dollar.svg'
+import { ReactComponent as Motobike } from './resources/motobike.svg'
+import { ReactComponent as Airplane } from './resources/airplane.svg'
+import { ReactComponent as Helicopter } from './resources/helicopter.svg'
+import { ReactComponent as Instagram } from './resources/instagram.svg'
 
 /* TODO augment import of svg components => list is too long */
 
 interface Props {
     type: string | null /* TODO find a way to implement narrowing */
-    size?: 's' | 'm' | 'l' | 'xl' | 'xxl';
-    color?: boolean;
-    inverted?: boolean;
+    size?: 's' | 'm' | 'l' | 'xl' | 'xxl'
+    color?: boolean
+    inverted?: boolean
 } 
 
 export const Icon: React.FunctionComponent<Props> = ({type, size='m', color, inverted}): JSX.Element | null => {
@@ -77,7 +77,7 @@ export const Icon: React.FunctionComponent<Props> = ({type, size='m', color, inv
             return <Helicopter className={className}/>
         }
         default: {
-            return null;
+            return null
         }
     }
 }

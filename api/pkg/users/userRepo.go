@@ -47,7 +47,7 @@ func (r *Repo) Create(email string, name string, surname string, password string
 	return id, nil
 }
 
-// Authorize checks email and password and gets back userID from the database or an error
+// Authenticate checks email and password and gets back userID from the database or an error
 func (r *Repo) Authenticate(email string, password string) (string, error) {
 	row := r.db.QueryRow("SELECT id, email, name, surname, password, version FROM users WHERE email=$1", email)
 	user, err := checkPasswordIsValid(row, password)
@@ -70,6 +70,17 @@ func checkPasswordIsValid(row *sql.Row, password string) (*User, error) {
 	} /* TODO: when password is hashed this function would have to be changed */
 	if password != passwordStoredInDB {
 		return nil, ErrWrongPassword
+	}
+	return user, nil
+}
+
+// Get retrives a user from the database
+func (r *Repo) Get(userID string) (*User, error) {
+	user := &User{}
+	row := r.db.QueryRow("SELECT id, email, name, surname, version FROM users WHERE id=$1", userID)
+	err := row.Scan(&user.ID, &user.Email, &user.Name, &user.Surname, &user.Version)
+	if err == sql.ErrNoRows {
+		return nil, ErrNoRecord
 	}
 	return user, nil
 }

@@ -1,8 +1,8 @@
-import React from 'react';
-import { PageLayout } from 'components/layouts';
-import { Header, Footer } from 'components/common';
-import { Overview } from './components';
-import { Grid, Paragraph } from 'components/ui';
+import React from 'react'
+import { PageLayout } from 'components/layouts'
+import { Header, Footer } from 'components/common'
+import { Overview } from './components'
+import { Grid, Paragraph } from 'components/ui'
 
 export const CatalogPage: React.FunctionComponent = (): JSX.Element => {
 
@@ -15,5 +15,5 @@ export const CatalogPage: React.FunctionComponent = (): JSX.Element => {
 			</Grid.Row>
 			<Overview />
 		</PageLayout>
-	);
-};
+	)
+}

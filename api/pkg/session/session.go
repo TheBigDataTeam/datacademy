@@ -42,16 +42,6 @@ var (
 	ErrorNoAuth = errors.New("No session found")
 )
 
-var noAuthUrls = map[string]struct{}{
-	"api/user/login":  {},
-	"api/user/signup": {},
-	"/courses":        {},
-	"/authors":        {},
-	"/courses/{id}":   {},
-	"/authors/{id}":   {},
-	"/":               {},
-}
-
 // Create creates a session and stores it in the databse
 func (sdb *DBSession) Create(w http.ResponseWriter, UserID string) error {
 	sessionID := util.RandString()
@@ -64,6 +54,7 @@ func (sdb *DBSession) Create(w http.ResponseWriter, UserID string) error {
 		Value:   sessionID,
 		Expires: time.Now().Add(30 * 24 * time.Hour),
 		Path:    "/",
+		Domain:  "localhost",
 	}
 	http.SetCookie(w, cookie)
 	return nil
@@ -71,7 +62,20 @@ func (sdb *DBSession) Create(w http.ResponseWriter, UserID string) error {
 
 // Check checks that a session exists in the database
 func (sdb *DBSession) Check(r *http.Request) (*Session, error) {
-	return &Session{}, nil
+	sessID, err := r.Cookie("session_id")
+	if err == http.ErrNoCookie {
+		return nil, ErrorNoAuth
+	}
+	sess := &Session{}
+	row := sdb.DB.QueryRow("SELECT user_id from sessions WHERE id=$1", sessID.Value)
+	err = row.Scan(&sess.UserID)
+	if err == sql.ErrNoRows {
+		return nil, ErrorNoAuth
+	} else if err != nil {
+		return nil, err
+	}
+	sess.ID = sessID.Value
+	return sess, nil
 }
 
 // DestroyCurrent removes current user's session from the database
@@ -97,6 +101,16 @@ func FromContext(ctx context.Context) (*Session, error) {
 	return sess, nil
 }
 
+var noAuthUrls = map[string]struct{}{
+	"/api/auth/login":  {},
+	"/api/auth/signup": {},
+	"/courses":         {},
+	"/authors":         {},
+	"/courses/{id}":    {},
+	"/authors/{id}":    {},
+	"/":                {},
+}
+
 // AuthMiddleware is responsible for checking whether or not a user has rights to access a resource
 func AuthMiddleware(sm Manager, next http.Handler) http.Handler {
 	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
@@ -109,7 +123,19 @@ func AuthMiddleware(sm Manager, next http.Handler) http.Handler {
 			http.Error(rw, "User is not authenticated", http.StatusUnauthorized)
 			return
 		}
+
 		ctx := context.WithValue(r.Context(), sessionKey, sess)
 		next.ServeHTTP(rw, r.WithContext(ctx))
 	})
+}
+
+// GetBySessID returns a userID based on sessionID
+func (sdb *DBSession) GetBySessID(sessID string) (string, error) {
+	sess := &Session{}
+	row := sdb.DB.QueryRow("SELECT id, user_id FROM sessions WHERE id=$1", sessID)
+	err := row.Scan(&sess.ID, &sess.UserID)
+	if err == sql.ErrNoRows {
+		return "", ErrorNoAuth
+	}
+	return sess.UserID, nil
 }

@@ -1,9 +1,9 @@
-import React, { ChangeEventHandler, useCallback, useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import { Input, Button, Grid, Paragraph } from 'components/ui';
-import { AuthLayout } from 'components/layouts';
-import { SocialButtons } from "components/common";
-import axios from 'axios';
+import React, { ChangeEventHandler, useCallback, useState } from 'react'
+import { Link, useHistory } from 'react-router-dom'
+import { Input, Button, Grid, Paragraph } from 'components/ui'
+import { AuthLayout } from 'components/layouts'
+import { SocialButtons } from "components/common"
+import axios from 'axios'
 
 export const SignUpPage: React.FunctionComponent = (): JSX.Element => {
 
@@ -37,17 +37,9 @@ export const SignUpPage: React.FunctionComponent = (): JSX.Element => {
     async (event) => {
       event.preventDefault();
 
-      /* if (!email || !name || !surname || !password) {
-        setFormErrors({
-          email: !email ? 'Enter your email address' : undefined,
-          name: !name ? 'Enter your name' : undefined,
-          surname: !surname ? 'Enter your surname' : undefined,
-          password: !password ? 'Come up with a strong password' : undefined,
-        })
-      } */
       //setDisabled(true)
       try {
-        await axios.post("http://localhost:3100/api/user/signup", {email, name, surname, password})
+        await axios.post("http://localhost:3100/api/auth/signup", {email, name, surname, password})
       } catch (error) {
         console.error(error) /* TODO: handle error properly */
       }

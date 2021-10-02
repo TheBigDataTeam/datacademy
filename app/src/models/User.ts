@@ -4,6 +4,6 @@ export type User = {
     name: string
     surname: string
     isAdmin: boolean
-    createdOn: string
+    createdon: string
     version: number
 }
