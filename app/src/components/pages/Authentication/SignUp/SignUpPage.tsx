@@ -44,7 +44,7 @@ export const SignUpPage: React.FunctionComponent = (): JSX.Element => {
         console.error(error) /* TODO: handle error properly */
       }
       //setDisabled(false)
-      history.push("/courses")
+      history.push("/dashboard")
     },
     [history, email, name, surname, password]
   )

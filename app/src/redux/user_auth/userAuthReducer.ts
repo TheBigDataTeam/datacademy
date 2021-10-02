@@ -18,12 +18,12 @@ export const initialState: initialStateType = {
 
 export const userAuthReducer = (state = initialState, action: UserAuthActions): initialStateType => {
     switch(action.type) {
-        case UserAuthActionTypes.FETCH_USER_AUTH_REQUEST:
+        case UserAuthActionTypes.FETCH_USER_LOGIN_REQUEST:
             return {
                 ...state,
                 isLoading: true
             }
-        case UserAuthActionTypes.FETCH_USER_AUTH_SUCCESS: {
+        case UserAuthActionTypes.FETCH_USER_LOGIN_SUCCESS: {
             return {
                 isLoading: false,
                 user: action.payload,
@@ -31,13 +31,35 @@ export const userAuthReducer = (state = initialState, action: UserAuthActions): 
                 isLoaded: true
             }
         }
-        case UserAuthActionTypes.FETCH_USER_AUTH_FAILURE: {
+        case UserAuthActionTypes.FETCH_USER_LOGIN_FAILURE: {
             return {
                 ...state,
                 isLoading: false,
                 user: null,
                 error: action.payload,
                 isLoaded: false
+            }
+        }
+        case UserAuthActionTypes.FETCH_USER_LOGOUT_REQUEST: {
+            return {
+                ...state,
+                isLoading: true
+            }
+        }
+        case UserAuthActionTypes.FETCH_USER_LOGOUT_SUCCESS: {
+            return {
+                isLoading: false,
+                user: null,
+                error: '',
+                isLoaded: true
+            }
+        }
+        case UserAuthActionTypes.FETCH_USER_LOGOUT_FAILURE: {
+            return {
+                ...state,
+                isLoading: false,
+                error: action.payload,
+                isLoaded: true
             }
         }
         default: return state

@@ -7,7 +7,7 @@ import { LandingPage, SignUpPage, LoginPage,
 		CoursePage, AuthorPage, DashboardPage
 } from 'components/pages'
 import { useDispatch } from 'react-redux'
-import { fetchUserAuth } from 'redux/user_auth/userAuthActions'
+import { fetchUserLogin } from 'redux/user_auth/userAuthActions'
 
 export const App: React.FunctionComponent = (): JSX.Element => {
 
@@ -16,7 +16,7 @@ export const App: React.FunctionComponent = (): JSX.Element => {
 
 	useEffect(() => {
 		try {
-			dispatch(fetchUserAuth())
+			dispatch(fetchUserLogin())
 		} catch (error) {
 			console.log(error) /* TODO handle errors properly */
 		}
