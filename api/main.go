@@ -59,20 +59,21 @@ func main() {
 
 	sm := mux.NewRouter()
 
-	// handlers for API
+	// handlers for API calls
 	sm.HandleFunc("/courses", coursesHandler.ListAll).Methods("GET")
+	sm.HandleFunc("/courses", coursesHandler.Create).Methods("POST")
 	sm.HandleFunc("/authors", authorsHandler.ListAll).Methods("GET")
 	sm.HandleFunc("/courses/{id}", coursesHandler.ListOne).Methods("GET")
 	sm.HandleFunc("/authors/{id}", authorsHandler.ListOne).Methods("GET")
 	sm.HandleFunc("/api/users", usersHandler.Get).Methods("GET") /* currently is not used */
-	sm.HandleFunc("/api/auth/user", usersHandler.GetBySessionID).Methods("GET")
 
 	sm.HandleFunc("/courses/{id}", coursesHandler.Update).Methods("PUT")
 	sm.HandleFunc("/courses/{id}", authorsHandler.Update).Methods("PUT")
 
-	sm.HandleFunc("/courses", coursesHandler.Create).Methods("POST")
 	sm.HandleFunc("/api/auth/signup", usersHandler.Signup).Methods("POST")
 	sm.HandleFunc("/api/auth/login", usersHandler.Login).Methods("POST")
+	sm.HandleFunc("/api/auth/user", usersHandler.GetBySessionID).Methods("GET")
+	sm.HandleFunc("/api/auth/logout", usersHandler.Logout).Methods("GET")
 
 	//sm.Use(coursesHandler.MiddlewareValidateCourse)
 

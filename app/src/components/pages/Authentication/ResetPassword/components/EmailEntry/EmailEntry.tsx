@@ -1,20 +1,12 @@
-import React, { useCallback, /* useState  */} from 'react';
-import { Input, Button, Grid, Paragraph } from '../../../../../ui';
+import React, { useCallback } from 'react';
+import { Input, Button, Grid, Paragraph } from 'components/ui';
 
-/* interface FormData {
-    email: string;
-}
-
-const initialFormData: FormData = {
-    email: '',
-} */
 
 interface Props {
     handlePageChangeState: () => void
 }
 
 export const EmailEntry: React.FunctionComponent<Props> = ({ handlePageChangeState }): JSX.Element => {
-    //const [formData, setFormData] = useState<FormData>(initialFormData); // TODO
 
     const handleChange = () => {
         console.log('TODO')

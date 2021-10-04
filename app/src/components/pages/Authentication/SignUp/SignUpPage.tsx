@@ -4,6 +4,8 @@ import { Input, Button, Grid, Paragraph } from 'components/ui'
 import { AuthLayout } from 'components/layouts'
 import { SocialButtons } from "components/common"
 import axios from 'axios'
+import { useDispatch } from 'react-redux'
+import { fetchUserLogin } from 'redux/user_auth/userAuthActions'
 
 export const SignUpPage: React.FunctionComponent = (): JSX.Element => {
 
@@ -14,6 +16,7 @@ export const SignUpPage: React.FunctionComponent = (): JSX.Element => {
   //const [disabled, setDisabled] = useState<boolean>(false)
 
   const history = useHistory()
+  const dispatch = useDispatch()
 
   const handleChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
     (event) => {
@@ -39,14 +42,15 @@ export const SignUpPage: React.FunctionComponent = (): JSX.Element => {
 
       //setDisabled(true)
       try {
-        await axios.post("http://localhost:3100/api/auth/signup", {email, name, surname, password})
+        await axios.post("http://localhost:3100/api/auth/signup", {email, name, surname, password}, {withCredentials: true})
+        history.push("/dashboard")
+        dispatch(fetchUserLogin())
       } catch (error) {
-        console.error(error) /* TODO: handle error properly */
+          console.error(error) /* TODO: handle error properly */
       }
       //setDisabled(false)
-      history.push("/courses")
     },
-    [history, email, name, surname, password]
+    [history, dispatch, email, name, surname, password]
   )
 
   return (

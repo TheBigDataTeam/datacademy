@@ -3,6 +3,8 @@ import { Link, useHistory } from 'react-router-dom'
 import { SocialButtons} from 'components/common'
 import { Input, Button, Grid, Paragraph } from 'components/ui'
 import { AuthLayout } from 'components/layouts'
+import { fetchUserLogin } from 'redux/user_auth/userAuthActions'
+import { useDispatch } from 'react-redux'
 import axios from 'axios'
 
 export const LoginPage: React.FunctionComponent = (): JSX.Element => {
@@ -12,6 +14,7 @@ export const LoginPage: React.FunctionComponent = (): JSX.Element => {
     //const [disabled, setDisabled] = useState<boolean>(false)
 
     const history = useHistory()
+    const dispatch = useDispatch()
 
     const handleChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
         (event) => {
@@ -32,12 +35,13 @@ export const LoginPage: React.FunctionComponent = (): JSX.Element => {
             try {
                 await axios.post("http://localhost:3100/api/auth/login", {email, password}, {withCredentials: true})
                 history.push("/dashboard")
+                dispatch(fetchUserLogin())
             } catch (error) {
                 console.log(error) /* TODO: handle errors properly */
             }
             //setDisabled(false)
         },
-        [history, email, password]
+        [history, email, password, dispatch]
     )
 
     return (

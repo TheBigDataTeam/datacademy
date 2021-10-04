@@ -1,58 +1,105 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { UserAuthActionTypes } from './userAuthActionTypes'
 import { BASE_URL } from 'constants/common'
 import { User } from 'models/User'
 import axios from 'axios'
+import { Dispatch } from 'redux'
 
 /* TODO Error type */
-type Error = any
+type Error = string
 
-export type UserAuthRequest = {
-    type: UserAuthActionTypes.FETCH_USER_AUTH_REQUEST,
+export type UserLoginRequest = {
+    type: UserAuthActionTypes.FETCH_USER_LOGIN_REQUEST,
 }
 
-export type UserAuthSuccess = {
-    type: UserAuthActionTypes.FETCH_USER_AUTH_SUCCESS,
+export type UserLoginSuccess = {
+    type: UserAuthActionTypes.FETCH_USER_LOGIN_SUCCESS,
     payload: User
 }
 
-export type UserAuthFailure = {
-    type: UserAuthActionTypes.FETCH_USER_AUTH_FAILURE,
+export type UserLoginFailure = {
+    type: UserAuthActionTypes.FETCH_USER_LOGIN_FAILURE,
     payload: Error
 }
 
-export type UserAuthAction = UserAuthRequest | UserAuthSuccess | UserAuthFailure
+export type UserLogoutRequest = {
+    type: UserAuthActionTypes.FETCH_USER_LOGOUT_REQUEST
+}
 
-export const fetchUserAuthRequest = (): UserAuthRequest => {
+export type UserLogoutSuccess = {
+    type: UserAuthActionTypes.FETCH_USER_LOGOUT_SUCCESS
+}
+
+export type UserLogoutFailure = {
+    type: UserAuthActionTypes.FETCH_USER_LOGOUT_FAILURE,
+    payload: Error
+}
+
+export type UserAuthActions = UserLoginRequest | UserLoginSuccess | UserLoginFailure | UserLogoutRequest | UserLogoutSuccess | UserLogoutFailure
+
+export const fetchUserLoginRequest = (): UserLoginRequest => {
     return {
-        type: UserAuthActionTypes.FETCH_USER_AUTH_REQUEST
+        type: UserAuthActionTypes.FETCH_USER_LOGIN_REQUEST
     }
 }
 
-export const fetchUserAuthSuccess = (user: User): UserAuthSuccess => {
+export const fetchUserLoginSuccess = (user: User): UserLoginSuccess => {
     return {
-        type: UserAuthActionTypes.FETCH_USER_AUTH_SUCCESS,
+        type: UserAuthActionTypes.FETCH_USER_LOGIN_SUCCESS,
         payload: user
     }
 }
 
-export const fetchUserAuthFailure = (error: Error): UserAuthFailure => {
+export const fetchUserLoginFailure = (error: Error): UserLoginFailure => {
     return {
-        type: UserAuthActionTypes.FETCH_USER_AUTH_FAILURE,
+        type: UserAuthActionTypes.FETCH_USER_LOGIN_FAILURE,
         payload: error
     }
 }
 
-export const fetchUserAuth = () => {
-    return (dispatch: any): any => {
-        dispatch(fetchUserAuthRequest())
-        axios.get<User>(BASE_URL + `api/auth/user`, {withCredentials: true}).then(response => {
+export const fetchUserLogoutRequest = (): UserLogoutRequest => {
+    return {
+        type: UserAuthActionTypes.FETCH_USER_LOGOUT_REQUEST
+    }
+}
+
+export const fetchUserLogoutSuccess = (): UserLogoutSuccess => {
+    return {
+        type: UserAuthActionTypes.FETCH_USER_LOGOUT_SUCCESS
+    }
+}
+
+export const fetchUserLogoutFailure = (error: Error): UserLogoutFailure => {
+    return {
+        type: UserAuthActionTypes.FETCH_USER_LOGOUT_FAILURE,
+        payload: error
+    }
+}
+
+export const fetchUserLogin = () => {
+    return (dispatch: Dispatch<UserAuthActions>): void => {
+        dispatch(fetchUserLoginRequest())
+        axios.get<User>(BASE_URL + `api/auth/user`, {withCredentials: true})
+        .then(response => {
             const user = response.data
-            dispatch(fetchUserAuthSuccess(user))
-        }).catch(error => {
+            dispatch(fetchUserLoginSuccess(user))})
+        .catch(error => {
             const errMsg = error.message
-            dispatch(fetchUserAuthFailure(errMsg))
+            dispatch(fetchUserLoginFailure(errMsg))
+        })
+    }
+}
+
+export const fetchUserLogout = () => {
+    return (dispatch: Dispatch<UserAuthActions>): void => {
+        dispatch(fetchUserLoginRequest())
+        axios.get(BASE_URL + `api/auth/logout`, {withCredentials: true})
+        .then(response => {
+            dispatch(fetchUserLogoutSuccess())
+            console.log(response) /* TODO: try catch or something */
+        })
+        .catch(error => {
+            const errMsg = error.message
+            dispatch(fetchUserLogoutFailure(errMsg))
         })
     }
 }
