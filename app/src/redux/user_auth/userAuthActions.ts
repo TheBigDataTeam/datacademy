@@ -95,7 +95,7 @@ export const fetchUserLogout = () => {
         axios.get(BASE_URL + `api/auth/logout`, {withCredentials: true})
         .then(response => {
             dispatch(fetchUserLogoutSuccess())
-            console.log(response)
+            console.log(response) /* TODO: try catch or something */
         })
         .catch(error => {
             const errMsg = error.message

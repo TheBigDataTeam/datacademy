@@ -46,43 +46,43 @@ type loginInfo struct {
 }
 
 // Signup handles request for creating new users
-func (u *Users) Signup(w http.ResponseWriter, r *http.Request) {
-	u.l.Println("[ATTENTION] request to create a new user has come")
+func (u *Users) Signup(rw http.ResponseWriter, r *http.Request) {
+	u.l.Println("[ATTENTION] Create a new user")
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		http.Error(w, "Cannot read body", http.StatusInternalServerError)
+		http.Error(rw, "Cannot read body", http.StatusInternalServerError)
 	}
 	r.Body.Close()
 	newUser := &signUpInfo{}
 	err = json.Unmarshal(body, newUser)
 	if err != nil {
-		http.Error(w, "Error unmarshaling request body", http.StatusInternalServerError)
+		http.Error(rw, "Error unmarshaling request body", http.StatusInternalServerError)
 	}
 
 	salt := util.RandString()
 	hashedPassword := string(u.hashPassword(newUser.Password, salt)) /* TODO: now passwords are not hashed!! */
-	u.l.Println(hashedPassword)
+	u.l.Println(hashedPassword)                                      /* this line is needed for linter issue only */
 
 	userID, err := u.r.Create(newUser.Email, newUser.Name, newUser.Surname, newUser.Password)
 	switch err {
 	case nil:
 	case users.ErrorBadRequest:
-		http.Error(w, "Wrong data provided", http.StatusBadRequest)
+		http.Error(rw, "Wrong data provided", http.StatusBadRequest)
 	case users.ErrorUserAlreadyExists:
-		http.Error(w, "Such user already exists", http.StatusForbidden)
+		http.Error(rw, "Such user already exists", http.StatusForbidden)
 	default:
-		http.Error(w, "Internal error", http.StatusInternalServerError)
+		http.Error(rw, "Internal error", http.StatusInternalServerError)
 	}
 	if err != nil {
 		return
 	}
-	u.s.Create(w, userID)
-	w.WriteHeader(http.StatusCreated)
+	u.s.Create(rw, userID)
+	rw.WriteHeader(http.StatusCreated)
 }
 
 // Login handles requests for user's authorization
 func (u *Users) Login(rw http.ResponseWriter, r *http.Request) {
-	u.l.Println("[ATTENTION] request for user login has come")
+	u.l.Println("[ATTENTION] User login")
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		http.Error(rw, "Cannot read body", http.StatusInternalServerError)
@@ -108,6 +108,7 @@ func (u *Users) Login(rw http.ResponseWriter, r *http.Request) {
 }
 
 // Get returns a user based on a userID coming from query params
+// Currently is not used
 func (u *Users) Get(rw http.ResponseWriter, r *http.Request) {
 	queryParams := r.URL.Query()
 	userID := queryParams["user"][0]
@@ -124,14 +125,13 @@ func (u *Users) Get(rw http.ResponseWriter, r *http.Request) {
 	rw.Write(response)
 }
 
-// GetBySessionID ...
+// GetBySessionID returns a user based on a session id
 func (u *Users) GetBySessionID(rw http.ResponseWriter, r *http.Request) {
 	sess, err := u.s.Check(r)
-	u.l.Println(sess)
 	switch {
 	case err == nil:
 	case err == session.ErrorNoAuth:
-		http.Error(rw, "Not authorized", http.StatusUnauthorized)
+		http.Error(rw, "Not authenticated", http.StatusUnauthorized)
 	case err != nil:
 		http.Error(rw, "Internal error", http.StatusInternalServerError)
 	}
@@ -147,4 +147,10 @@ func (u *Users) GetBySessionID(rw http.ResponseWriter, r *http.Request) {
 		http.Error(rw, "Cannot marshal response", http.StatusInternalServerError)
 	}
 	rw.Write(response)
+}
+
+// Logout handles requests for a user log out
+func (u *Users) Logout(rw http.ResponseWriter, r *http.Request) {
+	u.l.Println("[ATTENTION] User logout")
+	u.s.DestroyCurrent(rw, r)
 }
