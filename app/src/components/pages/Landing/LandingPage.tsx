@@ -21,11 +21,14 @@ export const LandingPage: React.FunctionComponent = (): JSX.Element => {
 					</Grid.Col>
 				</Grid.Row> 
 				<Grid.Row>
-					{ !isLoaded ? <Form /> : 
-						<Link to="/dashboard">
-							<Button design="primary">Start learning!</Button>
-						</Link> 
-					}
+				{ !isLoaded ? <Form /> 
+					: 
+						<Grid.Col>
+							<Link to="/dashboard">
+								<Button design="primary">Start learning</Button>
+							</Link> 
+						</Grid.Col>
+				}
 				</Grid.Row>               
 			</div>
 		</LandingLayout>

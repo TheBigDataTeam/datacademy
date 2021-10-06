@@ -4,8 +4,9 @@ import { SocialButtons} from 'components/common'
 import { Input, Button, Grid, Paragraph } from 'components/ui'
 import { AuthLayout } from 'components/layouts'
 import { fetchUserLogin } from 'redux/user_auth/userAuthActions'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
+import { AppStateType } from 'redux/rootReducer'
 
 export const LoginPage: React.FunctionComponent = (): JSX.Element => {
 
@@ -15,6 +16,7 @@ export const LoginPage: React.FunctionComponent = (): JSX.Element => {
 
     const history = useHistory()
     const dispatch = useDispatch()
+    const isLoaded = useSelector((state: AppStateType) => state.userAuth.isLoaded)
 
     const handleChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
         (event) => {
@@ -46,48 +48,65 @@ export const LoginPage: React.FunctionComponent = (): JSX.Element => {
 
     return (
         <AuthLayout>
-            <form onSubmit={handleSubmit}>
-                <Grid.Row>
-                    <Input
-                        name='email'
-                        value={email}
-                        placeholder='Email'
-                        onChange={handleChange}
-                        autoFocus
-                    />
-                </Grid.Row>
-                <Grid.Row>
-                    <Input
-                        type='password'
-                        name='password'
-                        value={password}
-                        placeholder='Password'
-                        onChange={handleChange}
-                    />
-                </Grid.Row>
-                <Grid.Row>
-                    <Grid.Col>
-                        <Paragraph align="right" size="s">
-                            <Link to="/auth/forget">Forgot password?</Link>
-                        </Paragraph>
-                    </Grid.Col>
-                </Grid.Row>
-                <Grid.Row>
-                    <Button type='submit' fullWidth design='primary' rounded /* disabled={disabled} */>
-                        Log In
-                    </Button>
-                </Grid.Row>
-                <Grid.Row>
-                    <SocialButtons />
-                </Grid.Row>
-                <Grid.Row>
-                    <Grid.Col>
-                        <Paragraph align="center" size="s">
-                            Don&apos;t have an account? <Link to="/auth/signup">Sign Up</Link>
-                        </Paragraph>
-                    </Grid.Col>
-                </Grid.Row>
-            </form>
+            { !isLoaded ?
+                <form onSubmit={handleSubmit}>
+                    <Grid.Row>
+                        <Input
+                            name='email'
+                            value={email}
+                            placeholder='Email'
+                            onChange={handleChange}
+                            autoFocus
+                        />
+                    </Grid.Row>
+                    <Grid.Row>
+                        <Input
+                            type='password'
+                            name='password'
+                            value={password}
+                            placeholder='Password'
+                            onChange={handleChange}
+                        />
+                    </Grid.Row>
+                    <Grid.Row>
+                        <Grid.Col>
+                            <Paragraph align="right" size="s">
+                                <Link to="/auth/forget">Forgot password?</Link>
+                            </Paragraph>
+                        </Grid.Col>
+                    </Grid.Row>
+                    <Grid.Row>
+                        <Button type='submit' fullWidth design='primary' rounded /* disabled={disabled} */>
+                            Log In
+                        </Button>
+                    </Grid.Row>
+                    <Grid.Row>
+                        <SocialButtons />
+                    </Grid.Row>
+                    <Grid.Row>
+                        <Grid.Col>
+                            <Paragraph align="center" size="s">
+                                Don&apos;t have an account? <Link to="/auth/signup">Sign Up</Link>
+                            </Paragraph>
+                        </Grid.Col>
+                    </Grid.Row>
+                </form>
+                :
+                <>
+                    <Grid.Row>
+                        <Grid.Col>
+                            <Paragraph align="center" size="l">You have already logged in</Paragraph>
+                        </Grid.Col>
+                    </Grid.Row>
+                    <Grid.Row>
+                        <Grid.Col align="center">
+                            <Link to="/dashboard">
+                                <Button design="primary">Start learning</Button>
+                            </Link>
+                        </Grid.Col>
+                    </Grid.Row>
+                </>
+            }     
         </AuthLayout>
     )
 }
