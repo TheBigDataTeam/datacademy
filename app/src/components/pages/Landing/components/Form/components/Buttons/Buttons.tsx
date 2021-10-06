@@ -7,12 +7,12 @@ export const Buttons:React.FunctionComponent = (): JSX.Element => {
     return (
         <div className={styles.root}>
             <Link to="/auth/signup" className={styles.root_link}>
-                <Button design='secondary'>
+                <Button design='secondary' size="m">
                     <Text size="l">Sign Up</Text>
                 </Button>
             </Link>
             <Link to="/auth/login" className={styles.root_link}>
-                <Button design='primary'>
+                <Button design='primary' size="m">
                     <Text size="l" color="inverted">Sign In</Text>
                 </Button>
             </Link>
