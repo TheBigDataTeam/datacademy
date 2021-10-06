@@ -25,8 +25,8 @@ export const Buttons: React.FunctionComponent = (): JSX.Element => {
 
     return (
         <div className={styles.root}>
-            <Button onClick={handleLogoutClick}>Logout</Button>
-            <Button onClick={handleCancelClick}>Cancel</Button>
+            <Button onClick={handleLogoutClick} design="caution">Logout</Button>
+            <Button onClick={handleCancelClick} design="primary">Cancel</Button>
         </div>
     )
 }
