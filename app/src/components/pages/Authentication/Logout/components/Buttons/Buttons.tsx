@@ -3,12 +3,14 @@ import { useHistory } from 'react-router-dom'
 import { Button } from 'components/ui'
 import styles from './Buttons.module.css'
 import { fetchUserLogout } from 'redux/user_auth/userAuthActions'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppStateType } from 'redux/rootReducer'
 
 export const Buttons: React.FunctionComponent = (): JSX.Element => {
 
     const dispatch = useDispatch()
     const history = useHistory()
+    const isLoading = useSelector((state: AppStateType) => state.userAuth.isLoading)
 
     const handleLogoutClick = () => {
         try {
@@ -25,7 +27,7 @@ export const Buttons: React.FunctionComponent = (): JSX.Element => {
 
     return (
         <div className={styles.root}>
-            <Button onClick={handleLogoutClick} design="caution">Logout</Button>
+            <Button onClick={handleLogoutClick} design="caution" disabled={isLoading}>Logout</Button>
             <Button onClick={handleCancelClick} design="primary">Cancel</Button>
         </div>
     )

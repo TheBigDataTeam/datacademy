@@ -12,11 +12,11 @@ export const LoginPage: React.FunctionComponent = (): JSX.Element => {
 
     const [email, setEmail] = useState<string>("")
     const [password, setPassword] = useState<string>("")
-    //const [disabled, setDisabled] = useState<boolean>(false)
 
     const history = useHistory()
     const dispatch = useDispatch()
     const isLoaded = useSelector((state: AppStateType) => state.userAuth.isLoaded)
+    const isLoading = useSelector((state: AppStateType) => state.userAuth.isLoading)
 
     const handleChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
         (event) => {
@@ -33,7 +33,6 @@ export const LoginPage: React.FunctionComponent = (): JSX.Element => {
     const handleSubmit = useCallback<React.FormEventHandler<HTMLFormElement>>(
         async (event) => {
             event.preventDefault()
-            //setDisabled(true)
             try {
                 await axios.post("http://localhost:3100/api/auth/login", {email, password}, {withCredentials: true})
                 history.push("/dashboard")
@@ -41,7 +40,6 @@ export const LoginPage: React.FunctionComponent = (): JSX.Element => {
             } catch (error) {
                 console.log(error) /* TODO: handle errors properly */
             }
-            //setDisabled(false)
         },
         [history, email, password, dispatch]
     )
@@ -76,7 +74,7 @@ export const LoginPage: React.FunctionComponent = (): JSX.Element => {
                         </Grid.Col>
                     </Grid.Row>
                     <Grid.Row>
-                        <Button type='submit' fullWidth design='primary' rounded /* disabled={disabled} */>
+                        <Button type='submit' fullWidth design='primary' rounded disabled={isLoading} >
                             Log In
                         </Button>
                     </Grid.Row>
