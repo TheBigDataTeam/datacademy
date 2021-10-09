@@ -4,18 +4,26 @@
     justify-content: space-between;
 }
 
-.left, .right {
-    display: flex;
-}
-
 .left {
     padding: 0 10px;
 }
 
 .right {
     padding: 0 10px;
+    align-items: center;
+    display: flex;
+    width: fit-content;
 }
 
-.right:hover {
-    color: #f8be3a;
+.link {
+    width: 30px;
+    height: 30px;
+}
+
+.name {
+    padding-right: 10px;
+}
+
+.name:hover {
+    cursor: pointer;
 }

@@ -4,8 +4,9 @@ import { Input, Button, Grid, Paragraph } from 'components/ui'
 import { AuthLayout } from 'components/layouts'
 import { SocialButtons } from "components/common"
 import axios from 'axios'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { fetchUserLogin } from 'redux/user_auth/userAuthActions'
+import { AppStateType } from 'redux/rootReducer'
 
 export const SignUpPage: React.FunctionComponent = (): JSX.Element => {
 
@@ -13,10 +14,10 @@ export const SignUpPage: React.FunctionComponent = (): JSX.Element => {
   const [name, setName] = useState<string>("")
   const [surname, setSurname] = useState<string>("")
   const [password, setPassword] = useState<string>("")
-  //const [disabled, setDisabled] = useState<boolean>(false)
 
   const history = useHistory()
   const dispatch = useDispatch()
+  const isLoading = useSelector((state: AppStateType) => state.userAuth.isLoading)
 
   const handleChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
     (event) => {
@@ -40,7 +41,6 @@ export const SignUpPage: React.FunctionComponent = (): JSX.Element => {
     async (event) => {
       event.preventDefault();
 
-      //setDisabled(true)
       try {
         await axios.post("http://localhost:3100/api/auth/signup", {email, name, surname, password}, {withCredentials: true})
         history.push("/dashboard")
@@ -48,7 +48,6 @@ export const SignUpPage: React.FunctionComponent = (): JSX.Element => {
       } catch (error) {
           console.error(error) /* TODO: handle error properly */
       }
-      //setDisabled(false)
     },
     [history, dispatch, email, name, surname, password]
   )
@@ -91,7 +90,7 @@ export const SignUpPage: React.FunctionComponent = (): JSX.Element => {
           />
         </Grid.Row>
         <Grid.Row>
-          <Button type='submit' fullWidth design='secondary' rounded /* disabled={disabled} */>Sign Up</Button>
+          <Button type='submit' fullWidth design='secondary' rounded disabled={isLoading} >Sign Up</Button>
         </Grid.Row>
         <Grid.Row>
           <SocialButtons />
