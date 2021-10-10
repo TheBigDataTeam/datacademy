@@ -1,11 +1,11 @@
-import React, { useCallback, useState } from 'react';
-import { AuthLayout } from '../../../layouts';
-import { EmailEntry, Confirmation } from './components';
+import React, { useCallback, useState } from 'react'
+import { AuthLayout } from 'components/layouts'
+import { EmailEntry, Confirmation } from './components'
 
-type PageState = 'EmailEntry' | 'Confirmation';
+type PageState = 'EmailEntry' | 'Confirmation'
 
 export const ForgetPassPage: React.FunctionComponent = (): JSX.Element => {
-    const [pageState, setPageState] = useState<PageState>('EmailEntry');
+    const [pageState, setPageState] = useState<PageState>('EmailEntry')
 
     const handlePageChangeState = useCallback(() => {
         setPageState('Confirmation')
@@ -15,6 +15,6 @@ export const ForgetPassPage: React.FunctionComponent = (): JSX.Element => {
         <AuthLayout>
             { pageState === 'EmailEntry' ? <EmailEntry handlePageChangeState={handlePageChangeState} /> : <Confirmation /> }
         </AuthLayout>
-    );
-};
+    )
+}
 

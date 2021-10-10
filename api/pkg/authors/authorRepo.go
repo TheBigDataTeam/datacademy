@@ -1,104 +1,68 @@
 package authors
 
 import (
-	"database/sql"
-	"fmt"
+	"errors"
 	"time"
 
-	"github.com/Serj1c/datalearn/api/pkg/util"
+	mgo "github.com/globalsign/mgo"
+	"github.com/globalsign/mgo/bson"
 )
 
 // Repo represents a data base
 type Repo struct {
-	db *sql.DB
+	mongo      *mgo.Session
+	collection *mgo.Collection
 }
 
 // NewRepo returns an instance of a Repo
-func NewRepo(db *sql.DB) *Repo {
+func NewRepo(mongo *mgo.Session, collection *mgo.Collection) *Repo {
 	return &Repo{
-		db: db,
+		mongo:      mongo,
+		collection: collection,
 	}
 }
 
-// ErrorAuthorNotFound is an error raised when a author can not be found
-var ErrorAuthorNotFound = fmt.Errorf("Author not found")
+var (
+	// ErrNoRecord is returned when no record in database is found
+	ErrNoRecord = errors.New("No author record found")
+	// ErrorAuthorAlreadyExists is returned when one tries to add user which already exists
+	ErrorAuthorAlreadyExists = errors.New("Author already exists")
+	// ErrorBadRequest is returned when one tries to create a user with a wrong data
+	ErrorBadRequest = errors.New("Error inserting info into db")
+)
+
+// AddAuthor adds a new author in the DB
+func (r *Repo) AddAuthor(a Author) error {
+	a.ID = bson.NewObjectId()
+	err := r.collection.Insert(a)
+	if err != nil {
+		return ErrorBadRequest
+	}
+	return nil
+	/* to be continued */
+}
 
 // GetAuthors returns list of authors
 func (r *Repo) GetAuthors() ([]*Author, error) {
-	/* authors := make([]*Author, 0, 10)
-	rows, err := r.db.Query("SELECT id, courseid, email, twitter, facebook, instagram, location, fullname, bio, shortdescription, speciality, features FROM authors")
-	defer rows.Close()
-	if err != nil {
-		return nil, err
-	}
-	for rows.Next() {
-		author := &Author{}
-		err := rows.Scan(&author.ID, &author.CourseID, &author.Email, &author.Twitter, &author.Facebook, &author.Instagram, &author.Location,
-			&author.Fullname, &author.Bio, &author.ShortDescription, &author.Speciality, &author.Features)
-		if err != nil {
-			return nil, err
-		}
-		authors = append(authors, author)
-	} */
+
 	return authorsList, nil
 }
 
-// findIndexByAuthorID finds the index of a course in the DB
-// returns -1 when no author is found
-func findIndexByAuthorsID(id string) int {
-	for i, a := range authorsList {
-		if a.ID == id {
-			return i
-		}
-	}
-	return -1
-}
-
-/* TODO: make this function available for all handlers */
-
-// getNextId generates a new id for a product being inserted into db
-func getNextAuthorID() string {
-	newID := util.RandString()
-	return newID
-}
-
 // GetAuthorByID returns a single author which matches the id from the DB
-// if an author is not found this function returns an AuthorNotFound error
 func (r *Repo) GetAuthorByID(id string) (*Author, error) {
-	index := findIndexByAuthorsID(id)
-	if index == -1 {
-		return nil, ErrorAuthorNotFound
-	}
-	return authorsList[index], nil
-}
 
-/* TODO: currently if some filds are comming empty - it makes corresponding fields in data set empty as well - needs to be fixed */
+	return nil, nil
+}
 
 // UpdateAuthor replaces an author in the DB with the given item.
-// If an author with the given id does not exist in th DB
-// this function returns AuthorNotFound error
 func (r *Repo) UpdateAuthor(a Author) error {
-	index := findIndexByAuthorsID(a.ID)
-	if index == -1 {
-		return ErrorAuthorNotFound
-	}
-	authorsList[index] = &a
-	return nil
-}
 
-// AddAuthor adds a new author in the DB
-func (r *Repo) AddAuthor(a Author) {
-	a.ID = getNextAuthorID()
-	authorsList = append(authorsList, &a)
+	return nil
 }
 
 // DeleteAuthor deletes the author from the DB
 func (r *Repo) DeleteAuthor(id string) error {
-	index := findIndexByAuthorsID(id)
-	if index == -1 {
-		return ErrorAuthorNotFound
-	}
-	authorsList = append(authorsList[:index], authorsList[index+1])
+
 	return nil
 }
 
@@ -106,7 +70,6 @@ func (r *Repo) DeleteAuthor(id string) error {
 var authorsList = []*Author{
 	{
 		ID:        "qqqqq",
-		CourseID:  "1",
 		Email:     "topless@datalearn.biz",
 		Twitter:   "twitter.com",
 		Facebook:  "facebook.com",
@@ -125,20 +88,18 @@ var authorsList = []*Author{
 		Сейчас создаю 3 курса (информация о них вы можете найти на страницах данного сайта). Они будут бесплатные, и будет отдельный 
 		чат в Slack для каждого из них, где участники смогут помогать друг другу. Такой вот community driven.`,
 		ShortDescription: "Founder and CEO of Datacademy",
-		Speciality:       "Big data",
-		Features: `#Data Engineer in Amazon, Alexa AI,
-			#10+ years of experience in Analytics (Russia, Europe, Canada and USA),
-			#Organizer of Vancouver Tableau User Group, Snowflake Canada User Group, Amazon Tableau User Group and Amazon BI Tech Talks,
-			#University of Victoria lecturer - Cloud Computing,
-			#Author of 6 books about Analytics,
-			#Develops consaltyng in North America - rockyourdata.cloud,
-			#Speaker on conferences and meetups in Russia and North America,
-			#Courses are being developed on the West Coast`,
+		Features: []string{"#Data Engineer in Amazon, Alexa AI",
+			"#10+ years of experience in Analytics (Russia, Europe, Canada and USA)",
+			"#Organizer of Vancouver Tableau User Group, Snowflake Canada User Group, Amazon Tableau User Group and Amazon BI Tech Talks",
+			"#University of Victoria lecturer - Cloud Computing",
+			"#Author of 6 books about Analytics",
+			"#Develops consaltyng in North America - rockyourdata.cloud",
+			"#Speaker on conferences and meetups in Russia and North America",
+			"#Courses are being developed on the West Coast"},
 		CreatedOn: time.Now().UTC().String(),
 	},
 	{
 		ID:               "www",
-		CourseID:         "2",
 		Email:            "bottomless@datalearn.biz",
 		Twitter:          "twitter.com",
 		Facebook:         "facebook.com",
@@ -147,18 +108,16 @@ var authorsList = []*Author{
 		Fullname:         "Roman Ponomarev",
 		Bio:              "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum numquam quaerat magnam unde necessitatibus cum, nesciunt error earum optio molestias, laborum aliquam illum sint quo architecto minus magni culpa? Aspernatur explicabo mollitia, quae atque quidem error aperiam, perferendis nostrum recusandae, culpa molestiae. Ab assumenda saepe amet, optio, maxime incidunt commodi corporis totam recusandae provident corrupti! Enim sit suscipit optio voluptates recusandae quos at. Perspiciatis ut inventore corporis nostrum sit quas aliquam omnis natus neque quidem, delectus qui commodi dolorem quae dolore cumque, quisquam pariatur unde. Cum quam, autem provident deserunt explicabo unde earum blanditiis tenetur quis aspernatur quisquam. Aliquam, ducimus!",
 		ShortDescription: "Co-founder and admin of the project",
-		Speciality:       "Small data",
-		Features: `#Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, ipsum?
-					#Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, ipsum?,
-			#Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, ipsum?,
-			#Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, ipsum?,
-			#Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, ipsum?,
-			#Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, ipsum?`,
+		Features: []string{"#Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, ipsum?",
+			"#Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, ipsum?",
+			"#Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, ipsum?",
+			"#Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, ipsum?",
+			"#Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, ipsum?",
+			"#Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, ipsum?}"},
 		CreatedOn: time.Now().UTC().String(),
 	},
 	{
 		ID:               "eee",
-		CourseID:         "3",
 		Email:            "fullydressed@datalearn.biz",
 		Twitter:          "twitter.com",
 		Facebook:         "facebook.com",
@@ -167,8 +126,7 @@ var authorsList = []*Author{
 		Fullname:         "Sergei Isaev",
 		Bio:              "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum numquam quaerat magnam unde necessitatibus cum, nesciunt error earum optio molestias, laborum aliquam illum sint quo architecto minus magni culpa? Aspernatur explicabo mollitia, quae atque quidem error aperiam, perferendis nostrum recusandae, culpa molestiae. Ab assumenda saepe amet, optio, maxime incidunt commodi corporis totam recusandae provident corrupti! Enim sit suscipit optio voluptates recusandae quos at. Perspiciatis ut inventore corporis nostrum sit quas aliquam omnis natus neque quidem, delectus qui commodi dolorem quae dolore cumque, quisquam pariatur unde. Cum quam, autem provident deserunt explicabo unde earum blanditiis tenetur quis aspernatur quisquam. Aliquam, ducimus!",
 		ShortDescription: "Just a random guy",
-		Speciality:       "Doing nothing",
-		Features:         "#Lorem ipsum dolor sit amet. #Lorem ipsum dolor sit amet. #Lorem ipsum dolor sit amet.",
+		Features:         []string{"#Lorem ipsum dolor sit amet.", "#Lorem ipsum dolor sit amet. #Lorem ipsum dolor sit amet."},
 		CreatedOn:        time.Now().UTC().String(),
 	},
 }

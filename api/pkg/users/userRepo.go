@@ -20,7 +20,7 @@ func NewRepo(db *sql.DB) *Repo {
 }
 
 var (
-	// ErrNoRecord  is returned when no record in database is found
+	// ErrNoRecord is returned when no record in database is found
 	ErrNoRecord = errors.New("No user record found")
 	// ErrWrongPassword is returned when passwords do not match
 	ErrWrongPassword = errors.New("Wrong password")

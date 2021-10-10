@@ -16,6 +16,7 @@ import (
 	"github.com/Serj1c/datalearn/api/pkg/session"
 	"github.com/Serj1c/datalearn/api/pkg/users"
 	"github.com/Serj1c/datalearn/api/pkg/util"
+	mgo "github.com/globalsign/mgo"
 	"github.com/gorilla/mux"
 	_ "github.com/lib/pq"
 	"github.com/rs/cors"
@@ -29,6 +30,7 @@ func main() {
 		log.Fatal("unable to read configuration: ", err)
 	}
 
+	// init PostgreSQL
 	db, err := sql.Open(config.DBDriver, config.DBSource)
 	if err != nil {
 		log.Fatal(err)
@@ -40,6 +42,10 @@ func main() {
 		log.Fatalf("Cannot connect to db, err: %v\n", err)
 	}
 
+	// init MongoDB
+	mongo, err := mgo.Dial("mongodb://localhost") /* TODO */
+	collection := mongo.DB("datalearn").C("authors")
+
 	// init logger
 	l := log.New(os.Stdout, "API ", log.LstdFlags)
 
@@ -48,7 +54,7 @@ func main() {
 
 	// init repos
 	cr := courses.NewRepo(db)
-	ar := authors.NewRepo(db)
+	ar := authors.NewRepo(mongo, collection)
 	ur := users.NewRepo(db)
 	s := session.NewDBSession(db)
 
