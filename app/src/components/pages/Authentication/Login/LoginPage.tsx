@@ -7,6 +7,7 @@ import { fetchUserLogin } from 'redux/user_auth/userAuthActions'
 import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 import { AppStateType } from 'redux/rootReducer'
+import { BASE_URL } from 'constants/common'
 
 export const LoginPage: React.FunctionComponent = (): JSX.Element => {
 
@@ -34,7 +35,7 @@ export const LoginPage: React.FunctionComponent = (): JSX.Element => {
         async (event) => {
             event.preventDefault()
             try {
-                await axios.post("http://localhost:3100/api/auth/login", {email, password}, {withCredentials: true})
+                await axios.post(BASE_URL + "api/auth/login", {email, password}, {withCredentials: true})
                 history.push("/dashboard")
                 dispatch(fetchUserLogin())
             } catch (error) {
