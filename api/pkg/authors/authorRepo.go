@@ -2,6 +2,7 @@ package authors
 
 import (
 	"errors"
+	"fmt"
 	"time"
 
 	mgo "github.com/globalsign/mgo"
@@ -33,15 +34,20 @@ var (
 
 // AddAuthor inserts a new author in the DB
 func (r *Repo) AddAuthor(a Author) error {
-	a.ID = bson.NewObjectId()
-	a.CreatedOn = time.Now().Format("2006-01-02 15:04:05")
-	a.Version = 1
-	err := r.collection.Insert(a) /* TODO check for uniqueness */
-	if err != nil {
-		return ErrorBadRequest
+	tempAuthor := &Author{}
+	err := r.collection.Find(bson.M{"email": a.Email}).One(&tempAuthor)
+	if err == nil {
+		a.ID = bson.NewObjectId()
+		a.CreatedOn = time.Now().Format("2006-01-02 15:04:05")
+		a.Version = 1
+		err = r.collection.Insert(a)
+		if err != nil {
+			return ErrorBadRequest
+		}
+		return nil
 	}
-	return nil
-	/* to be continued */
+	fmt.Println(err)
+	return err
 }
 
 // GetAuthors returns list of authors
