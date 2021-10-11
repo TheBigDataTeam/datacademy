@@ -31,10 +31,12 @@ var (
 	ErrorBadRequest = errors.New("Error inserting info into db")
 )
 
-// AddAuthor adds a new author in the DB
+// AddAuthor inserts a new author in the DB
 func (r *Repo) AddAuthor(a Author) error {
 	a.ID = bson.NewObjectId()
-	err := r.collection.Insert(a)
+	a.CreatedOn = time.Now().Format("2006-01-02 15:04:05")
+	a.Version = 1
+	err := r.collection.Insert(a) /* TODO check for uniqueness */
 	if err != nil {
 		return ErrorBadRequest
 	}

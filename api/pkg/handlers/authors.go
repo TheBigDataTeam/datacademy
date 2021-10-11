@@ -38,9 +38,13 @@ func (a *Authors) Create(rw http.ResponseWriter, r *http.Request) {
 	}
 	err = a.r.AddAuthor(*author)
 	switch {
+	case err == nil:
 	case err == authors.ErrorBadRequest:
 		http.Error(rw, "Wrong data provided", http.StatusBadRequest)
-		/* to be continued */
+	case err == authors.ErrorAuthorAlreadyExists:
+		http.Error(rw, "Such author already exists", http.StatusForbidden)
+	default:
+		http.Error(rw, "Internal error", http.StatusInternalServerError)
 	}
 
 	rw.WriteHeader(http.StatusCreated)

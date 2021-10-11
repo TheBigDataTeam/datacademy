@@ -5,9 +5,12 @@ import "github.com/spf13/viper"
 // Config stores all configuration
 // The values are read by viper from config files or env variables
 type Config struct {
-	DBDriver   string `mapstructure:"DB_DRIVER"`
-	DBSource   string `mapstructure:"DB_SOURCE"`
-	ServerPort string `mapstructure:"SERVER_PORT"`
+	DBDriver    string `mapstructure:"DB_DRIVER"`
+	DBSource    string `mapstructure:"DB_SOURCE"`
+	ServerPort  string `mapstructure:"SERVER_PORT"`
+	MongoSource string `mapstructure:"MONGO_SOURCE"`
+	MongoDBname string `mapstructure:"MONGO_DB_NAME"`
+	MongoCname  string `mapstructure:"MONGO_C_NAME"`
 }
 
 // LoadConfig reads configuration from a file or env variables

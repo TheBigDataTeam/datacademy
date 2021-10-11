@@ -16,6 +16,8 @@ services:
 
   mongo:
     image: mongo:4.0
+    ports:
+      - "27017:27017"
     volumes:
       - ./api/.database/mongo/data:/data/db
     networks:

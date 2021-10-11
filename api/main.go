@@ -23,8 +23,12 @@ import (
 )
 
 func main() {
-	/* TODO move this file to cmd folder and update Dockerfile accordingly */
+	/* TODO move main.go to cmd folder and update Dockerfile accordingly */
 
+	// init logger
+	l := log.New(os.Stdout, "API ", log.LstdFlags)
+
+	// reaf config file
 	config, err := util.LoadConfig("./") // TODO address of a config file
 	if err != nil {
 		log.Fatal("unable to read configuration: ", err)
@@ -36,18 +40,17 @@ func main() {
 		log.Fatal(err)
 	}
 	defer db.Close()
-
 	err = db.Ping()
 	if err != nil {
-		log.Fatalf("Cannot connect to db, err: %v\n", err)
+		l.Fatalf("Cannot connect to postgres, err: %v\n", err)
 	}
 
 	// init MongoDB
-	mongo, err := mgo.Dial("mongodb://localhost") /* TODO */
-	collection := mongo.DB("datalearn").C("authors")
-
-	// init logger
-	l := log.New(os.Stdout, "API ", log.LstdFlags)
+	mongo, err := mgo.Dial(config.MongoSource)
+	if err != nil {
+		log.Fatalf("Cannot connect to mongo, err: %v\n", err)
+	}
+	collection := mongo.DB(config.MongoDBname).C(config.MongoCname)
 
 	//init validation
 	v := middleware.NewValidation() /* TODO: currently not registered */
@@ -58,14 +61,14 @@ func main() {
 	ur := users.NewRepo(db)
 	s := session.NewDBSession(db)
 
-	// create the handlers
+	// init handlers
 	coursesHandler := handlers.NewCourses(l, v, cr)
 	authorsHandler := handlers.NewAuthors(l, v, ar)
 	usersHandler := handlers.NewUsers(l, v, ur, s)
 
 	sm := mux.NewRouter()
 
-	// handlers for API calls
+	// register handler-functions
 	sm.HandleFunc("/courses", coursesHandler.ListAll).Methods("GET")
 	sm.HandleFunc("/courses", coursesHandler.Create).Methods("POST")
 	sm.HandleFunc("/authors", authorsHandler.ListAll).Methods("GET")
@@ -86,6 +89,8 @@ func main() {
 	sm.HandleFunc("/courses/{id}", coursesHandler.Delete).Methods("DELETE")
 	sm.HandleFunc("/authors/{id}", authorsHandler.Delete).Methods("DELETE")
 
+	sm.HandleFunc("/api/admin/add/author", authorsHandler.Create).Methods("POST")
+
 	// define middleware to handle CORS
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"http://localhost:3000"},
@@ -95,10 +100,11 @@ func main() {
 		ExposedHeaders:   []string{"set-cookie"},
 	})
 
-	// register middleware
+	// register middlewares
 	withAuthHandler := session.AuthMiddleware(s, sm)
 	withCorsHandler := c.Handler(withAuthHandler)
 
+	// init server
 	server := &http.Server{
 		Addr:         config.ServerPort,
 		Handler:      withCorsHandler,
@@ -108,7 +114,7 @@ func main() {
 		WriteTimeout: 1 * time.Second,
 	}
 
-	// start the server
+	// start server
 	go func() {
 		l.Printf("Server is listening on port %s", server.Addr)
 		err := server.ListenAndServe()
