@@ -93,7 +93,7 @@ func main() {
 
 	// define middleware to handle CORS
 	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{"http://localhost:3000"},
+		AllowedOrigins:   []string{config.AppURL},
 		AllowedMethods:   []string{http.MethodGet, http.MethodPost, http.MethodDelete, http.MethodPut},
 		AllowCredentials: true,
 		MaxAge:           10000, /* TODO check that it is necessary */
