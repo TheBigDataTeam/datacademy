@@ -71,7 +71,7 @@ func main() {
 	// register handler-functions
 	sm.HandleFunc("/courses", coursesHandler.ListAll).Methods("GET")
 	sm.HandleFunc("/courses", coursesHandler.Create).Methods("POST")
-	sm.HandleFunc("/authors", authorsHandler.ListAll).Methods("GET")
+	sm.HandleFunc("/api/authors", authorsHandler.ListAll).Methods("GET")
 	sm.HandleFunc("/courses/{id}", coursesHandler.ListOne).Methods("GET")
 	sm.HandleFunc("/authors/{id}", authorsHandler.ListOne).Methods("GET")
 	sm.HandleFunc("/api/users", usersHandler.Get).Methods("GET") /* currently is not used */

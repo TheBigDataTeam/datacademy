@@ -122,7 +122,7 @@ var noAuthUrls = map[string]struct{}{
 	"/api/auth/login":       {},
 	"/api/auth/signup":      {},
 	"/courses":              {},
-	"/authors":              {},
+	"/api/authors":          {},
 	"/courses/{id}":         {},
 	"/authors/{id}":         {},
 	"/":                     {},
