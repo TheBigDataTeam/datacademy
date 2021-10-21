@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import axios, { AxiosResponse } from 'axios';
-import { PageLayout } from 'components/layouts';
-import { Header, Footer } from 'components/common';
-import { Author } from 'models';
-import { Grid } from 'components/ui';
-import { SocialSection, BioSection } from './components';
+import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import axios, { AxiosResponse } from 'axios'
+import { PageLayout } from 'components/layouts'
+import { Header, Footer } from 'components/common'
+import { Author } from 'models'
+import { Grid } from 'components/ui'
+import { SocialSection, BioSection } from './components'
+import { BASE_URL } from 'constants/common'
 
 interface ParamsType {
     id: string
@@ -13,17 +14,16 @@ interface ParamsType {
 
 export const AuthorPage: React.FunctionComponent = (): JSX.Element => {
 
-    const params: ParamsType = useParams();
-    const [author, setAuthor] = useState<Author>();
+    const params: ParamsType = useParams()
+    const [author, setAuthor] = useState<Author | null>(null)
 
     useEffect(() => {
         const fetchAuthor = async () => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const result: AxiosResponse<any> = await axios.get(`http://localhost:3100/authors/${params.id}`);
-            setAuthor(result.data);
+            const result: AxiosResponse<Author> = await axios.get(BASE_URL + `/api/authors/${params.id}`, {withCredentials: true})
+            setAuthor(result.data)
         }
-        fetchAuthor();
-    }, [params.id]);
+        fetchAuthor()
+    }, [params.id])
 
     return (
         <PageLayout header={<Header /> } footer={<Footer />} topOffset>

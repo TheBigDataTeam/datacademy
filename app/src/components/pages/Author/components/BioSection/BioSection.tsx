@@ -1,6 +1,6 @@
-import React from 'react';
-import { Paragraph, Grid } from 'components/ui';
-import styles from './BioSection.module.css';
+import React from 'react'
+import { Paragraph, Grid } from 'components/ui'
+import styles from './BioSection.module.css'
 
 interface Props {
     bio: string

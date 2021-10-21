@@ -1,19 +1,21 @@
 package authors
 
-// Author defines the structure of the author api
+import (
+	"github.com/globalsign/mgo/bson"
+)
+
+// Author defines the structure of the author object
 type Author struct {
-	ID               string `json:"id"`
-	CourseID         string `json:"courseid"`
-	Email            string `json:"email"`
-	Fullname         string `json:"fullname"`
-	Twitter          string `json:"twitter"`
-	Facebook         string `json:"facebook"`
-	Instagram        string `json:"instagram"`
-	Location         string `json:"location"`
-	Bio              string `json:"bio"`
-	ShortDescription string `json:"shortdescription"`
-	Speciality       string `json:"speciality"`
-	Features         string `json:"features"`
-	CreatedOn        string `json:"createdon"`
-	Version          int    `json:"version"`
+	ID               bson.ObjectId `json:"id" bson:"_id"`
+	Email            string        `json:"email" bson:"email"`
+	Fullname         string        `json:"fullname" bson:"fullname"`
+	Bio              string        `json:"bio" bson:"bio"`
+	Location         string        `json:"location" bson:"location"`
+	Facebook         string        `json:"facebook" bson:"facebook"`
+	Instagram        string        `json:"instagram" bson:"instagram"`
+	Twitter          string        `json:"twitter" bson:"twitter"`
+	ShortDescription string        `json:"shortdescription" bson:"shortdescription"`
+	Features         string        `json:"features" bson:"features"`
+	CreatedOn        string        `json:"createdon" bson:"createdon"`
+	Version          int           `json:"version" bson:"version"`
 }

@@ -7,6 +7,7 @@ import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchUserLogin } from 'redux/user_auth/userAuthActions'
 import { AppStateType } from 'redux/rootReducer'
+import { BASE_URL } from 'constants/common'
 
 export const SignUpPage: React.FunctionComponent = (): JSX.Element => {
 
@@ -39,10 +40,10 @@ export const SignUpPage: React.FunctionComponent = (): JSX.Element => {
 
   const handleSubmit = useCallback<React.FormEventHandler<HTMLFormElement>>(
     async (event) => {
-      event.preventDefault();
+      event.preventDefault()
 
       try {
-        await axios.post("http://localhost:3100/api/auth/signup", {email, name, surname, password}, {withCredentials: true})
+        await axios.post(BASE_URL+ "/api/auth/signup", {email, name, surname, password}, {withCredentials: true})
         history.push("/dashboard")
         dispatch(fetchUserLogin())
       } catch (error) {

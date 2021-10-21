@@ -1,8 +1,9 @@
 import { combineReducers } from 'redux'
-import { userAuthReducer } from './user_auth/userAuthReducer'
+import { userAuthReducer, authorReducer } from './indexReducers'
 
 export const rootReducer = combineReducers({
-    userAuth: userAuthReducer
+    userAuth: userAuthReducer,
+    author: authorReducer
 })
 
 type RootReducerType = typeof rootReducer

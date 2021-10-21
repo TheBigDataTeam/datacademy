@@ -8,16 +8,16 @@ import { Dispatch } from 'redux'
 type Error = string
 
 export type UserLoginRequest = {
-    type: UserAuthActionTypes.FETCH_USER_LOGIN_REQUEST,
+    type: UserAuthActionTypes.FETCH_USER_LOGIN_REQUEST
 }
 
 export type UserLoginSuccess = {
-    type: UserAuthActionTypes.FETCH_USER_LOGIN_SUCCESS,
+    type: UserAuthActionTypes.FETCH_USER_LOGIN_SUCCESS
     payload: User
 }
 
 export type UserLoginFailure = {
-    type: UserAuthActionTypes.FETCH_USER_LOGIN_FAILURE,
+    type: UserAuthActionTypes.FETCH_USER_LOGIN_FAILURE
     payload: Error
 }
 
@@ -30,7 +30,7 @@ export type UserLogoutSuccess = {
 }
 
 export type UserLogoutFailure = {
-    type: UserAuthActionTypes.FETCH_USER_LOGOUT_FAILURE,
+    type: UserAuthActionTypes.FETCH_USER_LOGOUT_FAILURE
     payload: Error
 }
 
@@ -78,7 +78,7 @@ export const fetchUserLogoutFailure = (error: Error): UserLogoutFailure => {
 export const fetchUserLogin = () => {
     return (dispatch: Dispatch<UserAuthActions>): void => {
         dispatch(fetchUserLoginRequest())
-        axios.get<User>(BASE_URL + `api/auth/user`, {withCredentials: true})
+        axios.get<User>(BASE_URL + `/api/auth/user`, {withCredentials: true})
         .then(response => {
             const user = response.data
             dispatch(fetchUserLoginSuccess(user))})
@@ -92,7 +92,7 @@ export const fetchUserLogin = () => {
 export const fetchUserLogout = () => {
     return (dispatch: Dispatch<UserAuthActions>): void => {
         dispatch(fetchUserLoginRequest())
-        axios.get(BASE_URL + `api/auth/logout`, {withCredentials: true})
+        axios.get(BASE_URL + `/api/auth/logout`, {withCredentials: true})
         .then(response => {
             dispatch(fetchUserLogoutSuccess())
             console.log(response) /* TODO: try catch or something */

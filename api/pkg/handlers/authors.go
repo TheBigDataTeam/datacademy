@@ -1,16 +1,17 @@
 package handlers
 
 import (
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 
 	"github.com/Serj1c/datalearn/api/pkg/authors"
 	"github.com/Serj1c/datalearn/api/pkg/middleware"
-	"github.com/Serj1c/datalearn/api/pkg/util"
+	"github.com/globalsign/mgo/bson"
+	"github.com/gorilla/mux"
 )
-
-// KeyAuthor is a key used for the Author object in the context
-type KeyAuthor struct{}
 
 // Authors is a handler for getting and updating authors
 type Authors struct {
@@ -24,91 +25,82 @@ func NewAuthors(l *log.Logger, v *middleware.Validation, r *authors.Repo) *Autho
 	return &Authors{l, v, r}
 }
 
-// ListAll handles GET requests and returns all current authors
-func (a *Authors) ListAll(rw http.ResponseWriter, r *http.Request) {
-	a.l.Println("[SUCCESS] get all authors")
-	authors, err := a.r.GetAuthors()
-	if err != nil {
-		a.l.Println("[ERROR] receiving authors from db: ", err)
-	}
-	err = util.ToJSON(authors, rw)
-	if err != nil {
-		a.l.Println("[ERROR] serializing author", err)
-	}
-}
-
-// ListOne handles GET requests for a single author
-func (a *Authors) ListOne(rw http.ResponseWriter, r *http.Request) {
-	id := util.GetIDfromRequest(r)
-
-	a.l.Println("[SUCCESS] get record id", id)
-
-	author, err := a.r.GetAuthorByID(id)
-
-	switch err {
-	case nil:
-
-	case authors.ErrorAuthorNotFound:
-		a.l.Println("[ERROR] fetching author - author not found", err)
-		rw.WriteHeader(http.StatusNotFound)
-		util.ToJSON(&util.GenericError{Message: err.Error()}, rw)
-		return
-
-	default:
-		a.l.Println("[ERROR] fetching author", err)
-		rw.WriteHeader(http.StatusInternalServerError)
-		util.ToJSON(&util.GenericError{Message: err.Error()}, rw)
-		return
-	}
-	err = util.ToJSON(author, rw)
-	if err != nil {
-		a.l.Println("[ERROR] serializing author", err)
-	}
+type authorData struct {
+	Author authors.Author `json:"author"`
 }
 
 // Create handles POST requests to add new authors
 func (a *Authors) Create(rw http.ResponseWriter, r *http.Request) {
-	// fetch the author from the context
-	author := r.Context().Value(KeyAuthor{}).(authors.Author)
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		http.Error(rw, "Cannot read body", http.StatusInternalServerError)
+	}
+	r.Body.Close()
 
-	a.l.Printf("[SUCCESS] Inserting course: %#v\n", author)
+	data := &authorData{}
+	err = json.Unmarshal(body, data)
+	if err != nil {
+		http.Error(rw, "Error unmarshaling request body", http.StatusInternalServerError)
+	}
 
-	a.r.AddAuthor(author)
+	err = a.r.AddAuthor(data.Author)
+	switch {
+	case err == nil:
+		rw.WriteHeader(http.StatusCreated)
+	case err == authors.ErrorBadRequest:
+		http.Error(rw, "Wrong data provided", http.StatusBadRequest)
+	case err == authors.ErrorAuthorAlreadyExists:
+		http.Error(rw, "Such author already exists", http.StatusForbidden)
+	default:
+		http.Error(rw, "Internal error", http.StatusInternalServerError)
+	}
+}
+
+// List handles GET requests for all authors
+func (a *Authors) List(rw http.ResponseWriter, r *http.Request) {
+	listOfAuthors, err := a.r.GetAuthors()
+	switch {
+	case err == nil:
+	case err == authors.ErrorBadRequest:
+		http.Error(rw, "Wrong data provided", http.StatusBadRequest)
+	}
+	response, err := json.Marshal(listOfAuthors)
+	if err != nil {
+		http.Error(rw, "Error marshaling response", http.StatusInternalServerError)
+	}
+	rw.Write(response)
+}
+
+// Get handles GET requests for a single author
+func (a *Authors) Get(rw http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	if !bson.IsObjectIdHex(vars["id"]) {
+		http.Error(rw, "ID is of wrong format", http.StatusBadRequest)
+		return
+	}
+	authorID := bson.ObjectIdHex(vars["id"])
+	fmt.Println(authorID)
+	author, err := a.r.GetAuthorByID(authorID)
+	switch err {
+	case nil:
+	case authors.ErrorBadRequest:
+		http.Error(rw, "Wrong data provided", http.StatusBadRequest)
+	case authors.ErrorNoRecord:
+		http.Error(rw, "", http.StatusBadRequest)
+	}
+	response, err := json.Marshal(author)
+	if err != nil {
+		http.Error(rw, "Error marshaling response", http.StatusInternalServerError)
+	}
+	rw.Write(response)
 }
 
 // Update handles PUT requests to update authors
 func (a *Authors) Update(rw http.ResponseWriter, r *http.Request) {
-	// fetch the author from the context
-	author := r.Context().Value(KeyAuthor{}).(authors.Author)
-	a.l.Println("[SUCCESS] updating record id", author.ID)
-	err := a.r.UpdateAuthor(author)
-	if err == authors.ErrorAuthorNotFound {
-		a.l.Println("[ERROR] author not found", err)
-		rw.WriteHeader(http.StatusNotFound)
-		util.ToJSON(&util.GenericError{Message: "Product not found in database"}, rw)
-	}
-	// write the no content success header
-	rw.WriteHeader(http.StatusNoContent)
+	http.Error(rw, "Update resourse is not allowed", http.StatusForbidden)
 }
 
 // Delete handles requests for removing authors from db
 func (a *Authors) Delete(rw http.ResponseWriter, r *http.Request) {
-	id := util.GetIDfromRequest(r)
-
-	a.l.Println("[DEBUG] deleting record id ", id)
-
-	err := a.r.DeleteAuthor(id)
-	if err == authors.ErrorAuthorNotFound {
-		a.l.Println("[ERROR] deleting record id does not exist")
-		rw.WriteHeader(http.StatusNotFound)
-		util.ToJSON(&util.GenericError{Message: err.Error()}, rw)
-		return
-	}
-	if err != nil {
-		a.l.Println("[ERROR] deleting record id")
-		rw.WriteHeader(http.StatusInternalServerError)
-		util.ToJSON(&util.GenericError{Message: err.Error()}, rw)
-		return
-	}
-	rw.WriteHeader(http.StatusNoContent)
+	http.Error(rw, "Delete resourse is not allowed", http.StatusForbidden)
 }
