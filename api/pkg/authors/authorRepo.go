@@ -2,6 +2,7 @@ package authors
 
 import (
 	"errors"
+	"fmt"
 	"time"
 
 	mgo "github.com/globalsign/mgo"
@@ -23,12 +24,12 @@ func NewRepo(mongo *mgo.Session, collection *mgo.Collection) *Repo {
 }
 
 var (
-	// ErrNoRecord is returned when no record in database is found
-	ErrNoRecord = errors.New("No author record found")
-	// ErrorAuthorAlreadyExists is returned when one tries to add user which already exists
+	// ErrorNoRecord is returned when no record in database is found
+	ErrorNoRecord = errors.New("No author record found")
+	// ErrorAuthorAlreadyExists is returned when one tries to add author which already exists
 	ErrorAuthorAlreadyExists = errors.New("Author already exists")
-	// ErrorBadRequest is returned when one tries to create a user with a wrong data
-	ErrorBadRequest = errors.New("Error inserting info into db")
+	// ErrorBadRequest is returned when wrong data provided
+	ErrorBadRequest = errors.New("Wrong data provided")
 )
 
 // AddAuthor inserts a new author in the DB
@@ -42,6 +43,7 @@ func (r *Repo) AddAuthor(a Author) error {
 	a.ID = bson.NewObjectId()
 	a.CreatedOn = time.Now().Format("2006-01-02 15:04:05")
 	a.Version = 1
+	fmt.Println("from repo: ", a)
 	err = r.collection.Insert(a)
 	if err != nil {
 		return ErrorBadRequest
@@ -59,10 +61,14 @@ func (r *Repo) GetAuthors() ([]*Author, error) {
 	return authorsFromDB, nil
 }
 
-// GetAuthorByID returns a single author which matches the id from the DB
-func (r *Repo) GetAuthorByID(id string) (*Author, error) {
+// GetAuthorByID returns a single author which matches the id provided
+func (r *Repo) GetAuthorByID(id bson.ObjectId) (*Author, error) {
+	authorFromDB := &Author{}
+	err := r.collection.Find(bson.M{"_id": id}).One(&authorFromDB)
+	if err != nil {
 
-	return nil, nil
+	}
+	return authorFromDB, nil
 }
 
 // UpdateAuthor replaces an author in the DB with the given item.

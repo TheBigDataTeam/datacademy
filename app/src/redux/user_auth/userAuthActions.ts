@@ -8,16 +8,16 @@ import { Dispatch } from 'redux'
 type Error = string
 
 export type UserLoginRequest = {
-    type: UserAuthActionTypes.FETCH_USER_LOGIN_REQUEST,
+    type: UserAuthActionTypes.FETCH_USER_LOGIN_REQUEST
 }
 
 export type UserLoginSuccess = {
-    type: UserAuthActionTypes.FETCH_USER_LOGIN_SUCCESS,
+    type: UserAuthActionTypes.FETCH_USER_LOGIN_SUCCESS
     payload: User
 }
 
 export type UserLoginFailure = {
-    type: UserAuthActionTypes.FETCH_USER_LOGIN_FAILURE,
+    type: UserAuthActionTypes.FETCH_USER_LOGIN_FAILURE
     payload: Error
 }
 
@@ -30,7 +30,7 @@ export type UserLogoutSuccess = {
 }
 
 export type UserLogoutFailure = {
-    type: UserAuthActionTypes.FETCH_USER_LOGOUT_FAILURE,
+    type: UserAuthActionTypes.FETCH_USER_LOGOUT_FAILURE
     payload: Error
 }
 

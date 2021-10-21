@@ -1,16 +1,14 @@
 export type Author = {
-    id: string
-    courseId: string
+    id?: string
     email: string
-    fullname: string
-    twitter: string
-    facebook: string
-    instagram: string
-    location: string
-    bio: string
-    shortdescription: string
-    speciality: string
-    features: string
-    createdOn: string
-    version: number
+    fullname?: string
+    bio?: string
+    location?: string
+    facebook?: string
+    instagram?: string
+    twitter?: string
+    shortdescription?: string
+    features?: string
+    createdOn?: string
+    version?: number
 }

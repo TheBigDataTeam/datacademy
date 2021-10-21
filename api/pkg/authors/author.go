@@ -15,7 +15,7 @@ type Author struct {
 	Instagram        string        `json:"instagram" bson:"instagram"`
 	Twitter          string        `json:"twitter" bson:"twitter"`
 	ShortDescription string        `json:"shortdescription" bson:"shortdescription"`
-	Features         []string      `json:"features" bson:"features"`
+	Features         string        `json:"features" bson:"features"`
 	CreatedOn        string        `json:"createdon" bson:"createdon"`
 	Version          int           `json:"version" bson:"version"`
 }

@@ -1,7 +1,7 @@
-import React from 'react';
-import { Icon } from 'components/common';
-import styles from './SocialSection.module.css';
-import { Author } from 'models';
+import React from 'react'
+import { Icon } from 'components/common'
+import styles from './SocialSection.module.css'
+import { Author } from 'models'
 
 interface Props {
     author: Author

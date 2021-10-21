@@ -40,7 +40,7 @@ export const SignUpPage: React.FunctionComponent = (): JSX.Element => {
 
   const handleSubmit = useCallback<React.FormEventHandler<HTMLFormElement>>(
     async (event) => {
-      event.preventDefault();
+      event.preventDefault()
 
       try {
         await axios.post(BASE_URL+ "api/auth/signup", {email, name, surname, password}, {withCredentials: true})

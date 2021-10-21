@@ -11,7 +11,7 @@ interface Props {
   onChange: React.ChangeEventHandler;
 }
 
-const TEXTAREA_FIELDS = ['description', 'notes']
+const TEXTAREA_FIELDS = ['bio', 'shortdescription', 'features']
 
 export const InputRow = ({ label, name, value, error, disabled, autoFocus, onChange }: Props): JSX.Element => (
   

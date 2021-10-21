@@ -2,11 +2,11 @@ import React from 'react'
 import { Grid } from 'components/ui'
 import { User } from 'models/User'
 import { useSelector } from 'react-redux'
+import { AppStateType } from 'redux/rootReducer'
 
 export const GoalsSection: React.FunctionComponent = (): JSX.Element => {
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const user: User = useSelector((state: any) => state.userAuth.user)
+    const user: User = useSelector((state: AppStateType) => state.userAuth.user)
 
     return (
         <>

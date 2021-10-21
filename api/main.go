@@ -69,15 +69,17 @@ func main() {
 	sm := mux.NewRouter()
 
 	// register handler-functions
+	sm.HandleFunc("/api/authors", authorsHandler.List).Methods("GET")
+	sm.HandleFunc("/api/authors/{id}", authorsHandler.Get).Methods("GET")
+	sm.HandleFunc("/authors/{id}", authorsHandler.Update).Methods("PUT")
+
 	sm.HandleFunc("/courses", coursesHandler.ListAll).Methods("GET")
 	sm.HandleFunc("/courses", coursesHandler.Create).Methods("POST")
-	sm.HandleFunc("/api/authors", authorsHandler.ListAll).Methods("GET")
 	sm.HandleFunc("/courses/{id}", coursesHandler.ListOne).Methods("GET")
-	sm.HandleFunc("/authors/{id}", authorsHandler.ListOne).Methods("GET")
-	sm.HandleFunc("/api/users", usersHandler.Get).Methods("GET") /* currently is not used */
-
+	sm.HandleFunc("/courses/{id}", coursesHandler.Delete).Methods("DELETE")
 	sm.HandleFunc("/courses/{id}", coursesHandler.Update).Methods("PUT")
-	sm.HandleFunc("/courses/{id}", authorsHandler.Update).Methods("PUT")
+
+	sm.HandleFunc("/api/users", usersHandler.Get).Methods("GET") /* currently is not used */
 
 	sm.HandleFunc("/api/auth/signup", usersHandler.Signup).Methods("POST")
 	sm.HandleFunc("/api/auth/login", usersHandler.Login).Methods("POST")
@@ -86,10 +88,8 @@ func main() {
 
 	//sm.Use(coursesHandler.MiddlewareValidateCourse)
 
-	sm.HandleFunc("/courses/{id}", coursesHandler.Delete).Methods("DELETE")
-	sm.HandleFunc("/authors/{id}", authorsHandler.Delete).Methods("DELETE")
-
 	sm.HandleFunc("/api/admin/add/author", authorsHandler.Create).Methods("POST")
+	sm.HandleFunc("/authors/{id}", authorsHandler.Delete).Methods("DELETE")
 
 	// define middleware to handle CORS
 	c := cors.New(cors.Options{

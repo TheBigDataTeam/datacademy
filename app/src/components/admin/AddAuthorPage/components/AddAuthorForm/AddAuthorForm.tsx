@@ -1,6 +1,7 @@
 import React from 'react'
 import { Button, Form } from 'components/ui'
 import { InputRow } from './components'
+import { Author } from 'models'
 
 interface Fields {
   email: string;
@@ -11,15 +12,15 @@ interface Fields {
   instagram: string;
   twitter: string;
   shortdescription: string;
-  features: string[];
+  features: string;
 
 }
 
 interface Props {
-  data: Fields;
+  data: Author;
   errors: Partial<Fields>;
   error?: string;
-  isFetching: boolean;
+  isLoading: boolean;
   onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   onSubmit: React.FormEventHandler<HTMLFormElement>;
 }
@@ -47,9 +48,9 @@ const LABELS = [
   'List of features'
 ]
 
-export const AddAuthorForm: React.FunctionComponent<Props> = ({ data, errors, error, isFetching, onChange, onSubmit }: Props): JSX.Element => {
+export const AddAuthorForm: React.FunctionComponent<Props> = ({ data, errors, error, isLoading, onChange, onSubmit }: Props): JSX.Element => {
   
-    const focusField = getFocusField(errors, isFetching)
+    const focusField = getFocusField(errors, isLoading)
 
   return (
     <Form title='New author' error={error} onSubmit={onSubmit}>
@@ -59,13 +60,13 @@ export const AddAuthorForm: React.FunctionComponent<Props> = ({ data, errors, er
           label={LABELS[i]}
           name={f}
           value={data[f]}
-          disabled={isFetching}
+          disabled={isLoading}
           autoFocus={focusField === f}
           onChange={onChange}
         />
       ))}
       <Form.ActionRow>
-        <Button type='submit' loading={isFetching} design='primary'>
+        <Button type='submit' loading={isLoading} design='primary'>
           Add author
         </Button>
       </Form.ActionRow>
@@ -73,8 +74,8 @@ export const AddAuthorForm: React.FunctionComponent<Props> = ({ data, errors, er
   )
 }
 
-function getFocusField(errors: Partial<Fields>, isFetching: boolean): keyof Fields | null {
-  if (isFetching) {
+function getFocusField(errors: Partial<Fields>, isLoading: boolean): keyof Fields | null {
+  if (isLoading) {
     return null;
   }
 

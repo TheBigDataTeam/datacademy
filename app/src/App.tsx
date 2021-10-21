@@ -13,7 +13,6 @@ import { fetchUserLogin } from 'redux/user_auth/userAuthActions'
 export const App: React.FunctionComponent = (): JSX.Element => {
 
 	const dispatch = useDispatch()
-	//const sessionID = document.cookie.split(";").find(cookie => cookie.startsWith(" session_id=")).split("=")[1]
 
 	useEffect(() => {
 		try {

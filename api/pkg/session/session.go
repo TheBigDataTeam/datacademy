@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -64,6 +65,7 @@ func (sdb *DBSession) Create(rw http.ResponseWriter, UserID string) error {
 func (sdb *DBSession) Check(r *http.Request) (*Session, error) {
 	sessID, err := r.Cookie("session_id")
 	if err == http.ErrNoCookie {
+		fmt.Println("from Check:", err)
 		return nil, ErrorNoAuth
 	}
 	sess := &Session{}
@@ -124,7 +126,6 @@ var noAuthUrls = map[string]struct{}{
 	"/courses":              {},
 	"/api/authors":          {},
 	"/courses/{id}":         {},
-	"/authors/{id}":         {},
 	"/":                     {},
 	"/api/admin/add/author": {}, /* TODO: remove after testing with curl */
 }
@@ -137,8 +138,10 @@ func AuthMiddleware(sm Manager, next http.Handler) http.Handler {
 			return
 		}
 		sess, err := sm.Check(r)
+		fmt.Println(r)
 		if err != nil {
 			http.Error(rw, "User is not authenticated", http.StatusUnauthorized)
+			fmt.Println(err)
 			return
 		}
 
