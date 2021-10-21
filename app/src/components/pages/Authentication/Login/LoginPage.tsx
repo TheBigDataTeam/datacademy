@@ -35,7 +35,7 @@ export const LoginPage: React.FunctionComponent = (): JSX.Element => {
         async (event) => {
             event.preventDefault()
             try {
-                await axios.post(BASE_URL + "api/auth/login", {email, password}, {withCredentials: true})
+                await axios.post(BASE_URL + "/api/auth/login", {email, password}, {withCredentials: true})
                 history.push("/dashboard")
                 dispatch(fetchUserLogin())
             } catch (error) {

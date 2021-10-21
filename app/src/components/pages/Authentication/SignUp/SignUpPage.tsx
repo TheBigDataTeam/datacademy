@@ -43,7 +43,7 @@ export const SignUpPage: React.FunctionComponent = (): JSX.Element => {
       event.preventDefault()
 
       try {
-        await axios.post(BASE_URL+ "api/auth/signup", {email, name, surname, password}, {withCredentials: true})
+        await axios.post(BASE_URL+ "/api/auth/signup", {email, name, surname, password}, {withCredentials: true})
         history.push("/dashboard")
         dispatch(fetchUserLogin())
       } catch (error) {

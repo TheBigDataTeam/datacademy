@@ -35,7 +35,7 @@ export const AddAuthorPage: React.FunctionComponent = (): JSX.Element => {
           dispatch(fetchAddAuthorRequest())
 
         try {
-          await axios.post(BASE_URL + 'api/admin/add/author', {author}, {withCredentials: true})
+          await axios.post(BASE_URL + '/api/admin/add/author', {author}, {withCredentials: true})
           dispatch(fetchAddAuthorSuccess(author))
         } catch (error) {
             console.log(error) /* TODO: handle error properly */

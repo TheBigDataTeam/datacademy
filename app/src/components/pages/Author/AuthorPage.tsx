@@ -19,7 +19,7 @@ export const AuthorPage: React.FunctionComponent = (): JSX.Element => {
 
     useEffect(() => {
         const fetchAuthor = async () => {
-            const result: AxiosResponse<Author> = await axios.get(BASE_URL + `api/authors/${params.id}`, {withCredentials: true})
+            const result: AxiosResponse<Author> = await axios.get(BASE_URL + `/api/authors/${params.id}`, {withCredentials: true})
             setAuthor(result.data)
         }
         fetchAuthor()
