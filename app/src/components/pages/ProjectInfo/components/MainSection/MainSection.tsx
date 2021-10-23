@@ -1,7 +1,7 @@
-import React from 'react';
-import { Paragraph, Grid } from 'components/ui';
-import styles from './MainSection.module.css';
-import { listOfCitations } from './data/data';
+import React from 'react'
+import { Paragraph, Grid } from 'components/ui'
+import styles from './MainSection.module.css'
+import { listOfCitations } from './data/data'
 
 export const MainSection: React.FunctionComponent = (): JSX.Element => {
     return (

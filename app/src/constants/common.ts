@@ -1,6 +1,7 @@
 export const HOMEPAGE_URL = '/'
+export const USER_HOMEPAGE_URL = '/dashboard'
 export const ADMIN_HOMEPAGE_URL = '/admin/dashboard'
-export const TITLE_PREFIX = 'Datalearn – '
+export const TITLE_PREFIX = 'DataLearn | '
 export const BASE_URL = 'http://localhost:3100'
 
 export const EMAIL = 'TBD'
