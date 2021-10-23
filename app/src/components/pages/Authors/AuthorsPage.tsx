@@ -4,7 +4,8 @@ import { Header, Footer } from 'components/common'
 import { Grid, Heading } from 'components/ui'
 import { AuthorsList } from "./components"
 import axios, { AxiosResponse } from 'axios'
-import { BASE_URL } from 'constants/common'
+import { BASE_URL, TITLE_PREFIX } from 'constants/common'
+import { useDocTitle } from 'components/hooks'
 import { Author } from 'models/Author'
 
 export const AuthorsPage: React.FunctionComponent = (): JSX.Element => {
@@ -18,6 +19,8 @@ export const AuthorsPage: React.FunctionComponent = (): JSX.Element => {
 		}
 		fetchAuthors()
 	}, [])
+
+	useDocTitle(TITLE_PREFIX + 'Our Authors')
 
 	return (
 		<PageLayout header={<Header />} footer={<Footer />} topOffset>

@@ -6,7 +6,8 @@ import { Header, Footer } from 'components/common'
 import { Author } from 'models'
 import { Grid } from 'components/ui'
 import { SocialSection, BioSection } from './components'
-import { BASE_URL } from 'constants/common'
+import { BASE_URL, TITLE_PREFIX } from 'constants/common'
+import { useDocTitle } from 'components/hooks'
 
 interface ParamsType {
     id: string
@@ -24,6 +25,8 @@ export const AuthorPage: React.FunctionComponent = (): JSX.Element => {
         }
         fetchAuthor()
     }, [params.id])
+
+    useDocTitle(TITLE_PREFIX + author?.fullname)
 
     return (
         <PageLayout header={<Header /> } footer={<Footer />} topOffset>
