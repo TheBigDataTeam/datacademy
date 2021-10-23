@@ -7,9 +7,12 @@ import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchUserLogin } from 'redux/user_auth/userAuthActions'
 import { AppStateType } from 'redux/rootReducer'
-import { BASE_URL } from 'constants/common'
+import { BASE_URL, TITLE_PREFIX, USER_HOMEPAGE_URL } from 'constants/common'
+import { useDocTitle } from 'components/hooks'
 
 export const SignUpPage: React.FunctionComponent = (): JSX.Element => {
+
+  useDocTitle(TITLE_PREFIX + 'User registration')
 
   const [email, setEmail] = useState<string>("")
   const [name, setName] = useState<string>("")
@@ -44,7 +47,7 @@ export const SignUpPage: React.FunctionComponent = (): JSX.Element => {
 
       try {
         await axios.post(BASE_URL+ "/api/auth/signup", {email, name, surname, password}, {withCredentials: true})
-        history.push("/dashboard")
+        history.push(USER_HOMEPAGE_URL)
         dispatch(fetchUserLogin())
       } catch (error) {
           console.error(error) /* TODO: handle error properly */

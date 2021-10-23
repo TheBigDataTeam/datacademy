@@ -5,8 +5,12 @@ import { Buttons } from './components'
 import { Paragraph, Button, Grid } from 'components/ui'
 import { useSelector } from 'react-redux'
 import { AppStateType } from 'redux/rootReducer'
+import { useDocTitle } from 'components/hooks'
+import { TITLE_PREFIX } from 'constants/common'
 
 export const LogoutPage: React.FunctionComponent = (): JSX.Element => {
+
+    useDocTitle(TITLE_PREFIX + 'User logout')
 
     const isLoaded = useSelector((state: AppStateType) => state.userAuth.isLoaded)
 
