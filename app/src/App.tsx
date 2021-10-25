@@ -5,7 +5,7 @@ import { LandingPage, SignUpPage, LoginPage, LogoutPage,
 		ForgetPassPage, CatalogPage, AuthorsPage, 
 		ProjectInfoPage, PricingPage, PaymentPage,
 		CoursePage, AuthorPage, DashboardPage, Page404 } from 'components/pages'
-import { AddAuthorPage, AdminDashboardPage } from 'components/admin'
+import { AddAuthorPage, AdminDashboardPage, AddCoursePage } from 'components/admin'
 import { useDispatch } from 'react-redux'
 import { fetchUserLogin } from 'redux/user_auth/userAuthActions'
 
@@ -37,11 +37,12 @@ export const App: React.FunctionComponent = (): JSX.Element => {
 				<Route path="/project" component={ProjectInfoPage}/>
 				<Route path="/payment" component={PaymentPage}/>
 				<Route path="/dashboard" component={DashboardPage}/>
-				<Route component={Page404}/>
 				{/* Admin Section */}
-				<Route path="/admin/add/course" />
+				<Route path="/admin/add/course" component={AddCoursePage}/>
 				<Route path="/admin/add/author" component={AddAuthorPage}/>
 				<Route path="/admin/dashboard" component={AdminDashboardPage}/>
+				{/* Page not found section */}
+				<Route component={Page404}/>
 			</Switch>
 		</Router>
 	)

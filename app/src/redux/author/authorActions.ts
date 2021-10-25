@@ -1,5 +1,5 @@
 import { AuthorActionTypes } from './authorActionTypes'
-import { Author } from 'models/Author'
+import { Author } from 'models'
 
 /* TODO Error type */
 type Error = string
