@@ -50,7 +50,7 @@ func (a *Authors) Create(rw http.ResponseWriter, r *http.Request) {
 	case err == authors.ErrorBadRequest:
 		http.Error(rw, "Wrong data provided", http.StatusBadRequest)
 	case err == authors.ErrorAuthorAlreadyExists:
-		http.Error(rw, "Such author already exists", http.StatusForbidden)
+		http.Error(rw, "Such author already exists", http.StatusConflict)
 	default:
 		http.Error(rw, "Internal error", http.StatusInternalServerError)
 	}

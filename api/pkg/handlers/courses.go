@@ -1,12 +1,13 @@
 package handlers
 
 import (
+	"encoding/json"
+	"io/ioutil"
 	"log"
 	"net/http"
 
 	"github.com/Serj1c/datalearn/api/pkg/courses"
 	"github.com/Serj1c/datalearn/api/pkg/middleware"
-	"github.com/Serj1c/datalearn/api/pkg/util"
 )
 
 // KeyCourse is a key used for the Course object in the context
@@ -24,89 +25,53 @@ func NewCourses(l *log.Logger, v *middleware.Validation, r *courses.Repo) *Cours
 	return &Courses{l, v, r}
 }
 
-// ListAll handles GET requests and returns all current courses
-func (c *Courses) ListAll(rw http.ResponseWriter, r *http.Request) {
-	c.l.Println("[SUCCESS] get all records")
-	courses, err := c.r.GetCourses()
-	if err != nil {
-		c.l.Println("[ERROR] receiving courses from db: ", err)
-	}
-
-	err = util.ToJSON(courses, rw)
-	if err != nil {
-		c.l.Println("[ERROR] serializing courses ", err)
-	}
-}
-
-// ListOne handles GET requests for a single course
-func (c *Courses) ListOne(rw http.ResponseWriter, r *http.Request) {
-	id := util.GetIDfromRequest(r)
-	c.l.Println("[SUCCESS] get record id", id)
-
-	course, err := c.r.GetCourseByID(id)
-	c.l.Println(course)
-	if err == courses.ErrorCourseNotFound {
-		c.l.Println("[ERROR]", err)
-		rw.WriteHeader(http.StatusNotFound)
-		util.ToJSON(&util.GenericError{Message: err.Error()}, rw)
-		return
-	}
-	if err != nil {
-		c.l.Println("[ERROR] fetching course", err)
-		rw.WriteHeader(http.StatusInternalServerError)
-		util.ToJSON(&util.GenericError{Message: err.Error()}, rw)
-		return
-	}
-	err = util.ToJSON(course, rw)
-	if err != nil {
-		c.l.Println("[ERROR] serializing course", err)
-	}
-}
-
-// Delete handles DELETE request and removes items from the DB
-func (c *Courses) Delete(rw http.ResponseWriter, r *http.Request) {
-	id := util.GetIDfromRequest(r)
-
-	c.l.Println("[DEBUG] deleting record id", id)
-
-	err := c.r.DeleteCourse(id)
-	if err == courses.ErrorCourseNotFound {
-		c.l.Println("[ERROR] deleting record id does not exist")
-		rw.WriteHeader(http.StatusNotFound)
-		util.ToJSON(&util.GenericError{Message: err.Error()}, rw)
-		return
-	}
-	if err != nil {
-		c.l.Println("[ERROR] deleting record", err)
-		rw.WriteHeader(http.StatusInternalServerError)
-		util.ToJSON(&util.GenericError{Message: err.Error()}, rw)
-		return
-	}
-	rw.WriteHeader(http.StatusNoContent)
+type courseData struct {
+	Course courses.Course `json:"course"`
 }
 
 // Create handles POST requests to add new courses
 func (c *Courses) Create(rw http.ResponseWriter, r *http.Request) {
-	// fetch the course from the context
-	course := r.Context().Value(KeyCourse{}).(courses.Course)
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		http.Error(rw, "Cannot read body", http.StatusInternalServerError)
+	}
+	r.Body.Close()
 
-	c.l.Printf("[SUCCESS] Inserting course: %#v\n", course)
-	c.r.AddCourse(course)
+	data := &courseData{}
+	err = json.Unmarshal(body, data)
+	if err != nil {
+		http.Error(rw, "Error unmarshaling request body", http.StatusInternalServerError)
+	}
+
+	err = c.r.AddCourse(data.Course)
+	switch {
+	case err == nil:
+		rw.WriteHeader(http.StatusCreated)
+	case err == courses.ErrBadRequest:
+		http.Error(rw, "Wrong data provided", http.StatusBadRequest)
+	case err == courses.ErrAlreadyExists:
+		http.Error(rw, "Such course already exists", http.StatusConflict)
+	default:
+		http.Error(rw, "Internal error", http.StatusInternalServerError)
+	}
+}
+
+// List handles GET requests and returns all current courses
+func (c *Courses) List(rw http.ResponseWriter, r *http.Request) {
+
+}
+
+// Get handles GET requests for a single course
+func (c *Courses) Get(rw http.ResponseWriter, r *http.Request) {
+
+}
+
+// Delete handles DELETE request and removes items from the DB
+func (c *Courses) Delete(rw http.ResponseWriter, r *http.Request) {
+
 }
 
 // Update handles PUT requests to update courses
 func (c *Courses) Update(rw http.ResponseWriter, r *http.Request) {
-	// fetch the course from the context
-	course := r.Context().Value(KeyCourse{}).(courses.Course)
-	c.l.Println("[SUCCESS] updating record id", course.ID)
 
-	err := c.r.UpdateCourse(course)
-	if err == courses.ErrorCourseNotFound {
-		c.l.Println("[ERROR] course not found", err)
-		rw.WriteHeader(http.StatusNotFound)
-		util.ToJSON(&util.GenericError{Message: "Product not found in database"}, rw)
-		return
-	}
-	// write the no content success header
-	rw.WriteHeader(http.StatusNoContent)
 }

@@ -2,16 +2,13 @@ package courses
 
 // Course defines the structure for an API
 type Course struct {
-	ID          string `json:"id"`
-	Title       string `json:"title"`
-	Description string `json:"description"`
-	Theme       string `json:"theme"`
-	Author      string `json:"author"` // TODO author is to be Author struct
-	AuthorID    string `json:"authorid"`
-	TechStack   string `json:"techstack"`
-	Syllabus    string `json:"syllabus"`
-	Duration    string `json:"-"`
-	Beneficiars string `json:"beneficiars"`
-	CreatedOn   string `json:"createdon"`
-	Version     int    `json:"version"`
+	ID               string `json:"id"`
+	Title            string `json:"title"`
+	Author           string `json:"author"`
+	Description      string `json:"description"`
+	TechStack        string `json:"techstack"`
+	ModuleQuantity   string `json:"moduleQuantity"`
+	WorkshopQuantity string `json:"workshopQuantity"`
+	CreatedOn        string `json:"createdon"`
+	Version          int    `json:"version"`
 }

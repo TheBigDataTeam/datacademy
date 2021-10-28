@@ -47,7 +47,6 @@ type loginInfo struct {
 
 // Signup handles request for creating new users
 func (u *Users) Signup(rw http.ResponseWriter, r *http.Request) {
-	u.l.Println("[ATTENTION] Create a new user")
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		http.Error(rw, "Cannot read body", http.StatusInternalServerError)
@@ -82,7 +81,6 @@ func (u *Users) Signup(rw http.ResponseWriter, r *http.Request) {
 
 // Login handles requests for user's authorization
 func (u *Users) Login(rw http.ResponseWriter, r *http.Request) {
-	u.l.Println("[ATTENTION] User login")
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		http.Error(rw, "Cannot read body", http.StatusInternalServerError)
@@ -151,6 +149,5 @@ func (u *Users) GetBySessionID(rw http.ResponseWriter, r *http.Request) {
 
 // Logout handles requests for a user log out
 func (u *Users) Logout(rw http.ResponseWriter, r *http.Request) {
-	u.l.Println("[ATTENTION] User logout")
 	u.s.DestroyCurrent(rw, r)
 }

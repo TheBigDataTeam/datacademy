@@ -37,7 +37,7 @@ func main() {
 	// init PostgreSQL
 	db, err := sql.Open(config.DBDriver, config.DBSource)
 	if err != nil {
-		log.Fatal(err)
+		l.Fatal(err)
 	}
 	defer db.Close()
 	err = db.Ping()
@@ -72,10 +72,10 @@ func main() {
 	sm.HandleFunc("/api/authors", authorsHandler.List).Methods("GET")
 	sm.HandleFunc("/api/authors/{id}", authorsHandler.Get).Methods("GET")
 	sm.HandleFunc("/authors/{id}", authorsHandler.Update).Methods("PUT")
+	sm.HandleFunc("/authors/{id}", authorsHandler.Delete).Methods("DELETE")
 
-	sm.HandleFunc("/courses", coursesHandler.ListAll).Methods("GET")
-	sm.HandleFunc("/courses", coursesHandler.Create).Methods("POST")
-	sm.HandleFunc("/courses/{id}", coursesHandler.ListOne).Methods("GET")
+	sm.HandleFunc("/courses", coursesHandler.List).Methods("GET")
+	sm.HandleFunc("/courses/{id}", coursesHandler.Get).Methods("GET")
 	sm.HandleFunc("/courses/{id}", coursesHandler.Delete).Methods("DELETE")
 	sm.HandleFunc("/courses/{id}", coursesHandler.Update).Methods("PUT")
 
@@ -83,13 +83,14 @@ func main() {
 
 	sm.HandleFunc("/api/auth/signup", usersHandler.Signup).Methods("POST")
 	sm.HandleFunc("/api/auth/login", usersHandler.Login).Methods("POST")
-	sm.HandleFunc("/api/auth/user", usersHandler.GetBySessionID).Methods("GET")
 	sm.HandleFunc("/api/auth/logout", usersHandler.Logout).Methods("GET")
+	sm.HandleFunc("/api/auth/user", usersHandler.GetBySessionID).Methods("GET")
 
 	//sm.Use(coursesHandler.MiddlewareValidateCourse)
 
+	/* Administration endpoints */
 	sm.HandleFunc("/api/admin/add/author", authorsHandler.Create).Methods("POST")
-	sm.HandleFunc("/authors/{id}", authorsHandler.Delete).Methods("DELETE")
+	sm.HandleFunc("/api/admin/add/course", coursesHandler.Create).Methods("POST")
 
 	// define middleware to handle CORS
 	c := cors.New(cors.Options{
