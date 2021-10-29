@@ -65,9 +65,9 @@ func (u *Users) Signup(rw http.ResponseWriter, r *http.Request) {
 	userID, err := u.r.Create(newUser.Email, newUser.Name, newUser.Surname, newUser.Password)
 	switch err {
 	case nil:
-	case users.ErrorBadRequest:
+	case users.ErrBadRequest:
 		http.Error(rw, "Wrong data provided", http.StatusBadRequest)
-	case users.ErrorUserAlreadyExists:
+	case users.ErrAlreadyExists:
 		http.Error(rw, "Such user already exists", http.StatusForbidden)
 	default:
 		http.Error(rw, "Internal error", http.StatusInternalServerError)

@@ -56,9 +56,9 @@ func main() {
 	v := middleware.NewValidation() /* TODO: currently not registered */
 
 	// init repos
-	cr := courses.NewRepo(db)
-	ar := authors.NewRepo(mongo, collection)
-	ur := users.NewRepo(db)
+	cr := courses.New(db)
+	ar := authors.New(mongo, collection)
+	ur := users.New(db)
 	s := session.NewDBSession(db)
 
 	// init handlers
@@ -71,13 +71,9 @@ func main() {
 	// register handler-functions
 	sm.HandleFunc("/api/authors", authorsHandler.List).Methods("GET")
 	sm.HandleFunc("/api/authors/{id}", authorsHandler.Get).Methods("GET")
-	sm.HandleFunc("/authors/{id}", authorsHandler.Update).Methods("PUT")
-	sm.HandleFunc("/authors/{id}", authorsHandler.Delete).Methods("DELETE")
 
-	sm.HandleFunc("/courses", coursesHandler.List).Methods("GET")
-	sm.HandleFunc("/courses/{id}", coursesHandler.Get).Methods("GET")
-	sm.HandleFunc("/courses/{id}", coursesHandler.Delete).Methods("DELETE")
-	sm.HandleFunc("/courses/{id}", coursesHandler.Update).Methods("PUT")
+	sm.HandleFunc("/api/courses", coursesHandler.List).Methods("GET")
+	sm.HandleFunc("/api/courses/{id}", coursesHandler.Get).Methods("GET")
 
 	sm.HandleFunc("/api/users", usersHandler.Get).Methods("GET") /* currently is not used */
 
@@ -91,6 +87,10 @@ func main() {
 	/* Administration endpoints */
 	sm.HandleFunc("/api/admin/add/author", authorsHandler.Create).Methods("POST")
 	sm.HandleFunc("/api/admin/add/course", coursesHandler.Create).Methods("POST")
+	sm.HandleFunc("/courses/{id}", coursesHandler.Delete).Methods("DELETE")
+	sm.HandleFunc("/courses/{id}", coursesHandler.Update).Methods("PUT")
+	sm.HandleFunc("/authors/{id}", authorsHandler.Update).Methods("PUT")
+	sm.HandleFunc("/authors/{id}", authorsHandler.Delete).Methods("DELETE")
 
 	// define middleware to handle CORS
 	c := cors.New(cors.Options{

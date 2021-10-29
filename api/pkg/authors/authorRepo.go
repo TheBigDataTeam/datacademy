@@ -9,14 +9,14 @@ import (
 	"github.com/globalsign/mgo/bson"
 )
 
-// Repo represents a data base
+// Repo represents a database.
 type Repo struct {
 	mongo      *mgo.Session
 	collection *mgo.Collection
 }
 
-// NewRepo returns an instance of a Repo
-func NewRepo(mongo *mgo.Session, collection *mgo.Collection) *Repo {
+// New returns an instance of Author repository.
+func New(mongo *mgo.Session, collection *mgo.Collection) *Repo {
 	return &Repo{
 		mongo:      mongo,
 		collection: collection,
@@ -31,25 +31,6 @@ var (
 	// ErrorBadRequest is returned when wrong data provided
 	ErrorBadRequest = errors.New("Wrong data provided")
 )
-
-// AddAuthor inserts a new author in the DB
-func (r *Repo) AddAuthor(a Author) error {
-	tempAuthor := &Author{}
-	err := r.collection.Find(bson.M{"email": a.Email}).One(&tempAuthor)
-	if err == nil {
-		return ErrorAuthorAlreadyExists
-	}
-	/* TODO: here is possibly mistake in querying db not handled */
-	a.ID = bson.NewObjectId()
-	a.CreatedOn = time.Now().Format("2006-01-02 15:04:05")
-	a.Version = 1
-	fmt.Println("from repo: ", a)
-	err = r.collection.Insert(a)
-	if err != nil {
-		return ErrorBadRequest
-	}
-	return nil
-}
 
 // GetAuthors returns list of authors
 func (r *Repo) GetAuthors() ([]*Author, error) {
@@ -69,6 +50,27 @@ func (r *Repo) GetAuthorByID(id bson.ObjectId) (*Author, error) {
 
 	}
 	return authorFromDB, nil
+}
+
+/* Administration part of repository functions */
+
+// AddAuthor inserts a new author in the DB
+func (r *Repo) AddAuthor(a Author) error {
+	tempAuthor := &Author{}
+	err := r.collection.Find(bson.M{"email": a.Email}).One(&tempAuthor)
+	if err == nil {
+		return ErrorAuthorAlreadyExists
+	}
+	/* TODO: here is possibly mistake in querying db not handled */
+	a.ID = bson.NewObjectId()
+	a.CreatedOn = time.Now().Format("2006-01-02 15:04:05")
+	a.Version = 1
+	fmt.Println("from repo: ", a)
+	err = r.collection.Insert(a)
+	if err != nil {
+		return ErrorBadRequest
+	}
+	return nil
 }
 
 // UpdateAuthor replaces an author in the DB with the given item.

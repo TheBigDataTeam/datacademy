@@ -3,6 +3,8 @@ package courses
 import (
 	"database/sql"
 	"errors"
+
+	"github.com/Serj1c/datalearn/api/pkg/util"
 )
 
 // Repo represents DB
@@ -10,8 +12,8 @@ type Repo struct {
 	db *sql.DB
 }
 
-// NewRepo returns an instance of a Repo
-func NewRepo(db *sql.DB) *Repo {
+// New returns an instance of a Repo
+func New(db *sql.DB) *Repo {
 	return &Repo{
 		db: db,
 	}
@@ -26,24 +28,52 @@ var (
 	ErrBadRequest = errors.New("Wrong data provided")
 )
 
-// GetCourses returns a list of courses
+// GetCourses returns a list of courses.
 func (r *Repo) GetCourses() ([]*Course, error) {
-	return nil, nil
+	coursesFromDB := make([]*Course, 0, 10)
+	rows, err := r.db.Query("SELECT title, author, description, techstack, moduleQuantity, workshopQuantity FROM courses")
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	for rows.Next() {
+		course := &Course{}
+		err := rows.Scan(&course.Title, &course.Author, &course.Description, &course.TechStack, &course.ModuleQuantity, &course.WorkshopQuantity)
+		if err != nil {
+			return nil, err
+		}
+		coursesFromDB = append(coursesFromDB, course)
+	}
+	return coursesFromDB, nil
 }
 
-// GetCourseByID returns a single course which matches the id from the DB
-// if a course is not found this function returns a CourseNotFound error
+// GetCourseByID returns a single course which matches the id from the DB.
 func (r *Repo) GetCourseByID(id string) (*Course, error) {
 	return nil, nil
 }
 
-// UpdateCourse replaces a course in the DB with the given item.
-func (r *Repo) UpdateCourse(c Course) error {
+/* Administration part of repository functions */
+
+// AddCourse adds a new course to the DB.
+func (r *Repo) AddCourse(c Course) error {
+	id := util.RandString()
+	row, err := r.db.Exec("INSERT into courses(id, title, author, description, techstack, moduleQuantity, workshopQuantity) VALUES($1, $2, $3, $4, $5, $6, $7)",
+		id, c.Title, c.Author, c.Description, c.TechStack, c.ModuleQuantity, c.WorkshopQuantity)
+	if err != nil {
+		return ErrBadRequest
+	}
+	affected, err := row.RowsAffected()
+	if affected == 0 {
+		return ErrAlreadyExists
+	}
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
-// AddCourse adds new course to the DB
-func (r *Repo) AddCourse(c Course) error {
+// UpdateCourse replaces a course in the DB with the given item.
+func (r *Repo) UpdateCourse(c Course) error {
 	return nil
 }
 

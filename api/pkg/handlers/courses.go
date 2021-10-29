@@ -29,7 +29,27 @@ type courseData struct {
 	Course courses.Course `json:"course"`
 }
 
-// Create handles POST requests to add new courses
+// List handles GET requests and returns all current courses.
+func (c *Courses) List(rw http.ResponseWriter, r *http.Request) {
+	listOfCourses, err := c.r.GetCourses()
+	if err != nil {
+		http.Error(rw, "Internal error", http.StatusInternalServerError)
+	}
+	response, err := json.Marshal(listOfCourses)
+	if err != nil {
+		http.Error(rw, "Error marshaling response", http.StatusInternalServerError)
+	}
+	rw.Write(response)
+}
+
+// Get handles GET requests for a single course
+func (c *Courses) Get(rw http.ResponseWriter, r *http.Request) {
+
+}
+
+/* Administration endpoints handlers */
+
+// Create handles POST requests to add new courses.
 func (c *Courses) Create(rw http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
@@ -54,16 +74,6 @@ func (c *Courses) Create(rw http.ResponseWriter, r *http.Request) {
 	default:
 		http.Error(rw, "Internal error", http.StatusInternalServerError)
 	}
-}
-
-// List handles GET requests and returns all current courses
-func (c *Courses) List(rw http.ResponseWriter, r *http.Request) {
-
-}
-
-// Get handles GET requests for a single course
-func (c *Courses) Get(rw http.ResponseWriter, r *http.Request) {
-
 }
 
 // Delete handles DELETE request and removes items from the DB
