@@ -10,7 +10,7 @@ export const Success: React.FunctionComponent = (): JSX.Element => (
     <Icon className={styles.icon} />
     <Heading align='center'>Course added</Heading>
     <Paragraph align='center' marginBottom='xl'>
-      Course was already added to the site. Please check that it looks exactly as you planned
+      Course has just been added to the site. Please check that it looks exactly as you planned
     </Paragraph>
     <Paragraph align='center'>
       <Link to={ADMIN_HOMEPAGE_URL}>To Dashboard</Link>
