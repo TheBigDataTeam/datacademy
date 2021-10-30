@@ -5,6 +5,7 @@ import { PageLayout } from 'components/layouts'
 import { Grid, Paragraph } from 'components/ui'
 import { AuthorSection, SyllabusSection, BeneficiarsSection, TechStackSection, SubscribeSection } from './components'
 import { Author, Course } from 'models'
+import { BASE_URL } from 'constants/common'
 import axios, { AxiosResponse } from 'axios'
 
 type ParamsType = {
@@ -13,33 +14,31 @@ type ParamsType = {
 
 export const CoursePage: React.FunctionComponent = (): JSX.Element => {
 
-    const [course, setCourse] = useState<Course>()
+    const [course, setCourse] = useState<Course | null>(null)
 
-    const [authorIdToFetch, setAuthorIdToFetch] = useState<string>()
+    const [authorNameToFetch, setAuthorNameToFetch] = useState<string>()
 
-    const [author, setAuthor] = useState<Author>()
+    const [author, setAuthor] = useState<Author | null>(null)
 
     const params: ParamsType = useParams()
 
     useEffect(() => {
-        const fetchData = async (): Promise<void> => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const result: AxiosResponse<any> = await axios.get(`http://localhost:3100/courses/${params.id}`)
+        const fetchData = async () => {
+            const result: AxiosResponse<Course> = await axios.get(BASE_URL + `/api/courses/${params.id}`, {withCredentials: true})
             setCourse(result.data)
-            setAuthorIdToFetch(result.data.authorid)
+            setAuthorNameToFetch(result.data.author)
 
         }
         fetchData()
     }, [params.id])
 
     useEffect(() => {
-        const fetchAuthor = async ():Promise<void> => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const result: AxiosResponse<any> = await axios.get(`http://localhost:3100/authors/${authorIdToFetch}`)
+        const fetchAuthor = async () => {
+            const result: AxiosResponse<Author> = await axios.get(BASE_URL + `/api/authors/name/${authorNameToFetch}`, {withCredentials: true})
             setAuthor(result.data)
         }
         fetchAuthor()
-    }, [authorIdToFetch])
+    }, [authorNameToFetch])
 
     return (
         <PageLayout header={<Header />} footer={<Footer />} topOffset>

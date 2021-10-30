@@ -5,7 +5,7 @@ import styles from './AuthorSection.module.css';
 import { Author } from 'models/Author';
 
 interface Props {
-    author: Author | undefined /* TODO: rework types */
+    author: Author
 }
 
 export const AuthorSection: React.FunctionComponent<Props> = ({ author }): JSX.Element => {
@@ -26,7 +26,7 @@ export const AuthorSection: React.FunctionComponent<Props> = ({ author }): JSX.E
                                 </li>
                             ))}
                         </ul> */}
-                        <Paragraph>{author.features}</Paragraph>
+                        <Paragraph>{author?.features}</Paragraph>
                         <div className={styles.img}/>
                     </div>
                 </Grid.Col>

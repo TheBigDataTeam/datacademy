@@ -74,7 +74,7 @@ func checkPasswordIsValid(row *sql.Row, password string) (*User, error) {
 	return user, nil
 }
 
-// Get retrives a user from the database
+// Get retrives a user from the database.
 func (r *Repo) Get(userID string) (*User, error) {
 	user := &User{}
 	row := r.db.QueryRow("SELECT id, email, name, surname, version FROM users WHERE id=$1", userID)

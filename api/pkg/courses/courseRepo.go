@@ -30,26 +30,32 @@ var (
 
 // GetCourses returns a list of courses.
 func (r *Repo) GetCourses() ([]*Course, error) {
-	coursesFromDB := make([]*Course, 0, 10)
-	rows, err := r.db.Query("SELECT title, author, description, techstack, moduleQuantity, workshopQuantity FROM courses")
+	courses := make([]*Course, 0, 10)
+	rows, err := r.db.Query("SELECT id, title, author, description, techstack, moduleQuantity, workshopQuantity FROM courses")
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 	for rows.Next() {
 		course := &Course{}
-		err := rows.Scan(&course.Title, &course.Author, &course.Description, &course.TechStack, &course.ModuleQuantity, &course.WorkshopQuantity)
+		err := rows.Scan(&course.ID, &course.Title, &course.Author, &course.Description, &course.TechStack, &course.ModuleQuantity, &course.WorkshopQuantity)
 		if err != nil {
 			return nil, err
 		}
-		coursesFromDB = append(coursesFromDB, course)
+		courses = append(courses, course)
 	}
-	return coursesFromDB, nil
+	return courses, nil
 }
 
 // GetCourseByID returns a single course which matches the id from the DB.
 func (r *Repo) GetCourseByID(id string) (*Course, error) {
-	return nil, nil
+	course := &Course{}
+	row := r.db.QueryRow("SELECT id, title, author, description, techstack, moduleQuantity, workshopQuantity FROM courses WHERE id=$1", id)
+	err := row.Scan(&course.ID, &course.Title, &course.Author, &course.Description, &course.TechStack, &course.ModuleQuantity, &course.WorkshopQuantity)
+	if err == sql.ErrNoRows {
+		return nil, ErrNoRecord
+	}
+	return course, nil
 }
 
 /* Administration part of repository functions */

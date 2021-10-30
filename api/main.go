@@ -70,7 +70,8 @@ func main() {
 
 	// register handler-functions
 	sm.HandleFunc("/api/authors", authorsHandler.List).Methods("GET")
-	sm.HandleFunc("/api/authors/{id}", authorsHandler.Get).Methods("GET")
+	sm.HandleFunc("/api/authors/{id}", authorsHandler.GetByID).Methods("GET")
+	sm.HandleFunc("/api/authors/name/{name}", authorsHandler.GetByName).Methods("GET")
 
 	sm.HandleFunc("/api/courses", coursesHandler.List).Methods("GET")
 	sm.HandleFunc("/api/courses/{id}", coursesHandler.Get).Methods("GET")

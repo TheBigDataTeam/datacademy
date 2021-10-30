@@ -34,22 +34,33 @@ var (
 
 // GetAuthors returns list of authors
 func (r *Repo) GetAuthors() ([]*Author, error) {
-	authorsFromDB := []*Author{}
-	err := r.collection.Find(bson.M{}).All(&authorsFromDB)
+	authors := []*Author{}
+	err := r.collection.Find(bson.M{}).All(&authors)
 	if err != nil {
 		return nil, err
 	}
-	return authorsFromDB, nil
+	return authors, nil
 }
 
 // GetAuthorByID returns a single author which matches the id provided
 func (r *Repo) GetAuthorByID(id bson.ObjectId) (*Author, error) {
-	authorFromDB := &Author{}
-	err := r.collection.Find(bson.M{"_id": id}).One(&authorFromDB)
+	author := &Author{}
+	err := r.collection.Find(bson.M{"_id": id}).One(&author)
 	if err != nil {
-
+		return nil, err
 	}
-	return authorFromDB, nil
+	return author, nil
+}
+
+// GetAuthorByName returns a single author which matches the name provided
+func (r *Repo) GetAuthorByName(name string) (*Author, error) {
+	author := &Author{}
+	err := r.collection.Find(bson.M{"fullname": name}).One(&author)
+	if err != nil {
+		return nil, err
+	}
+	fmt.Println(author)
+	return author, nil
 }
 
 /* Administration part of repository functions */

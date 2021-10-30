@@ -2,12 +2,14 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
 
 	"github.com/Serj1c/datalearn/api/pkg/courses"
 	"github.com/Serj1c/datalearn/api/pkg/middleware"
+	"github.com/gorilla/mux"
 )
 
 // KeyCourse is a key used for the Course object in the context
@@ -44,7 +46,22 @@ func (c *Courses) List(rw http.ResponseWriter, r *http.Request) {
 
 // Get handles GET requests for a single course
 func (c *Courses) Get(rw http.ResponseWriter, r *http.Request) {
-
+	vars := mux.Vars(r)
+	courseID := vars["id"] /* TODO: check that ID of a correct type */
+	course, err := c.r.GetCourseByID(courseID)
+	fmt.Println(course)
+	switch err {
+	case nil:
+	case courses.ErrBadRequest:
+		http.Error(rw, "Wrong data provided", http.StatusBadRequest)
+	case courses.ErrNoRecord:
+		http.Error(rw, "There is no such a course", http.StatusBadRequest)
+	}
+	response, err := json.Marshal(course)
+	if err != nil {
+		http.Error(rw, "Error marshaling response", http.StatusInternalServerError)
+	}
+	rw.Write(response)
 }
 
 /* Administration endpoints handlers */
