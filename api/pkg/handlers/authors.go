@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -29,7 +28,66 @@ type authorData struct {
 	Author authors.Author `json:"author"`
 }
 
-// Create handles POST requests to add new authors
+// List handles GET requests for all authors
+func (a *Authors) List(rw http.ResponseWriter, r *http.Request) {
+	listOfAuthors, err := a.r.GetAuthors()
+	switch {
+	case err == nil:
+	case err == authors.ErrorBadRequest:
+		http.Error(rw, "Wrong data provided", http.StatusBadRequest)
+	}
+	response, err := json.Marshal(listOfAuthors)
+	if err != nil {
+		http.Error(rw, "Error marshaling response", http.StatusInternalServerError)
+	}
+	rw.Write(response)
+}
+
+// GetByID handles GET requests for a single author
+func (a *Authors) GetByID(rw http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	if !bson.IsObjectIdHex(vars["id"]) {
+		http.Error(rw, "ID is of a wrong format", http.StatusBadRequest)
+		return
+	}
+	authorID := bson.ObjectIdHex(vars["id"])
+	author, err := a.r.GetAuthorByID(authorID)
+	switch err {
+	case nil:
+	case authors.ErrorBadRequest:
+		http.Error(rw, "Wrong data provided", http.StatusBadRequest)
+	case authors.ErrorNoRecord:
+		http.Error(rw, "There is no such an author", http.StatusBadRequest)
+	}
+	response, err := json.Marshal(author)
+	if err != nil {
+		http.Error(rw, "Error marshaling response", http.StatusInternalServerError)
+	}
+	rw.Write(response)
+}
+
+// GetByName handles GET requests for a single author
+func (a *Authors) GetByName(rw http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	authorName := vars["name"]
+	author, err := a.r.GetAuthorByName(authorName)
+	switch err {
+	case nil:
+	case authors.ErrorBadRequest:
+		http.Error(rw, "Wrong data provided", http.StatusBadRequest)
+	case authors.ErrorNoRecord:
+		http.Error(rw, "There is no such an author", http.StatusBadRequest)
+	}
+	response, err := json.Marshal(author)
+	if err != nil {
+		http.Error(rw, "Error marshaling response", http.StatusInternalServerError)
+	}
+	rw.Write(response)
+}
+
+/* Administration endpoints handlers */
+
+// Create handles POST requests to add new authors.
 func (a *Authors) Create(rw http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
@@ -50,49 +108,10 @@ func (a *Authors) Create(rw http.ResponseWriter, r *http.Request) {
 	case err == authors.ErrorBadRequest:
 		http.Error(rw, "Wrong data provided", http.StatusBadRequest)
 	case err == authors.ErrorAuthorAlreadyExists:
-		http.Error(rw, "Such author already exists", http.StatusForbidden)
+		http.Error(rw, "Such author already exists", http.StatusConflict)
 	default:
 		http.Error(rw, "Internal error", http.StatusInternalServerError)
 	}
-}
-
-// List handles GET requests for all authors
-func (a *Authors) List(rw http.ResponseWriter, r *http.Request) {
-	listOfAuthors, err := a.r.GetAuthors()
-	switch {
-	case err == nil:
-	case err == authors.ErrorBadRequest:
-		http.Error(rw, "Wrong data provided", http.StatusBadRequest)
-	}
-	response, err := json.Marshal(listOfAuthors)
-	if err != nil {
-		http.Error(rw, "Error marshaling response", http.StatusInternalServerError)
-	}
-	rw.Write(response)
-}
-
-// Get handles GET requests for a single author
-func (a *Authors) Get(rw http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	if !bson.IsObjectIdHex(vars["id"]) {
-		http.Error(rw, "ID is of wrong format", http.StatusBadRequest)
-		return
-	}
-	authorID := bson.ObjectIdHex(vars["id"])
-	fmt.Println(authorID)
-	author, err := a.r.GetAuthorByID(authorID)
-	switch err {
-	case nil:
-	case authors.ErrorBadRequest:
-		http.Error(rw, "Wrong data provided", http.StatusBadRequest)
-	case authors.ErrorNoRecord:
-		http.Error(rw, "", http.StatusBadRequest)
-	}
-	response, err := json.Marshal(author)
-	if err != nil {
-		http.Error(rw, "Error marshaling response", http.StatusInternalServerError)
-	}
-	rw.Write(response)
 }
 
 // Update handles PUT requests to update authors

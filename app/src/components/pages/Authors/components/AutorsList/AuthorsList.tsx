@@ -1,7 +1,7 @@
-import React from 'react';
-import { AuthorsCard} from './components';
-import { Grid } from 'components/ui';
-import { Author } from 'models';
+import React from 'react'
+import { AuthorsCard} from './components'
+import { Grid } from 'components/ui'
+import { Author } from 'models'
 
 interface Props {
     authors: Array<Author> | null

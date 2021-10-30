@@ -12,8 +12,8 @@ type Repo struct {
 	db *sql.DB
 }
 
-// NewRepo returns an instance of a Repo
-func NewRepo(db *sql.DB) *Repo {
+// New returns an instance of a Repo
+func New(db *sql.DB) *Repo {
 	return &Repo{
 		db: db,
 	}
@@ -24,10 +24,10 @@ var (
 	ErrNoRecord = errors.New("No user record found")
 	// ErrWrongPassword is returned when passwords do not match
 	ErrWrongPassword = errors.New("Wrong password")
-	// ErrorUserAlreadyExists is returned when one tries to add user which already exists
-	ErrorUserAlreadyExists = errors.New("User already exists")
-	// ErrorBadRequest is returned when one tries to create a user with a wrong data
-	ErrorBadRequest = errors.New("Error inserting info into db")
+	// ErrAlreadyExists is returned when one tries to add user which already exists
+	ErrAlreadyExists = errors.New("User already exists")
+	// ErrBadRequest is returned when one tries to create a user with a wrong data
+	ErrBadRequest = errors.New("Error inserting info into db")
 )
 
 // Create creates a new user and adds her/him to the database
@@ -35,11 +35,11 @@ func (r *Repo) Create(email string, name string, surname string, password string
 	id := util.RandString()
 	row, err := r.db.Exec("INSERT into users(id, email, name, surname, password) VALUES($1, $2, $3, $4, $5)", id, email, name, surname, password)
 	if err != nil {
-		return "", ErrorBadRequest
+		return "", ErrBadRequest
 	}
 	affected, err := row.RowsAffected()
 	if affected == 0 {
-		return "", ErrorUserAlreadyExists
+		return "", ErrAlreadyExists
 	}
 	if err != nil {
 		return "", err
@@ -74,7 +74,7 @@ func checkPasswordIsValid(row *sql.Row, password string) (*User, error) {
 	return user, nil
 }
 
-// Get retrives a user from the database
+// Get retrives a user from the database.
 func (r *Repo) Get(userID string) (*User, error) {
 	user := &User{}
 	row := r.db.QueryRow("SELECT id, email, name, surname, version FROM users WHERE id=$1", userID)

@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { Header, Footer } from 'components/common';
-import { PageLayout } from 'components/layouts';
-import { Grid, Paragraph } from 'components/ui';
-import { AuthorSection, SyllabusSection, BeneficiarsSection, TechStackSection, SubscribeSection } from './components';
-import { Author, Course } from 'models';
-import axios, { AxiosResponse } from 'axios';
+import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import { Header, Footer } from 'components/common'
+import { PageLayout } from 'components/layouts'
+import { Grid, Paragraph } from 'components/ui'
+import { AuthorSection, SyllabusSection, BeneficiarsSection, TechStackSection, SubscribeSection } from './components'
+import { Author, Course } from 'models'
+import { BASE_URL } from 'constants/common'
+import axios, { AxiosResponse } from 'axios'
 
 type ParamsType = {
     id: string
@@ -13,33 +14,31 @@ type ParamsType = {
 
 export const CoursePage: React.FunctionComponent = (): JSX.Element => {
 
-    const [course, setCourse] = useState<Course>();
+    const [course, setCourse] = useState<Course | null>(null)
 
-    const [authorIdToFetch, setAuthorIdToFetch] = useState<string>();
+    const [authorNameToFetch, setAuthorNameToFetch] = useState<string>()
 
-    const [author, setAuthor] = useState<Author>();
+    const [author, setAuthor] = useState<Author | null>(null)
 
-    const params: ParamsType = useParams();
-
-    useEffect(() => {
-        const fetchData = async (): Promise<void> => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const result: AxiosResponse<any> = await axios.get(`http://localhost:3100/courses/${params.id}`);
-            setCourse(result.data);
-            setAuthorIdToFetch(result.data.authorid);
-
-        }
-        fetchData();
-    }, [params.id]);
+    const params: ParamsType = useParams()
 
     useEffect(() => {
-        const fetchAuthor = async ():Promise<void> => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const result: AxiosResponse<any> = await axios.get(`http://localhost:3100/authors/${authorIdToFetch}`);
-            setAuthor(result.data);
+        const fetchData = async () => {
+            const result: AxiosResponse<Course> = await axios.get(BASE_URL + `/api/courses/${params.id}`, {withCredentials: true})
+            setCourse(result.data)
+            setAuthorNameToFetch(result.data.author)
+
         }
-        fetchAuthor();
-    }, [authorIdToFetch]);
+        fetchData()
+    }, [params.id])
+
+    useEffect(() => {
+        const fetchAuthor = async () => {
+            const result: AxiosResponse<Author> = await axios.get(BASE_URL + `/api/authors/name/${authorNameToFetch}`, {withCredentials: true})
+            setAuthor(result.data)
+        }
+        fetchAuthor()
+    }, [authorNameToFetch])
 
     return (
         <PageLayout header={<Header />} footer={<Footer />} topOffset>
@@ -51,8 +50,8 @@ export const CoursePage: React.FunctionComponent = (): JSX.Element => {
                     </Grid.Col>
                 </Grid.Row>
                 <AuthorSection author={author}/>
-                <BeneficiarsSection beneficiars={course.beneficiars}/>
-                <SyllabusSection syllabus={course.syllabus}/>
+                <BeneficiarsSection beneficiars={'beneficiars'}/> {/* TODO */}
+                <SyllabusSection syllabus={'syllabus'}/> {/* TODO */}
                 <TechStackSection techstack={course.techstack}/>
                 <SubscribeSection />
             </>

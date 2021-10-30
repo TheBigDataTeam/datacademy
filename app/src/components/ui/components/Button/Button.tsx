@@ -1,9 +1,9 @@
-import React from 'react';
-import classNames from 'classnames';
-import { Loader } from 'components/ui';
-import { ButtonDesign, ButtonSize } from 'components/ui/common';
-import designStyles from 'components/ui/styles/design.module.css';
-import styles from './Button.module.css';
+import React from 'react'
+import classNames from 'classnames'
+import { Loader } from 'components/ui'
+import { ButtonDesign, ButtonSize } from 'components/ui/common'
+import designStyles from 'components/ui/styles/design.module.css'
+import styles from './Button.module.css'
 
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   design?: ButtonDesign;
@@ -40,7 +40,7 @@ export const Button: React.FunctionComponent<Props> = ({
   );
   const iconClassName = classNames(styles.icon, {
     [styles.icon_onlyIcon]: !children,
-  });
+  })
 
   return (
     <button
@@ -57,5 +57,5 @@ export const Button: React.FunctionComponent<Props> = ({
         </div>
       )}
     </button>
-  );
-};
+  )
+}

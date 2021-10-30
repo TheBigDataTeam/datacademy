@@ -1,62 +1,59 @@
-import { AuthorActionTypes } from './authorActionTypes'
-import { AuthorAction } from './authorActions'
-import { Author } from 'models'
+import { CourseActionTypes } from './courseActionTypes'
+import { CourseAction } from './courseActions'
+import { Course } from 'models'
 
 export type initialStateType = {
     isLoading: boolean,
-    author: Author,
+    course: Course,
     error: string,
     isLoaded: boolean
 }
 
 export const initialState: initialStateType = {
     isLoading: false,
-    author: {
-        email: '',
-        fullname: '',
-        bio: '',
-        location: '',
-        facebook: '',
-        instagram: '',
-        twitter: '',
-        shortdescription: '',
-        features: ''
+    course: {
+        title: '',
+        author: '',
+        description: '',
+        techstack: '',
+        moduleQuantity: '',
+        workshopQuantity: ''
     },
     error: '',
     isLoaded: false
 }
 
-export const authorReducer = (state = initialState, action: AuthorAction): initialStateType => {
+export const courseReducer = (state = initialState, action: CourseAction): initialStateType => {
     switch(action.type) {
-        case AuthorActionTypes.FETCH_ACTION_CHANGE: {
+        case CourseActionTypes.FETCH_ACTION_CHANGE: {
             const { name, value } = action.payload
             return {
                 ...state,
-                author: {
-                  ...state.author,
+                course: {
+                  ...state.course,
                   [name]: value,
                 }
             }
         }
-        case AuthorActionTypes.FETCH_ADD_AUTHOR_REQUEST: {
+        case CourseActionTypes.FETCH_ADD_COURSE_REQUEST: {
             return {
                 ...state,
                 isLoading: true
             }
         }
-        case AuthorActionTypes.FETCH_ADD_AUTHOR_SUCCESS: {
+        case CourseActionTypes.FETCH_ADD_COURSE_SUCCESS: {
             return {
                 isLoading: false,
-                author: action.payload,
+                course: action.payload,
                 error: '',
                 isLoaded: true
             }
         }
-        case AuthorActionTypes.FETCH_ADD_AUTHOR_FAILURE: {
+        case CourseActionTypes.FETCH_ADD_COURSE_FAILURE: {
             return {
                 ...state,
                 isLoading: false,
-                author: initialState.author,
+                course: initialState.course,
                 error: action.payload,
             }
         }
