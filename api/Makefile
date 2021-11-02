@@ -1,7 +1,11 @@
+.PHONY: build
 build:
-	docker build -t data-api:1.0.0 .
+	docker build -t datalearn-api:latest .
 
-api:
-	docker run --name data-api -d -p 3100:3100 data-api:1.0.0
+.PHONY: tag
+tag:
+	docker tag datalearn-api:latest 067789811623.dkr.ecr.us-east-2.amazonaws.com/datalearn-api:latest
 
-.PHONY: build api
+.PHONY: push
+push:
+	docker push 067789811623.dkr.ecr.us-east-2.amazonaws.com/datalearn-api:latest
