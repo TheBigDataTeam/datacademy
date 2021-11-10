@@ -54,6 +54,7 @@ services:
       - "3100:3100"
     depends_on: 
       - db
+      - mongo
     networks:
       - backend
     environment:
