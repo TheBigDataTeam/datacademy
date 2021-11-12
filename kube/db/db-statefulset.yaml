@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: datalearn-db-sts
+spec:
+  serviceName: datalearn-db-service
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      containers:
+        - name: db
+          image: postgres:13.1-alpine
+          imagePullPolicy: "IfNotPresent"
+          env:
+            - name: POSTGRES_USER
+              value: "root"
+            - name: POSTGRES_PASSWORD
+              value: "spartak1"
+            - name: POSTGRES_DB
+              value: "datacademy"
+          ports:
+          - containerPort: 5432
+            protocol: TCP
+          volumeMounts:
+            - name: db-storage
+              mountPath: /data
+  volumeClaimTemplates:
+    - metadata:
+        name: db-storage
+      spec:
+        accessModes:
+          - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: "500Mi"
