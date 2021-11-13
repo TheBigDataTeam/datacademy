@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: datalearn-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: "api.datalearn.biz"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: datalearn-api-service
+            port:
+              number: 80
