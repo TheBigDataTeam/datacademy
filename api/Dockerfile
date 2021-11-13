@@ -12,9 +12,9 @@ CMD if [ "$ENV" = "development" ]; then \
         cd $(mktemp -d); \
         go mod init tmp; \
         go get -v github.com/cespare/reflex; \
-        cd -; \
-        reflex -r '(\.go$|go\.mod)' -s go run .; \
+        cd /go/src/api; \
+        reflex -r '(\.go$|go\.mod)' -s go run cmd/datalearn/main.go; \
     else \
-        go build -o main .; \
-        ./main; \
+        go build -o main cmd/datalearn/main.go; \
+        ./cmd/datalearn/main.go; \
     fi
