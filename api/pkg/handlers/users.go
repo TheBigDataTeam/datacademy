@@ -105,7 +105,7 @@ func (u *Users) Login(rw http.ResponseWriter, r *http.Request) {
 	u.s.Create(rw, userID)
 }
 
-// Get returns a user based on a userID coming from query params
+// Get returns a user based on a userID coming from query params.
 // Currently is not used
 func (u *Users) Get(rw http.ResponseWriter, r *http.Request) {
 	queryParams := r.URL.Query()
