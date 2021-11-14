@@ -22,8 +22,15 @@
 
 .name {
     padding-right: 10px;
+    color: #000000;
 }
 
-.name:hover {
+.name_inverted {
+    padding-right: 10px;
+    color: #ffffff;
+}
+
+.name:hover, .name_inverted:hover {
     cursor: pointer;
+    color: #f41224;
 }
