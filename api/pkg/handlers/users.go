@@ -52,6 +52,7 @@ func (u *Users) Signup(rw http.ResponseWriter, r *http.Request) {
 
 	if !govalidator.IsEmail(newUser.Email) {
 		http.Error(rw, "Not valid email address", http.StatusBadRequest)
+		return
 	}
 
 	userID, err := u.r.Create(newUser.Email, newUser.Name, newUser.Surname, newUser.Password)
@@ -83,6 +84,12 @@ func (u *Users) Login(rw http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(rw, "Error unmarshaling request body", http.StatusInternalServerError)
 	}
+
+	if !govalidator.IsEmail(userForAuth.Email) {
+		http.Error(rw, "Not valid email address", http.StatusBadRequest)
+		return
+	}
+
 	userID, err := u.r.Authenticate(userForAuth.Email, userForAuth.Password)
 	switch err {
 	case nil:
