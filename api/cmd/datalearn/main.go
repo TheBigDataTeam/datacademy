@@ -10,12 +10,12 @@ import (
 	"time"
 
 	"github.com/Serj1c/datalearn/api/pkg/authors"
+	"github.com/Serj1c/datalearn/api/pkg/config"
 	"github.com/Serj1c/datalearn/api/pkg/courses"
 	"github.com/Serj1c/datalearn/api/pkg/handlers"
 	"github.com/Serj1c/datalearn/api/pkg/middleware"
 	"github.com/Serj1c/datalearn/api/pkg/session"
 	"github.com/Serj1c/datalearn/api/pkg/users"
-	"github.com/Serj1c/datalearn/api/pkg/util"
 	mgo "github.com/globalsign/mgo"
 	"github.com/gorilla/mux"
 	_ "github.com/lib/pq"
@@ -23,19 +23,18 @@ import (
 )
 
 func main() {
-	/* TODO move main.go to cmd folder and update Dockerfile accordingly */
 
 	// init logger
 	l := log.New(os.Stdout, "API ", log.LstdFlags)
 
 	// reaf config file
-	config, err := util.LoadConfig("./") // TODO address of a config file
+	cfg, err := config.Load("configs")
 	if err != nil {
 		log.Fatal("unable to read configuration: ", err)
 	}
 
 	// init PostgreSQL
-	db, err := sql.Open(config.DBDriver, config.DBSource)
+	db, err := sql.Open(cfg.DBDriver, cfg.DBSource)
 	if err != nil {
 		l.Fatal(err)
 	}
@@ -46,11 +45,11 @@ func main() {
 	}
 
 	// init MongoDB
-	mongo, err := mgo.Dial(config.MongoSource)
+	mongo, err := mgo.Dial(cfg.MongoSource)
 	if err != nil {
 		log.Fatalf("Cannot connect to mongo, err: %v\n", err)
 	}
-	collection := mongo.DB(config.MongoDBname).C(config.MongoCname)
+	collection := mongo.DB(cfg.MongoDBname).C(cfg.MongoCname)
 
 	//init validation
 	v := middleware.NewValidation() /* TODO: currently not registered */
@@ -95,7 +94,7 @@ func main() {
 
 	// define middleware to handle CORS
 	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{config.AppURL},
+		AllowedOrigins:   []string{cfg.AppURL},
 		AllowedMethods:   []string{http.MethodGet, http.MethodPost, http.MethodDelete, http.MethodPut},
 		AllowCredentials: true,
 		MaxAge:           10000, /* TODO check that it is necessary */
@@ -108,7 +107,7 @@ func main() {
 
 	// init server
 	server := &http.Server{
-		Addr:         config.ServerPort,
+		Addr:         cfg.ServerPort,
 		Handler:      withCorsHandler,
 		ErrorLog:     l,
 		IdleTimeout:  120 * time.Second,

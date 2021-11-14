@@ -20,7 +20,7 @@ services:
     environment: 
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=spartak1
-      - POSTGRES_DB=datacademy
+      - POSTGRES_DB=datalearn
     ports:
       - "5432:5432"
     networks:

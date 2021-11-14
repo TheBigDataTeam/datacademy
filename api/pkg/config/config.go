@@ -1,4 +1,4 @@
-package util
+package config
 
 import "github.com/spf13/viper"
 
@@ -14,8 +14,8 @@ type Config struct {
 	AppURL      string `mapstructure:"APP_URL"`
 }
 
-// LoadConfig reads configuration from a file or env variables
-func LoadConfig(path string) (config Config, err error) {
+// Load reads configuration from a file or env variables
+func Load(path string) (config Config, err error) {
 	viper.AddConfigPath(path)
 	viper.SetConfigName("api")
 	viper.SetConfigType("env")
