@@ -6,12 +6,10 @@ import (
 	"log"
 	"net/http"
 
-	"golang.org/x/crypto/argon2"
-
 	"github.com/Serj1c/datalearn/api/pkg/middleware"
 	"github.com/Serj1c/datalearn/api/pkg/session"
 	"github.com/Serj1c/datalearn/api/pkg/users"
-	"github.com/Serj1c/datalearn/api/pkg/util"
+	"github.com/asaskevich/govalidator"
 )
 
 // Users is a handler for getting and updating users
@@ -25,12 +23,6 @@ type Users struct {
 // NewUsers creates User's handler
 func NewUsers(l *log.Logger, v *middleware.Validation, r *users.Repo, s session.Manager) *Users {
 	return &Users{l, v, r, s}
-}
-
-func (u *Users) hashPassword(password string, salt string) []byte {
-	hashedPassword := argon2.IDKey([]byte(password), []byte(salt), 1, 64*1024, 4, 32)
-	temp := []byte(salt)
-	return append(temp, hashedPassword...)
 }
 
 type signUpInfo struct {
@@ -58,9 +50,9 @@ func (u *Users) Signup(rw http.ResponseWriter, r *http.Request) {
 		http.Error(rw, "Error unmarshaling request body", http.StatusInternalServerError)
 	}
 
-	salt := util.RandString()
-	hashedPassword := string(u.hashPassword(newUser.Password, salt)) /* TODO: now passwords are not hashed!! */
-	u.l.Println(hashedPassword)                                      /* this line is needed for linter issue only */
+	if !govalidator.IsEmail(newUser.Email) {
+		http.Error(rw, "Not valid email address", http.StatusBadRequest)
+	}
 
 	userID, err := u.r.Create(newUser.Email, newUser.Name, newUser.Surname, newUser.Password)
 	switch err {
