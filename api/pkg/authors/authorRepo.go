@@ -2,7 +2,6 @@ package authors
 
 import (
 	"errors"
-	"fmt"
 	"time"
 
 	mgo "github.com/globalsign/mgo"
@@ -59,7 +58,6 @@ func (r *Repo) GetAuthorByName(name string) (*Author, error) {
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println(author)
 	return author, nil
 }
 
@@ -76,7 +74,6 @@ func (r *Repo) AddAuthor(a Author) error {
 	a.ID = bson.NewObjectId()
 	a.CreatedOn = time.Now().Format("2006-01-02 15:04:05")
 	a.Version = 1
-	fmt.Println("from repo: ", a)
 	err = r.collection.Insert(a)
 	if err != nil {
 		return ErrorBadRequest

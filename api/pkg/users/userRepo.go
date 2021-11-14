@@ -1,8 +1,12 @@
 package users
 
 import (
+	"bytes"
 	"database/sql"
 	"errors"
+	"fmt"
+
+	"golang.org/x/crypto/argon2"
 
 	"github.com/Serj1c/datalearn/api/pkg/util"
 )
@@ -33,8 +37,13 @@ var (
 // Create creates a new user and adds her/him to the database
 func (r *Repo) Create(email string, name string, surname string, password string) (string, error) {
 	id := util.RandString()
-	row, err := r.db.Exec("INSERT into users(id, email, name, surname, password) VALUES($1, $2, $3, $4, $5)", id, email, name, surname, password)
+	salt := util.RandString()
+	hashedPassword := hashPassword(password, salt)
+
+	row, err := r.db.Exec(`INSERT into users(id, email, name, surname, password) 
+		VALUES($1, $2, $3, $4, $5)`, id, email, name, surname, hashedPassword)
 	if err != nil {
+		fmt.Println(err)
 		return "", ErrBadRequest
 	}
 	affected, err := row.RowsAffected()
@@ -50,7 +59,7 @@ func (r *Repo) Create(email string, name string, surname string, password string
 // Authenticate checks email and password and gets back userID from the database or an error
 func (r *Repo) Authenticate(email string, password string) (string, error) {
 	row := r.db.QueryRow("SELECT id, email, name, surname, password, version FROM users WHERE email=$1", email)
-	user, err := checkPasswordIsValid(row, password)
+	user, err := checkPassIsValid(row, password)
 	switch err {
 	case nil:
 	case ErrNoRecord:
@@ -61,17 +70,24 @@ func (r *Repo) Authenticate(email string, password string) (string, error) {
 	return user.ID, nil
 }
 
-func checkPasswordIsValid(row *sql.Row, password string) (*User, error) {
+func checkPassIsValid(row *sql.Row, password string) (*User, error) {
 	user := &User{}
-	var passwordStoredInDB string
-	err := row.Scan(&user.ID, &user.Email, &user.Name, &user.Surname, &passwordStoredInDB, &user.Version)
+	var passStoredInDB string
+	err := row.Scan(&user.ID, &user.Email, &user.Name, &user.Surname, &passStoredInDB, &user.Version)
 	if err == sql.ErrNoRows {
 		return nil, ErrNoRecord
-	} /* TODO: when password is hashed this function would have to be changed */
-	if password != passwordStoredInDB {
+	}
+	salt := passStoredInDB[0:24]
+	if !bytes.Equal(hashPassword(password, salt), []byte(passStoredInDB)) {
 		return nil, ErrWrongPassword
 	}
 	return user, nil
+}
+
+func hashPassword(password string, salt string) []byte {
+	hashedPassword := argon2.IDKey([]byte(password), []byte(salt), 1, 64*1024, 4, 32)
+	temp := []byte(salt)
+	return append(temp, hashedPassword...)
 }
 
 // Get retrives a user from the database.

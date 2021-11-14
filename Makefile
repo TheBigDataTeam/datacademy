@@ -1,23 +1,19 @@
 dev:
 	ENV=development docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
 
-api:
-	docker run --name data-api -d -p 3100:3100 data-api:latest
+devbuild:
+	ENV=development docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build
 
-postgres:
-	docker run --name data-db -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=spartak1 -d postgres:13.1-alpine
-
-# Container names in commands postgres, createdb and dropdb are not right
-createdb:
-	docker exec -it data-db createdb --username=root --owner=root datacademy
+initdb:
+	docker exec -it datalearn_db_1 createdb --username=root --owner=root datalearn
 
 dropdb:
-	docker exec -it data-db dropdb datacademy
+	docker exec -it datalearn_db_1 dropdb datalearn
 
 migrateup:
-	migrate -path migrations/migrations -database "postgresql://root:spartak1@localhost:5432/datacademy?sslmode=disable" up
+	migrate -path migrations/migrations -database "postgresql://root:spartak1@localhost:5432/datalearn?sslmode=disable" up
 
 migratedown:
-	migrate -path migrations/migrations -database "postgresql://root:spartak1@localhost:5432/datacademy?sslmode=disable" down
+	migrate -path migrations/migrations -database "postgresql://root:spartak1@localhost:5432/datalearn?sslmode=disable" down
 
-.PHONY: dev api postgres createdb dropdb migrateup migratedown
+.PHONY: dev devbuild initdb dropdb migrateup migratedown
