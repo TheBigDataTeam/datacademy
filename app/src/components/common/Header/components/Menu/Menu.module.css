@@ -5,11 +5,18 @@
     padding: 0;
 }
 
-.root_item {
+.menu_item {
     text-decoration: none;
     margin: 0 20px;
+    color: #000000;
 }
 
-.root_item:hover {
-    color: red;
+.menu_item_inverted {
+    text-decoration: none;
+    margin: 0 20px;
+    color: #ffffff;
+}
+
+.menu_item:hover, .menu_item_inverted:hover {
+    color: #f41224;
 }
