@@ -16,7 +16,7 @@ export const Header: React.FunctionComponent<Props> = ({ inverted }): JSX.Elemen
 	const user = useSelector((state: AppStateType) => state.userAuth.user)
 
 	return (
-		<div className={styles.root}>
+		<nav className={styles.root}>
 			<div className={styles.left}>
 				<Logo inverted={inverted} />
 			</div>
@@ -34,6 +34,6 @@ export const Header: React.FunctionComponent<Props> = ({ inverted }): JSX.Elemen
 				</Link>
 				}
 			</div>
-		</div>
+		</nav>
 	)
 }
