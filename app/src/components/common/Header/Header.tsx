@@ -20,7 +20,9 @@ export const Header: React.FunctionComponent<Props> = ({ inverted }): JSX.Elemen
 			<div className={styles.left}>
 				<Logo inverted={inverted} />
 			</div>
-			{ inverted ? <Menu inverted /> : <Menu /> }
+			<div className={styles.center}>
+				{ inverted ? <Menu inverted /> : <Menu /> }
+			</div>
 			<div className={styles.right}>
 				{ inverted ? <span className={styles.name_inverted}>{isLoaded ? user.name : `Guest`}</span> : 
 					<span className={styles.name}>{isLoaded ? user.name : `Guest`}</span> }

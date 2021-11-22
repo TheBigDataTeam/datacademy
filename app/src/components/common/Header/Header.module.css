@@ -1,10 +1,13 @@
 .root {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     position: fixed;
     width: 100%;
     z-index: 999;
+}
+
+.center {
+    margin: auto;
 }
 
 .left {
@@ -12,10 +15,10 @@
 }
 
 .right {
+    display: flex;
+    justify-content: flex-end;
     padding: 0 10px;
     align-items: center;
-    display: flex;
-    width: fit-content;
 }
 
 .link {
