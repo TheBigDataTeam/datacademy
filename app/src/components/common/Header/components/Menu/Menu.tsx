@@ -1,8 +1,7 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import styles from './Menu.module.css';
-import { menuItems } from './menuItems';
-import { Text } from 'components/ui';
+import React from 'react'
+import { Link } from 'react-router-dom'
+import styles from './Menu.module.css'
+import { menuItems } from './menuItems'
 
 interface Props {
 	inverted?: boolean
@@ -13,12 +12,12 @@ export const Menu: React.FunctionComponent<Props> = ({ inverted }): JSX.Element 
 		<ul className={styles.root}>
 			{menuItems.map((item, i) => (
 				<li key={i}>
-					<Link to={item.url} className={styles.root_item}>
-						{ inverted ? <Text color="inverted" size="l">{item.title}</Text>
-						: <Text size="l">{item.title}</Text> }
+					<Link to={item.url}>
+						{ inverted ? <span className={styles.menu_item_inverted}>{item.title}</span>
+						: <span className={styles.menu_item}>{item.title}</span> }
 					</Link>
 				</li>
 			))}
 		</ul>
-	);
-};
+	)
+}
