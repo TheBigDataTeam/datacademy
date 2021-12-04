@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -9,7 +10,6 @@ import (
 	"github.com/Serj1c/datalearn/api/pkg/middleware"
 	"github.com/Serj1c/datalearn/api/pkg/session"
 	"github.com/Serj1c/datalearn/api/pkg/users"
-	"github.com/asaskevich/govalidator"
 )
 
 // Users is a handler for getting and updating users
@@ -50,9 +50,8 @@ func (u *Users) Signup(rw http.ResponseWriter, r *http.Request) {
 		http.Error(rw, "Error unmarshaling request body", http.StatusInternalServerError)
 	}
 
-	if !govalidator.IsEmail(newUser.Email) {
-		http.Error(rw, "Not valid email address", http.StatusBadRequest)
-		return
+	if err = u.Validate(*newUser); err != nil {
+		http.Error(rw, fmt.Sprintf("Error: %s", err), http.StatusBadRequest)
 	}
 
 	userID, err := u.r.Create(newUser.Email, newUser.Name, newUser.Surname, newUser.Password)
@@ -85,9 +84,8 @@ func (u *Users) Login(rw http.ResponseWriter, r *http.Request) {
 		http.Error(rw, "Error unmarshaling request body", http.StatusInternalServerError)
 	}
 
-	if !govalidator.IsEmail(userForAuth.Email) {
-		http.Error(rw, "Not valid email address", http.StatusBadRequest)
-		return
+	if err = u.Validate(); err != nil {
+		http.Error(rw, fmt.Sprintf("Error: %s", err), http.StatusBadRequest)
 	}
 
 	userID, err := u.r.Authenticate(userForAuth.Email, userForAuth.Password)
@@ -149,4 +147,10 @@ func (u *Users) GetBySessionID(rw http.ResponseWriter, r *http.Request) {
 // Logout handles requests for a user log out
 func (u *Users) Logout(rw http.ResponseWriter, r *http.Request) {
 	u.s.DestroyCurrent(rw, r)
+}
+
+// Validate validates the input provided
+func (u *Users) Validate(user users.User) error {
+	err := validate.Struct(user)
+	return err
 }

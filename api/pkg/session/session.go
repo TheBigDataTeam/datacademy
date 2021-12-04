@@ -22,8 +22,8 @@ type DBSession struct {
 	DB *sql.DB
 }
 
-// NewDBSession returns an instance of DBSession
-func NewDBSession(db *sql.DB) *DBSession {
+// New returns an instance of DBSession
+func New(db *sql.DB) *DBSession {
 	return &DBSession{
 		DB: db,
 	}

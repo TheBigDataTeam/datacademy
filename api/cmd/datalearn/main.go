@@ -27,7 +27,7 @@ func main() {
 	// init logger
 	l := log.New(os.Stdout, "API ", log.LstdFlags)
 
-	// reaf config file
+	// read config file
 	cfg, err := config.Load("configs")
 	if err != nil {
 		log.Fatal("unable to read configuration: ", err)
@@ -58,7 +58,7 @@ func main() {
 	cr := courses.New(db)
 	ar := authors.New(mongo, collection)
 	ur := users.New(db)
-	s := session.NewDBSession(db)
+	s := session.New(db)
 
 	// init handlers
 	coursesHandler := handlers.NewCourses(l, v, cr)
@@ -81,8 +81,6 @@ func main() {
 	sm.HandleFunc("/api/auth/login", usersHandler.Login).Methods("POST")
 	sm.HandleFunc("/api/auth/logout", usersHandler.Logout).Methods("GET")
 	sm.HandleFunc("/api/auth/user", usersHandler.GetBySessionID).Methods("GET")
-
-	//sm.Use(coursesHandler.MiddlewareValidateCourse)
 
 	/* Administration endpoints */
 	sm.HandleFunc("/api/admin/add/author", authorsHandler.Create).Methods("POST")
