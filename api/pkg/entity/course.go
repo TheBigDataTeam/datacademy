@@ -1,6 +1,6 @@
-package courses
+package entity
 
-// Course defines the structure for an API
+// Course defines the structure for the API
 type Course struct {
 	ID               string `json:"id"`
 	Title            string `json:"title"`

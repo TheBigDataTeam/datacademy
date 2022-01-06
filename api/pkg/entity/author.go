@@ -1,4 +1,4 @@
-package authors
+package entity
 
 import (
 	"github.com/globalsign/mgo/bson"

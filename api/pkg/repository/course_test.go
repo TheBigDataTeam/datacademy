@@ -1,9 +1,10 @@
-package courses
+package repository
 
 import (
 	"bytes"
 	"testing"
 
+	"github.com/Serj1c/datalearn/api/pkg/entity"
 	"github.com/Serj1c/datalearn/api/pkg/middleware"
 	"github.com/Serj1c/datalearn/api/pkg/util"
 	"github.com/stretchr/testify/assert"
@@ -12,7 +13,7 @@ import (
 /* TODO tests to be reworked */
 
 func TestCourseMissingTitleReturnsError(t *testing.T) {
-	c := Course{
+	c := entity.Course{
 		Description: "dummies love SQL",
 	}
 	v := middleware.NewValidation()
@@ -21,7 +22,7 @@ func TestCourseMissingTitleReturnsError(t *testing.T) {
 }
 
 func TestCourseMissingAuthorReturnsError(t *testing.T) {
-	c := Course{
+	c := entity.Course{
 		Title:       "SQL for dummies",
 		Description: "dummies love SQL",
 	}
@@ -31,7 +32,7 @@ func TestCourseMissingAuthorReturnsError(t *testing.T) {
 }
 
 func TestValidProductDoesNotReturnError(t *testing.T) {
-	c := Course{
+	c := entity.Course{
 		Title:       "SQL for dummies",
 		Description: "dummies love SQL",
 		Author:      "Sergei Isaev",
@@ -43,7 +44,7 @@ func TestValidProductDoesNotReturnError(t *testing.T) {
 }
 
 func TestCourseToJSON(t *testing.T) {
-	cs := []*Course{
+	cs := []*entity.Course{
 		{
 			Title: "SQL for dummies",
 		},

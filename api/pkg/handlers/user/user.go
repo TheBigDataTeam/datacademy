@@ -1,4 +1,4 @@
-package handlers
+package user
 
 import (
 	"encoding/json"
@@ -6,22 +6,21 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/Serj1c/datalearn/api/pkg/errs"
 	"github.com/Serj1c/datalearn/api/pkg/middleware"
+	"github.com/Serj1c/datalearn/api/pkg/operation"
 	"github.com/Serj1c/datalearn/api/pkg/session"
-	"github.com/Serj1c/datalearn/api/pkg/users"
 )
 
-// Users is a handler for getting and updating users
-type Users struct {
+type UserHandler struct {
 	l *log.Logger
 	v *middleware.Validation
-	r *users.Repo
+	r operation.UserRepository
 	s session.Manager
 }
 
-// NewUsers creates User's handler
-func NewUsers(l *log.Logger, v *middleware.Validation, r *users.Repo, s session.Manager) *Users {
-	return &Users{l, v, r, s}
+func NewUserHandler(l *log.Logger, v *middleware.Validation, r operation.UserRepository, s session.Manager) *UserHandler {
+	return &UserHandler{l, v, r, s}
 }
 
 type signUpInfo struct {
@@ -36,8 +35,7 @@ type loginInfo struct {
 	Password string `json:"password"`
 }
 
-// Signup handles request for creating new users
-func (u *Users) Signup(rw http.ResponseWriter, r *http.Request) {
+func (u *UserHandler) Signup(rw http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		http.Error(rw, "Cannot read body", http.StatusInternalServerError)
@@ -52,9 +50,9 @@ func (u *Users) Signup(rw http.ResponseWriter, r *http.Request) {
 	userID, err := u.r.Create(newUser.Email, newUser.Name, newUser.Surname, newUser.Password)
 	switch err {
 	case nil:
-	case users.ErrBadRequest:
+	case errs.BadRequest:
 		http.Error(rw, "Wrong data provided", http.StatusBadRequest)
-	case users.ErrAlreadyExists:
+	case errs.AlreadyExists:
 		http.Error(rw, "Such user already exists", http.StatusForbidden)
 	default:
 		http.Error(rw, "Internal error", http.StatusInternalServerError)
@@ -66,8 +64,7 @@ func (u *Users) Signup(rw http.ResponseWriter, r *http.Request) {
 	rw.WriteHeader(http.StatusCreated)
 }
 
-// Login handles requests for user's authorization
-func (u *Users) Login(rw http.ResponseWriter, r *http.Request) {
+func (u *UserHandler) Login(rw http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		http.Error(rw, "Cannot read body", http.StatusInternalServerError)
@@ -82,9 +79,9 @@ func (u *Users) Login(rw http.ResponseWriter, r *http.Request) {
 	userID, err := u.r.Authenticate(userForAuth.Email, userForAuth.Password)
 	switch err {
 	case nil:
-	case users.ErrNoRecord:
+	case errs.NotFound:
 		http.Error(rw, "User does not exist", http.StatusBadRequest)
-	case users.ErrWrongPassword:
+	case errs.WrongPassword:
 		http.Error(rw, "Password is not correct", http.StatusBadRequest)
 	}
 	if err != nil {
@@ -95,13 +92,13 @@ func (u *Users) Login(rw http.ResponseWriter, r *http.Request) {
 
 // Get returns a user based on a userID coming from query params.
 // Currently is not used
-func (u *Users) Get(rw http.ResponseWriter, r *http.Request) {
+func (u *UserHandler) Get(rw http.ResponseWriter, r *http.Request) {
 	queryParams := r.URL.Query()
 	userID := queryParams["user"][0]
 	user, err := u.r.Get(userID)
 	switch err {
 	case nil:
-	case users.ErrNoRecord:
+	case errs.NotFound:
 		http.Error(rw, "User does not exist", http.StatusBadRequest)
 	}
 	response, err := json.Marshal(user)
@@ -111,8 +108,7 @@ func (u *Users) Get(rw http.ResponseWriter, r *http.Request) {
 	rw.Write(response)
 }
 
-// GetBySessionID returns a user based on a session id
-func (u *Users) GetBySessionID(rw http.ResponseWriter, r *http.Request) {
+func (u *UserHandler) GetBySessionID(rw http.ResponseWriter, r *http.Request) {
 	sess, err := u.s.Check(r)
 	switch {
 	case err == nil:
@@ -125,7 +121,7 @@ func (u *Users) GetBySessionID(rw http.ResponseWriter, r *http.Request) {
 	user, err := u.r.Get(userID)
 	switch err {
 	case nil:
-	case users.ErrNoRecord:
+	case errs.NotFound:
 		http.Error(rw, "User does not exist", http.StatusBadRequest)
 	}
 	response, err := json.Marshal(user)
@@ -135,7 +131,6 @@ func (u *Users) GetBySessionID(rw http.ResponseWriter, r *http.Request) {
 	rw.Write(response)
 }
 
-// Logout handles requests for a user log out
-func (u *Users) Logout(rw http.ResponseWriter, r *http.Request) {
+func (u *UserHandler) Logout(rw http.ResponseWriter, r *http.Request) {
 	u.s.DestroyCurrent(rw, r)
 }

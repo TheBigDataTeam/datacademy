@@ -1,43 +1,34 @@
-package courses
+package repository
 
 import (
 	"database/sql"
-	"errors"
 
+	"github.com/Serj1c/datalearn/api/pkg/entity"
+	"github.com/Serj1c/datalearn/api/pkg/errs"
 	"github.com/Serj1c/datalearn/api/pkg/util"
 )
 
 // Repo represents DB
-type Repo struct {
+type CourseRepository struct {
 	db *sql.DB
 }
 
 // New returns an instance of a Repo
-func New(db *sql.DB) *Repo {
-	return &Repo{
+func NewCourseRepository(db *sql.DB) *CourseRepository {
+	return &CourseRepository{
 		db: db,
 	}
 }
 
-var (
-	// ErrNoRecord is returned when no record in database is found
-	ErrNoRecord = errors.New("No course record found")
-	// ErrAlreadyExists is returned when one tries to add author which already exists
-	ErrAlreadyExists = errors.New("Course already exists")
-	// ErrBadRequest is returned when wrong data provided
-	ErrBadRequest = errors.New("Wrong data provided")
-)
-
-// GetCourses returns a list of courses.
-func (r *Repo) GetCourses() ([]*Course, error) {
-	courses := make([]*Course, 0, 10)
+func (r *CourseRepository) List() ([]*entity.Course, error) {
+	courses := make([]*entity.Course, 0, 10)
 	rows, err := r.db.Query("SELECT id, title, author, description, techstack, moduleQuantity, workshopQuantity FROM courses")
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 	for rows.Next() {
-		course := &Course{}
+		course := &entity.Course{}
 		err := rows.Scan(&course.ID, &course.Title, &course.Author, &course.Description, &course.TechStack, &course.ModuleQuantity, &course.WorkshopQuantity)
 		if err != nil {
 			return nil, err
@@ -47,30 +38,28 @@ func (r *Repo) GetCourses() ([]*Course, error) {
 	return courses, nil
 }
 
-// GetCourseByID returns a single course which matches the id from the DB.
-func (r *Repo) GetCourseByID(id string) (*Course, error) {
-	course := &Course{}
+func (r *CourseRepository) Get(id string) (*entity.Course, error) {
+	course := &entity.Course{}
 	row := r.db.QueryRow("SELECT id, title, author, description, techstack, moduleQuantity, workshopQuantity FROM courses WHERE id=$1", id)
 	err := row.Scan(&course.ID, &course.Title, &course.Author, &course.Description, &course.TechStack, &course.ModuleQuantity, &course.WorkshopQuantity)
 	if err == sql.ErrNoRows {
-		return nil, ErrNoRecord
+		return nil, errs.NotFound
 	}
 	return course, nil
 }
 
 /* Administration part of repository functions */
 
-// AddCourse adds a new course to the DB.
-func (r *Repo) AddCourse(c Course) error {
+func (r *CourseRepository) Create(c entity.Course) error {
 	id := util.RandString()
 	row, err := r.db.Exec("INSERT into courses(id, title, author, description, techstack, moduleQuantity, workshopQuantity) VALUES($1, $2, $3, $4, $5, $6, $7)",
 		id, c.Title, c.Author, c.Description, c.TechStack, c.ModuleQuantity, c.WorkshopQuantity)
 	if err != nil {
-		return ErrBadRequest
+		return errs.BadRequest
 	}
 	affected, err := row.RowsAffected()
 	if affected == 0 {
-		return ErrAlreadyExists
+		return errs.AlreadyExists
 	}
 	if err != nil {
 		return err
@@ -78,12 +67,10 @@ func (r *Repo) AddCourse(c Course) error {
 	return nil
 }
 
-// UpdateCourse replaces a course in the DB with the given item.
-func (r *Repo) UpdateCourse(c Course) error {
+func (r *CourseRepository) Update(c entity.Course) error {
 	return nil
 }
 
-// DeleteCourse deletes a course from the DB
-func (r *Repo) DeleteCourse(id string) error {
+func (r *CourseRepository) Delete(id string) error {
 	return nil
 }

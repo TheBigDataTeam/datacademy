@@ -9,13 +9,14 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/Serj1c/datalearn/api/pkg/authors"
 	"github.com/Serj1c/datalearn/api/pkg/config"
-	"github.com/Serj1c/datalearn/api/pkg/courses"
-	"github.com/Serj1c/datalearn/api/pkg/handlers"
+	"github.com/Serj1c/datalearn/api/pkg/handlers/author"
+	"github.com/Serj1c/datalearn/api/pkg/handlers/course"
+	"github.com/Serj1c/datalearn/api/pkg/handlers/user"
 	"github.com/Serj1c/datalearn/api/pkg/middleware"
+	"github.com/Serj1c/datalearn/api/pkg/repository"
+	"github.com/Serj1c/datalearn/api/pkg/service"
 	"github.com/Serj1c/datalearn/api/pkg/session"
-	"github.com/Serj1c/datalearn/api/pkg/users"
 	mgo "github.com/globalsign/mgo"
 	"github.com/gorilla/mux"
 	_ "github.com/lib/pq"
@@ -55,25 +56,28 @@ func main() {
 	v := middleware.NewValidation() /* TODO: currently not registered */
 
 	// init repos
-	cr := courses.New(db)
-	ar := authors.New(mongo, collection)
-	ur := users.New(db)
+	cr := repository.NewCourseRepository(db)
+	ar := repository.NewAuthorRepository(mongo, collection)
+	ur := repository.NewUserRepository(db)
 	s := session.New(db)
 
+	// init services
+	ap := service.NewAuthorProcessor(ar)
+
 	// init handlers
-	coursesHandler := handlers.NewCourses(l, v, cr)
-	authorsHandler := handlers.NewAuthors(l, v, ar)
-	usersHandler := handlers.NewUsers(l, v, ur, s)
+	courseHandler := course.NewCourseHandler(l, v, cr)
+	authorHandler := author.NewAuthorHandler(l, v, ap, ar)
+	usersHandler := user.NewUserHandler(l, v, ur, s)
 
 	sm := mux.NewRouter()
 
 	// register handler-functions
-	sm.HandleFunc("/api/authors", authorsHandler.List).Methods("GET")
-	sm.HandleFunc("/api/authors/{id}", authorsHandler.GetByID).Methods("GET")
-	sm.HandleFunc("/api/authors/name/{name}", authorsHandler.GetByName).Methods("GET")
+	sm.HandleFunc("/api/authors", authorHandler.List).Methods("GET")
+	sm.HandleFunc("/api/authors/{id}", authorHandler.Get).Methods("GET")
+	sm.HandleFunc("/api/authors/name/{name}", authorHandler.GetByName).Methods("GET")
 
-	sm.HandleFunc("/api/courses", coursesHandler.List).Methods("GET")
-	sm.HandleFunc("/api/courses/{id}", coursesHandler.Get).Methods("GET")
+	sm.HandleFunc("/api/courses", courseHandler.List).Methods("GET")
+	sm.HandleFunc("/api/courses/{id}", courseHandler.Get).Methods("GET")
 
 	sm.HandleFunc("/api/users", usersHandler.Get).Methods("GET") /* currently is not used */
 
@@ -83,12 +87,12 @@ func main() {
 	sm.HandleFunc("/api/auth/user", usersHandler.GetBySessionID).Methods("GET")
 
 	/* Administration endpoints */
-	sm.HandleFunc("/api/admin/add/author", authorsHandler.Create).Methods("POST")
-	sm.HandleFunc("/api/admin/add/course", coursesHandler.Create).Methods("POST")
-	sm.HandleFunc("/courses/{id}", coursesHandler.Delete).Methods("DELETE")
-	sm.HandleFunc("/courses/{id}", coursesHandler.Update).Methods("PUT")
-	sm.HandleFunc("/authors/{id}", authorsHandler.Update).Methods("PUT")
-	sm.HandleFunc("/authors/{id}", authorsHandler.Delete).Methods("DELETE")
+	sm.HandleFunc("/api/admin/add/author", authorHandler.Create).Methods("POST")
+	sm.HandleFunc("/api/admin/add/course", courseHandler.Create).Methods("POST")
+	sm.HandleFunc("/courses/{id}", courseHandler.Delete).Methods("DELETE")
+	sm.HandleFunc("/courses/{id}", courseHandler.Update).Methods("PUT")
+	sm.HandleFunc("/authors/{id}", authorHandler.Update).Methods("PUT")
+	sm.HandleFunc("/authors/{id}", authorHandler.Delete).Methods("DELETE")
 
 	// define middleware to handle CORS
 	c := cors.New(cors.Options{
