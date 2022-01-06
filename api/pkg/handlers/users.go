@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -50,10 +49,6 @@ func (u *Users) Signup(rw http.ResponseWriter, r *http.Request) {
 		http.Error(rw, "Error unmarshaling request body", http.StatusInternalServerError)
 	}
 
-	if err = u.Validate(*newUser); err != nil {
-		http.Error(rw, fmt.Sprintf("Error: %s", err), http.StatusBadRequest)
-	}
-
 	userID, err := u.r.Create(newUser.Email, newUser.Name, newUser.Surname, newUser.Password)
 	switch err {
 	case nil:
@@ -82,10 +77,6 @@ func (u *Users) Login(rw http.ResponseWriter, r *http.Request) {
 	err = json.Unmarshal(body, userForAuth)
 	if err != nil {
 		http.Error(rw, "Error unmarshaling request body", http.StatusInternalServerError)
-	}
-
-	if err = u.Validate(); err != nil {
-		http.Error(rw, fmt.Sprintf("Error: %s", err), http.StatusBadRequest)
 	}
 
 	userID, err := u.r.Authenticate(userForAuth.Email, userForAuth.Password)
@@ -147,10 +138,4 @@ func (u *Users) GetBySessionID(rw http.ResponseWriter, r *http.Request) {
 // Logout handles requests for a user log out
 func (u *Users) Logout(rw http.ResponseWriter, r *http.Request) {
 	u.s.DestroyCurrent(rw, r)
-}
-
-// Validate validates the input provided
-func (u *Users) Validate(user users.User) error {
-	err := validate.Struct(user)
-	return err
 }
