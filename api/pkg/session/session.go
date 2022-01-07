@@ -7,23 +7,20 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Serj1c/datalearn/api/pkg/users"
+	"github.com/Serj1c/datalearn/api/pkg/entity"
 	"github.com/Serj1c/datalearn/api/pkg/util"
 )
 
-// Session represents a session of a user
 type Session struct {
 	ID     string
 	UserID string
 }
 
-// DBSession is an abstraction on top of a connection to database
 type DBSession struct {
 	DB *sql.DB
 }
 
-// NewDBSession returns an instance of DBSession
-func NewDBSession(db *sql.DB) *DBSession {
+func New(db *sql.DB) *DBSession {
 	return &DBSession{
 		DB: db,
 	}
@@ -34,7 +31,7 @@ type Manager interface {
 	Create(http.ResponseWriter, string) error
 	Check(*http.Request) (*Session, error)
 	DestroyCurrent(http.ResponseWriter, *http.Request) error
-	DestroyAll(http.ResponseWriter, *users.User) error
+	DestroyAll(http.ResponseWriter, *entity.User) error
 }
 
 var (
@@ -42,7 +39,6 @@ var (
 	ErrorNoAuth = errors.New("No session found")
 )
 
-// Create creates a session and stores it in the databse
 func (sdb *DBSession) Create(rw http.ResponseWriter, UserID string) error {
 	sessionID := util.RandString()
 	_, err := sdb.DB.Exec("INSERT into sessions(id, user_id) VALUES($1, $2)", sessionID, UserID)
@@ -60,7 +56,6 @@ func (sdb *DBSession) Create(rw http.ResponseWriter, UserID string) error {
 	return nil
 }
 
-// Check checks that a session exists in the database
 func (sdb *DBSession) Check(r *http.Request) (*Session, error) {
 	sessID, err := r.Cookie("session_id")
 	if err == http.ErrNoCookie {
@@ -78,7 +73,6 @@ func (sdb *DBSession) Check(r *http.Request) (*Session, error) {
 	return sess, nil
 }
 
-// DestroyCurrent removes current user's session from the database
 func (sdb *DBSession) DestroyCurrent(rw http.ResponseWriter, r *http.Request) error {
 	sess, err := FromContext(r.Context())
 	switch {
@@ -100,8 +94,7 @@ func (sdb *DBSession) DestroyCurrent(rw http.ResponseWriter, r *http.Request) er
 	return nil
 }
 
-// DestroyAll removes all sessions of a current user from the databse
-func (sdb *DBSession) DestroyAll(rw http.ResponseWriter, user *users.User) error {
+func (sdb *DBSession) DestroyAll(rw http.ResponseWriter, user *entity.User) error {
 	return nil
 }
 
@@ -109,7 +102,6 @@ type ctxKey int
 
 const sessionKey ctxKey = 1
 
-// FromContext returns session from context if it exists
 func FromContext(ctx context.Context) (*Session, error) {
 	sess, ok := ctx.Value(sessionKey).(*Session)
 	if !ok {
@@ -127,7 +119,6 @@ var noAuthUrls = map[string]struct{}{
 	"/courses/{id}":    {},
 }
 
-// AuthMiddleware is responsible for checking whether or not a user has rights to access a resource
 func AuthMiddleware(sm Manager, next http.Handler) http.Handler {
 	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
 		if _, ok := noAuthUrls[r.URL.Path]; ok {

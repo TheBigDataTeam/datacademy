@@ -43,8 +43,7 @@ type Validation struct {
 // NewValidation creates a new Validation type
 func NewValidation() *Validation {
 	validate := validator.New()
-	validate.RegisterValidation("author", validateAuthor)
-
+	validate.RegisterValidation("user", validateUser)
 	return &Validation{validate}
 }
 
@@ -65,13 +64,12 @@ func (v *Validation) Validate(i interface{}) ValidationErrors {
 	return returnErrs
 }
 
-// validateAuthor field
-func validateAuthor(fl validator.FieldLevel) bool {
+func validateUser(fl validator.FieldLevel) bool {
 	// author is expected to be in the following format: Abcccc Defffg
 	regxp := regexp.MustCompile(`[A-Z][a-z]+ [A-Z][a-z]+`) // regexp is not valid TODO!
 	allMatches := regxp.FindAllString(fl.Field().String(), -1)
 
-	if len(allMatches) > 1 {
+	if len(allMatches) > 1 || len(allMatches) == 0 {
 		return false
 	}
 	return true
