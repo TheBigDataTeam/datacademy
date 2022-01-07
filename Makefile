@@ -1,8 +1,11 @@
 dev:
 	ENV=development docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
 
-devbuild:
+devb:
 	ENV=development docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build
+
+stop:
+	docker-compose down
 
 initdb:
 	docker exec -it datalearn_db_1 createdb --username=root --owner=root datalearn
@@ -16,4 +19,4 @@ migrateup:
 migratedown:
 	migrate -path migrations/migrations -database "postgresql://root:spartak1@localhost:5432/datalearn?sslmode=disable" down
 
-.PHONY: dev devbuild initdb dropdb migrateup migratedown
+.PHONY: dev devb stop initdb dropdb migrateup migratedown
