@@ -6,13 +6,14 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/globalsign/mgo/bson"
+	"github.com/gorilla/mux"
+
 	"github.com/Serj1c/datalearn/api/pkg/entity"
 	"github.com/Serj1c/datalearn/api/pkg/errs"
 	"github.com/Serj1c/datalearn/api/pkg/middleware"
 	"github.com/Serj1c/datalearn/api/pkg/operation"
 	"github.com/Serj1c/datalearn/api/pkg/service"
-	"github.com/globalsign/mgo/bson"
-	"github.com/gorilla/mux"
 )
 
 type AuthorHandler struct {

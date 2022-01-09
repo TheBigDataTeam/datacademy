@@ -4,7 +4,6 @@ import (
 	"github.com/globalsign/mgo/bson"
 )
 
-// Author defines the structure of the author object
 type Author struct {
 	ID               bson.ObjectId `json:"id" bson:"_id"`
 	Email            string        `json:"email" bson:"email"`
