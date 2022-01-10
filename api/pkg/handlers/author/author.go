@@ -12,7 +12,6 @@ import (
 	"github.com/Serj1c/datalearn/api/pkg/entity"
 	"github.com/Serj1c/datalearn/api/pkg/errs"
 	"github.com/Serj1c/datalearn/api/pkg/middleware"
-	"github.com/Serj1c/datalearn/api/pkg/operation"
 	"github.com/Serj1c/datalearn/api/pkg/service"
 )
 
@@ -20,11 +19,10 @@ type AuthorHandler struct {
 	l *log.Logger
 	v *middleware.Validation
 	p *service.AuthorProcessor
-	r operation.AuthorRepository
 }
 
-func NewAuthorHandler(l *log.Logger, v *middleware.Validation, p *service.AuthorProcessor, r operation.AuthorRepository) *AuthorHandler {
-	return &AuthorHandler{l, v, p, r}
+func NewAuthorHandler(l *log.Logger, v *middleware.Validation, p *service.AuthorProcessor) *AuthorHandler {
+	return &AuthorHandler{l, v, p}
 }
 
 type authorData struct {

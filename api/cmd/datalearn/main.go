@@ -66,7 +66,7 @@ func main() {
 
 	// init handlers
 	courseHandler := course.NewCourseHandler(l, v, cr)
-	authorHandler := author.NewAuthorHandler(l, v, ap, ar)
+	authorHandler := author.NewAuthorHandler(l, v, ap)
 	usersHandler := user.NewUserHandler(l, v, ur, s)
 
 	sm := mux.NewRouter()
