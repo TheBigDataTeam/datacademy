@@ -67,10 +67,11 @@ func main() {
 
 	// init services
 	ap := service.NewAuthorProcessor(ar)
+	cp := service.NewCourseProcessor(cr)
 	mp := service.NewModuleProcessor(mr)
 
 	// init handlers
-	courseHandler := course.NewCourseHandler(l, v, cr)
+	courseHandler := course.NewCourseHandler(l, v, cp)
 	moduleHandler := module.NewModuleHandler(l, v, mp)
 	authorHandler := author.NewAuthorHandler(l, v, ap)
 	usersHandler := user.NewUserHandler(l, v, ur, s)

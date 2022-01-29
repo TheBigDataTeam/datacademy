@@ -6,26 +6,25 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/gorilla/mux"
+
 	"github.com/Serj1c/datalearn/api/pkg/entity"
 	"github.com/Serj1c/datalearn/api/pkg/errs"
 	"github.com/Serj1c/datalearn/api/pkg/middleware"
-	"github.com/Serj1c/datalearn/api/pkg/operation"
-	"github.com/gorilla/mux"
+	"github.com/Serj1c/datalearn/api/pkg/service"
 )
-
-type KeyCourse struct{}
 
 type CourseHandler struct {
 	l *log.Logger
 	v *middleware.Validation
-	r operation.CourseRepository
+	p *service.CourseProcessor
 }
 
-func NewCourseHandler(l *log.Logger, v *middleware.Validation, r operation.CourseRepository) *CourseHandler {
+func NewCourseHandler(l *log.Logger, v *middleware.Validation, p *service.CourseProcessor) *CourseHandler {
 	return &CourseHandler{
 		l: l,
 		v: v,
-		r: r,
+		p: p,
 	}
 }
 
@@ -34,11 +33,11 @@ type courseData struct {
 }
 
 func (c *CourseHandler) List(rw http.ResponseWriter, r *http.Request) {
-	listOfCourses, err := c.r.List()
+	courses, err := c.p.List()
 	if err != nil {
 		http.Error(rw, "Internal error", http.StatusInternalServerError)
 	}
-	response, err := json.Marshal(listOfCourses)
+	response, err := json.Marshal(courses)
 	if err != nil {
 		http.Error(rw, "Error marshaling response", http.StatusInternalServerError)
 	}
@@ -48,13 +47,13 @@ func (c *CourseHandler) List(rw http.ResponseWriter, r *http.Request) {
 func (c *CourseHandler) Get(rw http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	courseID := vars["id"] /* TODO: check that ID of a correct type */
-	course, err := c.r.Get(courseID)
+	course, err := c.p.Get(courseID)
 	switch err {
 	case nil:
 	case errs.BadRequest:
 		http.Error(rw, "Wrong data provided", http.StatusBadRequest)
 	case errs.NotFound:
-		http.Error(rw, "There is no such a course", http.StatusBadRequest)
+		http.Error(rw, "There is no such course", http.StatusBadRequest)
 	}
 	response, err := json.Marshal(course)
 	if err != nil {
@@ -78,7 +77,7 @@ func (c *CourseHandler) Create(rw http.ResponseWriter, r *http.Request) {
 		http.Error(rw, "Error unmarshaling request body", http.StatusInternalServerError)
 	}
 
-	err = c.r.Create(data.Course)
+	err = c.p.Create(data.Course)
 	switch {
 	case err == nil:
 		rw.WriteHeader(http.StatusCreated)
