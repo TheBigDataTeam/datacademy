@@ -22,7 +22,11 @@ type AuthorHandler struct {
 }
 
 func NewAuthorHandler(l *log.Logger, v *middleware.Validation, p *service.AuthorProcessor) *AuthorHandler {
-	return &AuthorHandler{l, v, p}
+	return &AuthorHandler{
+		l: l,
+		v: v,
+		p: p,
+	}
 }
 
 type authorData struct {

@@ -18,9 +18,9 @@ func NewModuleRepository(db *sql.DB) *ModuleRepository {
 	}
 }
 
-func (mr *ModuleRepository) List() ([]*entity.Module, error) {
+func (mr *ModuleRepository) List(courseId string) ([]*entity.Module, error) {
 	modules := make([]*entity.Module, 0, 10)
-	rows, err := mr.db.Query("SELECT id, course_id, title, body, badge FROM modules")
+	rows, err := mr.db.Query("SELECT id, course_id, title, body, badge FROM modules WHERE course_id=$1", courseId)
 	if err != nil {
 		return nil, err
 	}
@@ -50,7 +50,7 @@ func (mr *ModuleRepository) Get(id string) (*entity.Module, error) {
 
 func (mr *ModuleRepository) Create(m entity.Module) error {
 	id := util.RandString()
-	row, err := mr.db.Exec("INSERT into modules(id, course_id, title, body, badge) VALUES($1, $2, $3, $4, $5, $6, $7)",
+	row, err := mr.db.Exec("INSERT into modules(id, course_id, title, body, badge) VALUES($1, $2, $3, $4, $5)",
 		id, m.CourseId, m.Title, m.Body, m.Badge)
 	if err != nil {
 		return errs.BadRequest

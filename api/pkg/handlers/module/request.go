@@ -3,6 +3,9 @@ package module
 type GetRequest struct {
 	Id string `json:"id"`
 }
+type ListRequest struct {
+	CourseId string `json:"course_id"`
+}
 type CreateRequest struct {
 	CourseId string `json:"course_id" validate:"required"`
 	Title    string `json:"title" validate:"required"`

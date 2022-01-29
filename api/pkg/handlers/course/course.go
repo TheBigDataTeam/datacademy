@@ -22,7 +22,11 @@ type CourseHandler struct {
 }
 
 func NewCourseHandler(l *log.Logger, v *middleware.Validation, r operation.CourseRepository) *CourseHandler {
-	return &CourseHandler{l, v, r}
+	return &CourseHandler{
+		l: l,
+		v: v,
+		r: r,
+	}
 }
 
 type courseData struct {

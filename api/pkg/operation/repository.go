@@ -1,8 +1,9 @@
 package operation
 
 import (
-	"github.com/Serj1c/datalearn/api/pkg/entity"
 	"github.com/globalsign/mgo/bson"
+
+	"github.com/Serj1c/datalearn/api/pkg/entity"
 )
 
 type UserRepository interface {
@@ -29,7 +30,7 @@ type CourseRepository interface {
 }
 
 type ModuleRepository interface {
-	List() ([]*entity.Module, error)
+	List(courseId string) ([]*entity.Module, error)
 	Get(id string) (*entity.Module, error)
 	Create(m entity.Module) error
 	Update(m entity.Module) error

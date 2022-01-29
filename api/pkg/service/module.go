@@ -15,8 +15,8 @@ func NewModuleProcessor(mr operation.ModuleRepository) *ModuleProcessor {
 	}
 }
 
-func (mp *ModuleProcessor) List() ([]*entity.Module, error) {
-	modules, err := mp.mr.List()
+func (mp *ModuleProcessor) List(courseId string) ([]*entity.Module, error) {
+	modules, err := mp.mr.List(courseId)
 	if err != nil {
 		return nil, err
 	}
