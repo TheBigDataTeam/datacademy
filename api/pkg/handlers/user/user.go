@@ -20,7 +20,12 @@ type UserHandler struct {
 }
 
 func NewUserHandler(l *log.Logger, v *middleware.Validation, r operation.UserRepository, s session.Manager) *UserHandler {
-	return &UserHandler{l, v, r, s}
+	return &UserHandler{
+		l: l,
+		v: v,
+		r: r,
+		s: s,
+	}
 }
 
 type signUpInfo struct {
@@ -90,7 +95,6 @@ func (u *UserHandler) Login(rw http.ResponseWriter, r *http.Request) {
 	u.s.Create(rw, userID)
 }
 
-// Get returns a user based on a userID coming from query params.
 // Currently is not used
 func (u *UserHandler) Get(rw http.ResponseWriter, r *http.Request) {
 	queryParams := r.URL.Query()

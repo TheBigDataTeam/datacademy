@@ -1,4 +1,4 @@
-package entity
+package course
 
 type Course struct {
 	ID               string `json:"id"`
@@ -8,6 +8,4 @@ type Course struct {
 	TechStack        string `json:"techstack"`
 	ModuleQuantity   string `json:"module_quantity"`
 	WorkshopQuantity string `json:"workshop_quantity"`
-	CreatedOn        string `json:"created_on"`
-	Version          int    `json:"version"`
 }

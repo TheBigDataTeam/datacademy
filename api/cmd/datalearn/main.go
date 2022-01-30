@@ -7,20 +7,23 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"syscall"
 	"time"
+
+	mgo "github.com/globalsign/mgo"
+	"github.com/gorilla/mux"
+	_ "github.com/lib/pq"
+	"github.com/rs/cors"
 
 	"github.com/Serj1c/datalearn/api/pkg/config"
 	"github.com/Serj1c/datalearn/api/pkg/handlers/author"
 	"github.com/Serj1c/datalearn/api/pkg/handlers/course"
+	"github.com/Serj1c/datalearn/api/pkg/handlers/module"
 	"github.com/Serj1c/datalearn/api/pkg/handlers/user"
 	"github.com/Serj1c/datalearn/api/pkg/middleware"
 	"github.com/Serj1c/datalearn/api/pkg/repository"
 	"github.com/Serj1c/datalearn/api/pkg/service"
 	"github.com/Serj1c/datalearn/api/pkg/session"
-	mgo "github.com/globalsign/mgo"
-	"github.com/gorilla/mux"
-	_ "github.com/lib/pq"
-	"github.com/rs/cors"
 )
 
 func main() {
@@ -57,16 +60,20 @@ func main() {
 
 	// init repos
 	cr := repository.NewCourseRepository(db)
+	mr := repository.NewModuleRepository(db)
 	ar := repository.NewAuthorRepository(mongo, collection)
 	ur := repository.NewUserRepository(db)
 	s := session.New(db)
 
 	// init services
 	ap := service.NewAuthorProcessor(ar)
+	cp := service.NewCourseProcessor(cr)
+	mp := service.NewModuleProcessor(mr)
 
 	// init handlers
-	courseHandler := course.NewCourseHandler(l, v, cr)
-	authorHandler := author.NewAuthorHandler(l, v, ap, ar)
+	courseHandler := course.NewCourseHandler(l, v, cp)
+	moduleHandler := module.NewModuleHandler(l, v, mp)
+	authorHandler := author.NewAuthorHandler(l, v, ap)
 	usersHandler := user.NewUserHandler(l, v, ur, s)
 
 	sm := mux.NewRouter()
@@ -89,6 +96,7 @@ func main() {
 	/* Administration endpoints */
 	sm.HandleFunc("/api/admin/add/author", authorHandler.Create).Methods("POST")
 	sm.HandleFunc("/api/admin/add/course", courseHandler.Create).Methods("POST")
+	sm.HandleFunc("/api/admin/add/module", moduleHandler.Create).Methods("POST")
 	sm.HandleFunc("/courses/{id}", courseHandler.Delete).Methods("DELETE")
 	sm.HandleFunc("/courses/{id}", courseHandler.Update).Methods("PUT")
 	sm.HandleFunc("/authors/{id}", authorHandler.Update).Methods("PUT")
@@ -128,9 +136,9 @@ func main() {
 	}()
 
 	// gracefully shutdown
-	sigChannel := make(chan os.Signal)
+	sigChannel := make(chan os.Signal, 1)
 	signal.Notify(sigChannel, os.Interrupt)
-	signal.Notify(sigChannel, os.Kill)
+	signal.Notify(sigChannel, syscall.SIGTERM)
 
 	// block until a signal is received
 	sig := <-sigChannel

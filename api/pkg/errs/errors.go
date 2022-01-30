@@ -1,7 +1,7 @@
 package errs
 
 type InternalError struct {
-	code uint64
+	code int
 	msg  string
 	desc string
 	data interface{}
@@ -11,7 +11,7 @@ func (ie InternalError) Error() string {
 	return ie.msg + ": " + ie.desc
 }
 
-func (ie InternalError) Code() uint64 {
+func (ie InternalError) Code() int {
 	return ie.code
 }
 
@@ -23,8 +23,8 @@ func (ie InternalError) Description() string {
 	return ie.desc
 }
 
-func OperationFailed(code uint64, msg, desc string, data interface{}) InternalError {
-	return InternalError{
+func OperationFailed(code int, msg, desc string, data interface{}) *InternalError {
+	return &InternalError{
 		code: code,
 		msg:  msg,
 		desc: desc,

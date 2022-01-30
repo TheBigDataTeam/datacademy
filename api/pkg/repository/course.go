@@ -8,12 +8,10 @@ import (
 	"github.com/Serj1c/datalearn/api/pkg/util"
 )
 
-// Repo represents DB
 type CourseRepository struct {
 	db *sql.DB
 }
 
-// New returns an instance of a Repo
 func NewCourseRepository(db *sql.DB) *CourseRepository {
 	return &CourseRepository{
 		db: db,

@@ -1,9 +1,10 @@
 package service
 
 import (
+	"github.com/globalsign/mgo/bson"
+	
 	"github.com/Serj1c/datalearn/api/pkg/entity"
 	"github.com/Serj1c/datalearn/api/pkg/operation"
-	"github.com/globalsign/mgo/bson"
 )
 
 type AuthorProcessor struct {
