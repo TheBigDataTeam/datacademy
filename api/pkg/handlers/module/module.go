@@ -2,11 +2,9 @@ package module
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"log"
 	"net/http"
 
-	"github.com/Serj1c/datalearn/api/pkg/entity"
 	"github.com/Serj1c/datalearn/api/pkg/errs"
 	"github.com/Serj1c/datalearn/api/pkg/middleware"
 	"github.com/Serj1c/datalearn/api/pkg/service"
@@ -62,24 +60,13 @@ func (m *ModuleHandler) Get(rw http.ResponseWriter, r *http.Request) {
 	rw.Write(response)
 }
 
-type moduleData struct {
-	Module entity.Module `json:"module"`
-}
-
 func (m *ModuleHandler) Create(rw http.ResponseWriter, r *http.Request) {
-	body, err := ioutil.ReadAll(r.Body)
-	if err != nil {
-		http.Error(rw, "Cannot read body", http.StatusInternalServerError)
-	}
-	r.Body.Close()
-
-	data := &moduleData{}
-	err = json.Unmarshal(body, data)
-	if err != nil {
-		http.Error(rw, "Error unmarshaling request body", http.StatusInternalServerError)
+	req, reqErr := m.parseCreateRequest(r)
+	if reqErr != nil {
+		http.Error(rw, "", http.StatusBadRequest)
 	}
 
-	err = m.p.Create(data.Module)
+	err := m.p.Create(entityFromCreateRequest(req))
 	switch {
 	case err == nil:
 		rw.WriteHeader(http.StatusCreated)
@@ -105,6 +92,14 @@ func (m *ModuleHandler) parseGetRequest(r *http.Request) (req *GetRequest, e *er
 }
 
 func (m *ModuleHandler) parseListRequest(r *http.Request) (req *ListRequest, e *errs.InternalError) {
+	err := json.NewDecoder(r.Body).Decode(&req)
+	if err != nil {
+		e = errs.OperationFailed(http.StatusBadRequest, "...", err.Error(), nil)
+	}
+	return
+}
+
+func (m *ModuleHandler) parseCreateRequest(r *http.Request) (req *CreateRequest, e *errs.InternalError) {
 	err := json.NewDecoder(r.Body).Decode(&req)
 	if err != nil {
 		e = errs.OperationFailed(http.StatusBadRequest, "...", err.Error(), nil)
