@@ -3,10 +3,11 @@ package repository
 import (
 	"time"
 
-	"github.com/Serj1c/datalearn/api/pkg/entity"
-	"github.com/Serj1c/datalearn/api/pkg/errs"
 	mgo "github.com/globalsign/mgo"
 	"github.com/globalsign/mgo/bson"
+
+	"github.com/Serj1c/datalearn/api/pkg/entity"
+	"github.com/Serj1c/datalearn/api/pkg/errs"
 )
 
 type AuthorRepository struct {

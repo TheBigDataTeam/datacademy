@@ -2,9 +2,11 @@ package module
 
 import (
 	"encoding/json"
+	"io/ioutil"
 	"log"
 	"net/http"
 
+	"github.com/Serj1c/datalearn/api/pkg/entity"
 	"github.com/Serj1c/datalearn/api/pkg/errs"
 	"github.com/Serj1c/datalearn/api/pkg/middleware"
 	"github.com/Serj1c/datalearn/api/pkg/service"
@@ -60,7 +62,35 @@ func (m *ModuleHandler) Get(rw http.ResponseWriter, r *http.Request) {
 	rw.Write(response)
 }
 
-func (m *ModuleHandler) Create(rw http.ResponseWriter, r *http.Request) {}
+type moduleData struct {
+	Module entity.Module `json:"module"`
+}
+
+func (m *ModuleHandler) Create(rw http.ResponseWriter, r *http.Request) {
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		http.Error(rw, "Cannot read body", http.StatusInternalServerError)
+	}
+	r.Body.Close()
+
+	data := &moduleData{}
+	err = json.Unmarshal(body, data)
+	if err != nil {
+		http.Error(rw, "Error unmarshaling request body", http.StatusInternalServerError)
+	}
+
+	err = m.p.Create(data.Module)
+	switch {
+	case err == nil:
+		rw.WriteHeader(http.StatusCreated)
+	case err == errs.BadRequest:
+		http.Error(rw, "Wrong data provided", http.StatusBadRequest)
+	case err == errs.AlreadyExists:
+		http.Error(rw, "Such module already exists", http.StatusConflict)
+	default:
+		http.Error(rw, "Internal error", http.StatusInternalServerError)
+	}
+}
 
 func (m *ModuleHandler) Delete(rw http.ResponseWriter, r *http.Request) {}
 
