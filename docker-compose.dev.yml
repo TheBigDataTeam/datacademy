@@ -1,9 +1,9 @@
 version: "3.7"
 
 services:
-  api:
+  backend:
     volumes:
-      - ./api:/go/src/api
-  app:
+      - ./backend:/go/src/api
+  frontend:
     volumes:
-      - ./app:/home/node/app
+      - ./frontend:/home/node/app
