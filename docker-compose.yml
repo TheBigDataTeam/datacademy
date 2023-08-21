@@ -12,20 +12,20 @@ services:
     networks:
       - backend
     volumes: 
-      - ./api/.database/postgres/data:/var/lib/postgresql/data
+      - ./backend/.database/postgres/data:/var/lib/postgresql/data
 
   mongo:
     image: mongo:4.0
     ports:
       - "27017:27017"
     volumes:
-      - ./api/.database/mongo/data:/data/db
+      - ./backend/.database/mongo/data:/data/db
     networks:
       - backend
 
-  app:
+  frontend:
     build:
-      context: './app'
+      context: './frontend'
     ports:
       - "3000:3000"
     environment:
@@ -33,9 +33,9 @@ services:
     networks:
       - backend
 
-  api:
+  backend:
     build:
-      context: './api'
+      context: './backend'
     ports:
       - "3100:3100"
     depends_on: 
