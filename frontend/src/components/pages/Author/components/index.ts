@@ -1,2 +1,2 @@
-export { SocialSection } from './SocialSection';
-export { BioSection } from './BioSection';
+export { SocialSection } from './SocialSection'
+export { BioSection } from './BioSection'

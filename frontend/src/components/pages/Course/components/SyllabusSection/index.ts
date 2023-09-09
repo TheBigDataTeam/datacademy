@@ -1,1 +1,1 @@
-export { SyllabusSection } from './SyllabusSection';
+export { SyllabusSection } from './SyllabusSection'

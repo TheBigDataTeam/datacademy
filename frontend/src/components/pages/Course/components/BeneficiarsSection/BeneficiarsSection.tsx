@@ -1,7 +1,7 @@
-import React from 'react';
-//import styles from './BeneficiarsSection.module.css';
-import { Grid, Heading, Paragraph } from 'components/ui';
-//import { v4 as uuidv4 } from 'uuid';
+import React from 'react'
+//import styles from './BeneficiarsSection.module.css'
+import { Grid, Heading, Paragraph } from 'components/ui'
+//import { v4 as uuidv4 } from 'uuid'
 
 interface Props {
     beneficiars: string

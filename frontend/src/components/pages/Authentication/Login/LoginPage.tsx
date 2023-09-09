@@ -7,7 +7,9 @@ import { fetchUserLogin } from 'redux/user_auth/userAuthActions'
 import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 import { AppStateType } from 'redux/rootReducer'
-import { BASE_URL, TITLE_PREFIX, USER_HOMEPAGE_URL } from 'constants/common'
+import { BASE_URL, USER_HOMEPAGE_URL, FORGET_PASS_URL, REGISTRATION_URL, USER_DASHBOARD_URL,
+    API_LOGIN_URL } from 'constants/urls'
+import { TITLE_PREFIX } from 'constants/common'
 import { useDocTitle } from 'components/hooks'
 
 export const LoginPage: React.FunctionComponent = (): JSX.Element => {
@@ -39,7 +41,7 @@ export const LoginPage: React.FunctionComponent = (): JSX.Element => {
         async (event) => {
             event.preventDefault()
             try {
-                await axios.post(BASE_URL + "/api/auth/login", {email, password}, {withCredentials: true})
+                await axios.post(BASE_URL + API_LOGIN_URL, {email, password}, {withCredentials: true})
                 navigate(USER_HOMEPAGE_URL)
                 dispatch(fetchUserLogin())
             } catch (error) {
@@ -74,7 +76,7 @@ export const LoginPage: React.FunctionComponent = (): JSX.Element => {
                     <Grid.Row>
                         <Grid.Col>
                             <Paragraph align="right" size="s">
-                                <Link to="/auth/forget">Forgot password?</Link>
+                                <Link to={FORGET_PASS_URL}>Forgot password?</Link>
                             </Paragraph>
                         </Grid.Col>
                     </Grid.Row>
@@ -89,7 +91,7 @@ export const LoginPage: React.FunctionComponent = (): JSX.Element => {
                     <Grid.Row>
                         <Grid.Col>
                             <Paragraph align="center" size="s">
-                                Don&apos;t have an account? <Link to="/auth/signup">Sign Up</Link>
+                                Don&apos;t have an account? <Link to={REGISTRATION_URL}>Sign Up</Link>
                             </Paragraph>
                         </Grid.Col>
                     </Grid.Row>
@@ -103,7 +105,7 @@ export const LoginPage: React.FunctionComponent = (): JSX.Element => {
                     </Grid.Row>
                     <Grid.Row>
                         <Grid.Col align="center">
-                            <Link to="/dashboard">
+                            <Link to={USER_DASHBOARD_URL}>
                                 <Button design="primary">Start learning</Button>
                             </Link>
                         </Grid.Col>

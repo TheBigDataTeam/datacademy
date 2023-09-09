@@ -13,13 +13,13 @@ export type Weight = 'bold' | 'normal'
 type WithoutClassName = Omit<React.HTMLAttributes<HTMLElement>, 'className'>
 
 interface LevelParams {
-  size: Size;
-  marginTop: Margin;
-  marginBottom: Margin;
+  size: Size
+  marginTop: Margin
+  marginBottom: Margin
 }
 
 interface ParamsByLevel {
-  [key: string]: LevelParams;
+  [key: string]: LevelParams
 }
 
 const paramsByLevel: ParamsByLevel = {
@@ -42,23 +42,23 @@ const paramsByLevel: ParamsByLevel = {
 
 export interface Props extends WithoutClassName {
   /** Header level */
-  level?: Level;
+  level?: Level
   /** Texts size */
-  size?: Size;
+  size?: Size
   /** One line text */
-  noWrap?: boolean;
+  noWrap?: boolean
   /** Text color */
-  color?: Color;
+  color?: Color
   /** Text align */
-  align?: Align;
+  align?: Align
   /** Font's weight */
-  weight?: Weight;
+  weight?: Weight
   /** Top and bottom margins */
-  margin?: Margin;
+  margin?: Margin
   /** Top margin */
-  marginTop?: Margin;
+  marginTop?: Margin
   /** Bottom margin */
-  marginBottom?: Margin;
+  marginBottom?: Margin
 }
 
 export const Heading: React.FunctionComponent<Props> = ({
@@ -74,12 +74,12 @@ export const Heading: React.FunctionComponent<Props> = ({
   children,
   ...props
 }) => {
-  const sizeValue: Size = size || paramsByLevel[level].size;
+  const sizeValue: Size = size || paramsByLevel[level].size
   const marginTopValue: Margin =
-    marginTop || margin || paramsByLevel[level].marginTop;
+    marginTop || margin || paramsByLevel[level].marginTop
   const marginBottomValue: Margin =
-    marginBottom || margin || paramsByLevel[level].marginBottom;
-  const tagName = `h${level}`;
+    marginBottom || margin || paramsByLevel[level].marginBottom
+  const tagName = `h${level}`
   const className = classNames(
     styles.root,
     styles[`root_align_${align}`],

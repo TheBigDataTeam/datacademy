@@ -6,12 +6,12 @@ import designStyles from 'components/ui/styles/design.module.css'
 import styles from './Button.module.css'
 
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  design?: ButtonDesign;
-  size?: ButtonSize;
-  rounded?: boolean;
-  fullWidth?: boolean;
-  icon?: React.ReactNode;
-  loading?: boolean;
+  design?: ButtonDesign
+  size?: ButtonSize
+  rounded?: boolean
+  fullWidth?: boolean
+  icon?: React.ReactNode
+  loading?: boolean
 }
 
 export const Button: React.FunctionComponent<Props> = ({
@@ -37,7 +37,7 @@ export const Button: React.FunctionComponent<Props> = ({
       [styles.root_fullwidth]: fullWidth,
       [styles.root_loading]: loading,
     }
-  );
+  )
   const iconClassName = classNames(styles.icon, {
     [styles.icon_onlyIcon]: !children,
   })

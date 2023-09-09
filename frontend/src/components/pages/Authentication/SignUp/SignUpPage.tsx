@@ -7,7 +7,8 @@ import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchUserLogin } from 'redux/user_auth/userAuthActions'
 import { AppStateType } from 'redux/rootReducer'
-import { BASE_URL, TITLE_PREFIX, USER_HOMEPAGE_URL } from 'constants/common'
+import { BASE_URL, USER_HOMEPAGE_URL, API_REGISTRATION_URL } from 'constants/urls'
+import { TITLE_PREFIX } from 'constants/common'
 import { useDocTitle } from 'components/hooks'
 
 export const SignUpPage: React.FunctionComponent = (): JSX.Element => {
@@ -46,7 +47,7 @@ export const SignUpPage: React.FunctionComponent = (): JSX.Element => {
       event.preventDefault()
 
       try {
-        await axios.post(BASE_URL+ "/api/auth/signup", {email, name, surname, password}, {withCredentials: true})
+        await axios.post(BASE_URL + API_REGISTRATION_URL, {email, name, surname, password}, {withCredentials: true})
         navigate(USER_HOMEPAGE_URL)
         dispatch(fetchUserLogin())
       } catch (error) {

@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux'
 import { AppStateType } from 'redux/rootReducer'
 import { useDocTitle } from 'components/hooks'
 import { TITLE_PREFIX } from 'constants/common'
+import { USER_DASHBOARD_URL } from 'constants/urls'
 
 export const LandingPage: React.FunctionComponent = (): JSX.Element => {
 
@@ -28,7 +29,7 @@ export const LandingPage: React.FunctionComponent = (): JSX.Element => {
 				{ !isLoaded ? <Form /> 
 					: 
 						<Grid.Col>
-							<Link to="/dashboard">
+							<Link to={USER_DASHBOARD_URL}>
 								<Button design="primary">Start learning</Button>
 							</Link> 
 						</Grid.Col>

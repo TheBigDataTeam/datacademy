@@ -1,1 +1,1 @@
-export { SocialSection } from './SocialSection';
+export { SocialSection } from './SocialSection'

@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { Grid, Button } from 'components/ui';
-import Modal from 'react-modal';
-import styles from './SubscribeSection.module.css';
+import React, { useState } from 'react'
+import { Grid, Button } from 'components/ui'
+import Modal from 'react-modal'
+import styles from './SubscribeSection.module.css'
 
 export const SubscribeSection: React.FunctionComponent = (): JSX.Element => {
 
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
     const customStyles = {
         content : {
@@ -16,7 +16,7 @@ export const SubscribeSection: React.FunctionComponent = (): JSX.Element => {
           marginRight: '-50%',
           transform: 'translate(-50%, -50%)'
         }
-      };
+      }
 
     return (
         <Grid.Row>

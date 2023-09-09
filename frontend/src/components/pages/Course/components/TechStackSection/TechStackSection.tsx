@@ -1,8 +1,8 @@
-import React from 'react';
-import { Paragraph } from 'components/ui';
-//import { v4 as uuidv4 } from 'uuid';
-import { Grid, Heading } from 'components/ui';
-//import styles from './TechStackSection.module.css';
+import React from 'react'
+import { Paragraph } from 'components/ui'
+//import { v4 as uuidv4 } from 'uuid'
+import { Grid, Heading } from 'components/ui'
+//import styles from './TechStackSection.module.css'
 
 interface Props {
     techstack: string

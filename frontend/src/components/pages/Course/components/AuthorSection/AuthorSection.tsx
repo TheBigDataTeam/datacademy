@@ -1,8 +1,8 @@
-import React from 'react';
-//import { v4 as uuidv4 } from 'uuid';
-import { Grid, Paragraph, Heading } from 'components/ui';
-import styles from './AuthorSection.module.css';
-import { Author } from 'models/Author';
+import React from 'react'
+//import { v4 as uuidv4 } from 'uuid'
+import { Grid, Paragraph, Heading } from 'components/ui'
+import styles from './AuthorSection.module.css'
+import { Author } from 'models/Author'
 
 interface Props {
     author: Author

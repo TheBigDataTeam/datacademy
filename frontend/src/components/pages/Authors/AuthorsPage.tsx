@@ -4,17 +4,18 @@ import { Header, Footer } from 'components/common'
 import { Grid, Heading } from 'components/ui'
 import { AuthorsList } from "./components"
 import axios, { AxiosResponse } from 'axios'
-import { BASE_URL, TITLE_PREFIX } from 'constants/common'
+import { TITLE_PREFIX } from 'constants/common'
+import { BASE_URL, API_AUTHORS_URL } from 'constants/urls'
 import { useDocTitle } from 'components/hooks'
 import { Author } from 'models/Author'
 
 export const AuthorsPage: React.FunctionComponent = (): JSX.Element => {
 
-	const [authors, setAuthors] = useState<Author[] | null>(null);
+	const [authors, setAuthors] = useState<Author[] | null>(null)
 
 	useEffect(() => {
 		const fetchAuthors = async (): Promise<void> => {
-			const results: AxiosResponse<Author[]> = await axios.get(BASE_URL+ "/api/authors")
+			const results: AxiosResponse<Author[]> = await axios.get(BASE_URL + API_AUTHORS_URL)
 			setAuthors(results.data)
 		}
 		fetchAuthors()
@@ -31,5 +32,5 @@ export const AuthorsPage: React.FunctionComponent = (): JSX.Element => {
 			</Grid.Row>
 			<AuthorsList authors={authors}/>
 		</PageLayout>
-	);
-};
+	)
+}

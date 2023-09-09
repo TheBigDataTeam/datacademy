@@ -1,7 +1,7 @@
-import React from 'react';
-import { Paragraph, Heading, Grid } from 'components/ui';
-//import styles from './SyllabusSection.module.css';
-//import { v4 as uuidv4 } from 'uuid';
+import React from 'react'
+import { Paragraph, Heading, Grid } from 'components/ui'
+//import styles from './SyllabusSection.module.css'
+//import { v4 as uuidv4 } from 'uuid'
 
 
 interface Props {

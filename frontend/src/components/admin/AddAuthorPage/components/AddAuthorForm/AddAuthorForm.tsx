@@ -4,25 +4,25 @@ import { InputRow } from './components'
 import { Author } from 'models'
 
 interface Fields {
-  email: string;
-  fullname: string;
-  bio: string;
-  location: string;
-  facebook: string;
-  instagram: string;
-  twitter: string;
-  shortdescription: string;
-  features: string;
+  email: string
+  fullname: string
+  bio: string
+  location: string
+  facebook: string
+  instagram: string
+  twitter: string
+  shortdescription: string
+  features: string
 
 }
 
 interface Props {
-  data: Author;
-  errors: Partial<Fields>;
-  error?: string;
-  isLoading: boolean;
-  onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-  onSubmit: React.FormEventHandler<HTMLFormElement>;
+  data: Author
+  errors: Partial<Fields>
+  error?: string
+  isLoading: boolean
+  onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
+  onSubmit: React.FormEventHandler<HTMLFormElement>
 }
 
 const FIELDS: (keyof Fields)[] = [
@@ -76,14 +76,14 @@ export const AddAuthorForm: React.FunctionComponent<Props> = ({ data, errors, er
 
 function getFocusField(errors: Partial<Fields>, isLoading: boolean): keyof Fields | null {
   if (isLoading) {
-    return null;
+    return null
   }
 
   for (const f of FIELDS) {
     if (f in errors) {
-      return f;
+      return f
     }
   }
 
-  return FIELDS[0];
+  return FIELDS[0]
 }

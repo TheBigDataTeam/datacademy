@@ -1,2 +1,2 @@
-export { EmailEntry } from './EmailEntry';
-export { Confirmation } from './Confirmation';
+export { EmailEntry } from './EmailEntry'
+export { Confirmation } from './Confirmation'

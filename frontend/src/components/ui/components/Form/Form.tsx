@@ -6,24 +6,24 @@ import { ActionRow, Row } from './components'
 import styles from './Form.module.css'
 
 interface Context {
-  narrow?: boolean;
+  narrow?: boolean
 }
 
 export const context = React.createContext<Context>(undefined)
 
 interface Props {
-  children: React.ReactNode;
-  title?: string;
-  error?: string;
-  narrow?: boolean;
-  onSubmit?: React.FormEventHandler;
+  children: React.ReactNode
+  title?: string
+  error?: string
+  narrow?: boolean
+  onSubmit?: React.FormEventHandler
 }
 
 export const Form: React.FunctionComponent<Props> & {
-  Row: typeof Row;
-  ActionRow: typeof ActionRow;
+  Row: typeof Row
+  ActionRow: typeof ActionRow
 } = ({ children, title, error, narrow, onSubmit }) => {
-  const value = useMemo<Context>(() => ({ narrow }), [narrow]);
+  const value = useMemo<Context>(() => ({ narrow }), [narrow])
 
   return (
     <context.Provider value={value}>

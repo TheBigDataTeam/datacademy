@@ -1,1 +1,1 @@
-export { BeneficiarsSection } from './BeneficiarsSection';
+export { BeneficiarsSection } from './BeneficiarsSection'

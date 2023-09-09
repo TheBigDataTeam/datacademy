@@ -14,4 +14,4 @@ rootContainer.render(
 		</Provider>
 )
 
-reportWebVitals();
+reportWebVitals()

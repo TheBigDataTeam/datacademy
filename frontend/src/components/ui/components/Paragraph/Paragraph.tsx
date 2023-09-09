@@ -1,5 +1,5 @@
-import React from 'react';
-import classNames from 'classnames';
+import React from 'react'
+import classNames from 'classnames'
 import { Color, Size, Text } from 'components/ui/components/Text/Text'
 import { Margin } from 'components/ui/common/margins'
 import marginStyles from 'components/ui/styles/margins.module.css'
@@ -12,19 +12,19 @@ type WithoutClassName = Omit<React.HTMLAttributes<HTMLElement>, 'className'>
 
 export interface Props extends WithoutClassName {
   /** Text size */
-  size?: Size;
+  size?: Size
   /** Text color */
-  color?: Color;
+  color?: Color
   /** Text alignment */
-  align?: Align;
+  align?: Align
   /** Top and bottom margin */
-  margin?: Margin;
+  margin?: Margin
   /** Top margin */
-  marginTop?: Margin;
+  marginTop?: Margin
   /** Bottom margin */
-  marginBottom?: Margin;
+  marginBottom?: Margin
   /** Data marker */
-  marker?: string;
+  marker?: string
 }
 
 export const Paragraph: React.FunctionComponent<Props> = ({
@@ -42,7 +42,7 @@ export const Paragraph: React.FunctionComponent<Props> = ({
     lineHeightStyles[`line-height_${size}`],
     marginStyles[`top_${marginTop || margin}`],
     marginStyles[`bottom_${marginBottom || margin}`]
-  );
+  )
 
   return (
     <p {...props} className={className}>
