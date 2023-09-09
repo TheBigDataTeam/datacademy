@@ -1,10 +1,10 @@
-import React from 'react';
-import { PageLayout } from 'components/layouts';
-import { Header, Footer } from 'components/common';
-import { Grid, Heading } from 'components/ui';
-import { Overview } from './components';
-import { useDocTitle } from 'components/hooks';
-import { TITLE_PREFIX } from 'constants/common';
+import React from 'react'
+import { PageLayout } from 'components/layouts'
+import { Header, Footer } from 'components/common'
+import { Grid, Heading } from 'components/ui'
+import { Overview } from './components'
+import { useDocTitle } from 'components/hooks'
+import { TITLE_PREFIX } from 'constants/common'
 
 export const PricingPage: React.FunctionComponent = (): JSX.Element => {
 

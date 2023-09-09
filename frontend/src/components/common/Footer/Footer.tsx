@@ -5,7 +5,7 @@ import { getYears } from './utils'
 import styles from './Footer.module.css'
 
 interface Props {
-  withPadding?: boolean;
+  withPadding?: boolean
 }
 
 export const Footer: React.FunctionComponent<Props> = ({ withPadding }): JSX.Element => {

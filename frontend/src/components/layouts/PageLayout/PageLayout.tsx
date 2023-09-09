@@ -1,25 +1,25 @@
-import React, { ReactNode, useEffect } from 'react';
-import classNames from 'classnames';
-import { Container, Loader } from 'components/ui';
-import styles from './PageLayout.module.css';
+import React, { ReactNode, useEffect } from 'react'
+import classNames from 'classnames'
+import { Container, Loader } from 'components/ui'
+import styles from './PageLayout.module.css'
 
 const handleResize = (): void => {
-  const vh = window.innerHeight * 0.01;
-  document.documentElement.style.setProperty('--vh', `${vh}px`);
-};
+  const vh = window.innerHeight * 0.01
+  document.documentElement.style.setProperty('--vh', `${vh}px`)
+}
 
 interface Props {
-  children?: ReactNode;
+  children?: ReactNode
   /** Header section */
-  header?: ReactNode;
+  header?: ReactNode
   /** Footer section */
-  footer?: ReactNode;
+  footer?: ReactNode
   /** Align content in the center */
-  center?: boolean;
+  center?: boolean
   /** Is page loading */
-  loading?: boolean;
+  loading?: boolean
   /** Page with top offset */
-  topOffset?: boolean;
+  topOffset?: boolean
 }
 
 export const PageLayout: React.FunctionComponent<Props> = ({
@@ -31,21 +31,21 @@ export const PageLayout: React.FunctionComponent<Props> = ({
   children,
 }) => {
   useEffect((): (() => void) => {
-    handleResize();
+    handleResize()
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize)
 
     return (): void => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
 
   const rootClassName = classNames(styles.root, {
     [styles.root_offset_top]: topOffset,
-  });
+  })
   const contentClassName = classNames(styles.content, {
     [styles.content_center]: center || loading,
-  }); 
+  })
 
   return (
     <div className={rootClassName}>
@@ -57,5 +57,5 @@ export const PageLayout: React.FunctionComponent<Props> = ({
 
       {footer && !loading && <div className={styles.footer}>{footer}</div>}
     </div> 
-  );
-};
+  )
+}

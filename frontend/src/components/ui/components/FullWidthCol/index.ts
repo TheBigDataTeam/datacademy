@@ -1,1 +1,1 @@
-export { FullWidthCol } from './FullWidthCol';
+export { FullWidthCol } from './FullWidthCol'

@@ -1,7 +1,7 @@
 type Item = {
-    type: 'item';
-    title: string;
-    url: string;
+    type: 'item'
+    title: string
+    url: string
   }
   
   export const menuItems: Item[] = [
@@ -25,5 +25,5 @@ type Item = {
       title: 'Authors',
       url: '/authors',
     },
-  ];
+  ]
   

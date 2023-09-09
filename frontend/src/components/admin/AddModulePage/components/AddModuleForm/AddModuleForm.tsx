@@ -10,12 +10,12 @@ interface Fields {
 }
 
 interface Props {
-  data: Module;
-  errors: Partial<Fields>;
-  error?: string;
-  isLoading: boolean;
-  onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-  onSubmit: React.FormEventHandler<HTMLFormElement>;
+  data: Module
+  errors: Partial<Fields>
+  error?: string
+  isLoading: boolean
+  onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
+  onSubmit: React.FormEventHandler<HTMLFormElement>
 }
 
 const FIELDS: (keyof Fields)[] = [
@@ -57,14 +57,14 @@ export const AddModuleForm: React.FunctionComponent<Props> = ({ data, errors, er
 
 function getFocusField(errors: Partial<Fields>, isLoading: boolean): keyof Fields | null {
   if (isLoading) {
-    return null;
+    return null
   }
 
   for (const f of FIELDS) {
     if (f in errors) {
-      return f;
+      return f
     }
   }
 
-  return FIELDS[0];
+  return FIELDS[0]
 }

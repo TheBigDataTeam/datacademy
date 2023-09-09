@@ -1,6 +1,6 @@
-export type Margin = 'none' | 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl';
+export type Margin = 'none' | 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl'
 
-export const DEFAULT_MARGIN: Margin = 'm';
+export const DEFAULT_MARGIN: Margin = 'm'
 
 export const margins = [
   {
@@ -35,4 +35,4 @@ export const margins = [
     name: 'xxl',
     size: 64,
   },
-];
+]

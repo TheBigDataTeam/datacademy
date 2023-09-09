@@ -1,1 +1,1 @@
-export { BioSection } from './BioSection';
+export { BioSection } from './BioSection'

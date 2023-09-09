@@ -1,11 +1,11 @@
-import React, { useEffect, useRef } from 'react';
-import classNames from 'classnames';
-import styles from './Textarea.module.css';
+import React, { useEffect, useRef } from 'react'
+import classNames from 'classnames'
+import styles from './Textarea.module.css'
 
-type Size = 's' | 'm' | 'l';
+type Size = 's' | 'm' | 'l'
 
 interface Props extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
-  size?: Size;
+  size?: Size
 }
 
 export const Textarea: React.FunctionComponent<Props> = ({
@@ -13,14 +13,14 @@ export const Textarea: React.FunctionComponent<Props> = ({
   autoFocus,
   ...restProps
 }) => {
-  const ref = useRef<HTMLTextAreaElement>(null);
-  const className = classNames(styles.root, styles[`root_size_${size}`]);
+  const ref = useRef<HTMLTextAreaElement>(null)
+  const className = classNames(styles.root, styles[`root_size_${size}`])
 
   useEffect(() => {
     if (ref.current && autoFocus) {
-      ref.current.focus();
+      ref.current.focus()
     }
-  }, [autoFocus]);
+  }, [autoFocus])
 
-  return <textarea ref={ref} {...restProps} className={className} />;
-};
+  return <textarea ref={ref} {...restProps} className={className} />
+}

@@ -1,11 +1,11 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import styles from './Confirmation.module.css';
-import { Button, Grid, Paragraph } from 'components/ui';
-import { HOMEPAGE_URL } from 'constants/common';
+import React from 'react'
+import { Link } from 'react-router-dom'
+import styles from './Confirmation.module.css'
+import { Button, Grid, Paragraph } from 'components/ui'
+import { HOMEPAGE_URL } from 'constants/urls'
 
 export const Confirmation: React.FunctionComponent = (): JSX.Element => {
-    const email = 'test@test.com';
+    const email = 'test@test.com'
 
     return (
         <>
@@ -20,6 +20,6 @@ export const Confirmation: React.FunctionComponent = (): JSX.Element => {
                 </Link>
             </Grid.Row>
         </>
-    );
-};
+    )
+}
 

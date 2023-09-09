@@ -9,9 +9,9 @@ type WithoutClassname = Omit<React.HTMLAttributes<HTMLElement>, 'className'>
 
 export interface Props extends WithoutClassname {
   /** Text color */
-  color?: Color;
+  color?: Color
   /** Text size */
-  size?: Size;
+  size?: Size
 }
 
 export const Text: React.FunctionComponent<Props> = ({
@@ -24,7 +24,7 @@ export const Text: React.FunctionComponent<Props> = ({
     styles.root,
     styles[`root_color_${color}`],
     styles[`root_size_${size}`]
-  );
+  )
 
   return (
     <span {...props} className={className}>

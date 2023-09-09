@@ -1,7 +1,7 @@
-import React from 'react';
-import { Text } from 'components/ui';
-import { Icon } from 'components/common';
-import styles from './Price.module.css';
+import React from 'react'
+import { Text } from 'components/ui'
+import { Icon } from 'components/common'
+import styles from './Price.module.css'
 
 interface Props {
     price: string

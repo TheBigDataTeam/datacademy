@@ -1,42 +1,42 @@
-import React from 'react';
-import classNames from 'classnames';
-import { Margin } from 'components/ui/common/margins';
-import marginsStyles from 'components/ui/styles/margins.module.css';
-import styles from './Col.module.css';
+import React from 'react'
+import classNames from 'classnames'
+import { Margin } from 'components/ui/common/margins'
+import marginsStyles from 'components/ui/styles/margins.module.css'
+import styles from './Col.module.css'
 
-type cols = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+type cols = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
 
-type Offsets = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
+type Offsets = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11
 
-type Align = 'left' | 'center' | 'right';
+type Align = 'left' | 'center' | 'right'
 
-type VerticalAlign = 'top' | 'center' | 'bottom';
+type VerticalAlign = 'top' | 'center' | 'bottom'
 
 interface Props {
-  children?: React.ReactNode;
+  children?: React.ReactNode
   // Columns
-  cols?: cols;
-  colsSM?: cols;
-  colsMD?: cols;
-  colsLG?: cols;
-  colsXL?: cols;
+  cols?: cols
+  colsSM?: cols
+  colsMD?: cols
+  colsLG?: cols
+  colsXL?: cols
   // Offsets
-  offset?: Offsets;
-  offsetSM?: Offsets;
-  offsetMD?: Offsets;
-  offsetLG?: Offsets;
-  offsetXL?: Offsets;
+  offset?: Offsets
+  offsetSM?: Offsets
+  offsetMD?: Offsets
+  offsetLG?: Offsets
+  offsetXL?: Offsets
   // Vertical margins
-  margin?: Margin;
-  marginTop?: Margin;
-  marginBottom?: Margin;
+  margin?: Margin
+  marginTop?: Margin
+  marginBottom?: Margin
   // Other
-  noGutters?: boolean;
-  align?: Align;
-  verticalAlign?: VerticalAlign;
+  noGutters?: boolean
+  align?: Align
+  verticalAlign?: VerticalAlign
 }
 
-const DEFAULT_MARGIN = 'none';
+const DEFAULT_MARGIN = 'none'
 
 export const Col: React.FunctionComponent<Props> = ({
   children,
@@ -76,7 +76,7 @@ export const Col: React.FunctionComponent<Props> = ({
       [styles[`root_align_${align}`]]: align,
       [styles[`root_vertical-align_${verticalAlign}`]]: verticalAlign,
     }
-  );
+  )
 
-  return <div className={className}>{children}</div>;
-};
+  return <div className={className}>{children}</div>
+}

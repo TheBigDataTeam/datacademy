@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { PricingCard } from './components';
-import { listOfPricingCards } from './components/data/data';
-import { Grid, Paragraph, Switch } from 'components/ui';
-import styles from './PricingCardsSection.module.css';
+import React, { useState } from 'react'
+import { PricingCard } from './components'
+import { listOfPricingCards } from './components/data/data'
+import { Grid, Paragraph, Switch } from 'components/ui'
+import styles from './PricingCardsSection.module.css'
 
 export const PricingCardsSection: React.FunctionComponent = (): JSX.Element => {
 
-    const [toggled, setToggled] = useState<boolean>(false);
+    const [toggled, setToggled] = useState<boolean>(false)
 
     return (
         <>

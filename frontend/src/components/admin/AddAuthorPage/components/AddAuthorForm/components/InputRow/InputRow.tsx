@@ -2,13 +2,13 @@ import React from 'react'
 import { Form, Input, Textarea } from 'components/ui'
 
 interface Props {
-  label: string;
-  name: string;
-  value: string | string[];
-  error?: string;
-  disabled: boolean;
-  autoFocus: boolean;
-  onChange: React.ChangeEventHandler;
+  label: string
+  name: string
+  value: string | string[]
+  error?: string
+  disabled: boolean
+  autoFocus: boolean
+  onChange: React.ChangeEventHandler
 }
 
 const TEXTAREA_FIELDS = ['bio', 'shortdescription', 'features']

@@ -1,5 +1,5 @@
-import React, { useCallback } from 'react';
-import { Input, Button, Grid, Paragraph } from 'components/ui';
+import React, { useCallback } from 'react'
+import { Input, Button, Grid, Paragraph } from 'components/ui'
 
 
 interface Props {
@@ -14,11 +14,11 @@ export const EmailEntry: React.FunctionComponent<Props> = ({ handlePageChangeSta
 
     const handleSubmit = useCallback(
         (event) => {
-            event.preventDefault();
-            handlePageChangeState();
+            event.preventDefault()
+            handlePageChangeState()
         },
         [handlePageChangeState]
-    );
+    )
 
     return (
         <>
@@ -42,6 +42,6 @@ export const EmailEntry: React.FunctionComponent<Props> = ({ handlePageChangeSta
                 </Grid.Row>
             </form>
         </>
-    );
-};
+    )
+}
 

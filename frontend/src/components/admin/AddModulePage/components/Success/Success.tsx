@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Heading, Paragraph } from 'components/ui'
-import { ADMIN_HOMEPAGE_URL } from 'constants/common'
+import { ADMIN_HOMEPAGE_URL } from 'constants/urls'
 import { ReactComponent as Icon } from './resources/icon.svg'
 import { useSelector } from 'react-redux'
 import styles from './Success.module.css'

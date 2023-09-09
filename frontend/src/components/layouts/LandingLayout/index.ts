@@ -1,1 +1,1 @@
-export { LandingLayout } from './LandingLayout';
+export { LandingLayout } from './LandingLayout'

@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux'
 import { AppStateType } from 'redux/rootReducer'
 import { useDocTitle } from 'components/hooks'
 import { TITLE_PREFIX } from 'constants/common'
+import { LOGIN_URL } from 'constants/urls'
 
 export const LogoutPage: React.FunctionComponent = (): JSX.Element => {
 
@@ -37,7 +38,7 @@ export const LogoutPage: React.FunctionComponent = (): JSX.Element => {
                     </Grid.Row>
                     <Grid.Row>
                         <Grid.Col align="center">
-                            <Link to="/auth/login">
+                            <Link to={LOGIN_URL}>
                                 <Button design="primary">Log In</Button>
                             </Link>
                         </Grid.Col>

@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { Logo } from 'components/common'
 import { Menu, Login, Logout } from './components'
+import { LOGIN_URL, LOGOUT_URL } from 'constants/urls'
 import styles from './Header.module.css'
 import { useSelector } from 'react-redux'
 import { AppStateType } from 'redux/rootReducer'
@@ -27,11 +28,11 @@ export const Header: React.FunctionComponent<Props> = ({ inverted }): JSX.Elemen
 				{ inverted ? <span className={styles.name_inverted}>{isLoaded ? user.name : `Guest`}</span> : 
 					<span className={styles.name}>{isLoaded ? user.name : `Guest`}</span> }
 				{ isLoaded ?
-				<Link to="/auth/logout" className={styles.link}>
+				<Link to={LOGOUT_URL} className={styles.link}>
 					{ inverted ? <Logout inverted /> : <Logout /> }
 				</Link>
 				: 
-				<Link to="/auth/login">
+				<Link to={LOGIN_URL}>
 					{ inverted ? <Login inverted /> : <Login /> }
 				</Link>
 				}

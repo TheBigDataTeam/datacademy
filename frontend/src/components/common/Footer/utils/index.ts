@@ -1,1 +1,1 @@
-export { getYears } from './getYears';
+export { getYears } from './getYears'

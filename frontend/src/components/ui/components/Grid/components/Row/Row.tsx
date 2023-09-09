@@ -1,15 +1,15 @@
-import React from 'react';
-import classNames from 'classnames';
-import marginsStyles from 'components/ui/styles/margins.module.css';
-import { DEFAULT_MARGIN, Margin } from 'components/ui/common/margins';
-import styles from './Row.module.css';
+import React from 'react'
+import classNames from 'classnames'
+import marginsStyles from 'components/ui/styles/margins.module.css'
+import { DEFAULT_MARGIN, Margin } from 'components/ui/common/margins'
+import styles from './Row.module.css'
 
 interface Props {
-  children?: React.ReactNode;
-  margin?: Margin;
-  marginTop?: Margin;
-  marginBottom?: Margin;
-  noGutter?: boolean;
+  children?: React.ReactNode
+  margin?: Margin
+  marginTop?: Margin
+  marginBottom?: Margin
+  noGutter?: boolean
 }
 
 export const Row: React.FunctionComponent<Props> = ({
@@ -26,7 +26,7 @@ export const Row: React.FunctionComponent<Props> = ({
     {
       [styles.root_noGutter]: noGutter,
     }
-  );
+  )
 
-  return <div className={className}>{children}</div>;
-};
+  return <div className={className}>{children}</div>
+}

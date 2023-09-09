@@ -1,15 +1,15 @@
-import React, { useContext } from 'react';
-import { Grid } from '../../../Grid';
-import { Text } from '../../../Text';
-import { Input, Props as InputProps } from '../../../Input/Input';
-import { Paragraph } from '../../../Paragraph';
-import { context } from '../../Form';
+import React, { useContext } from 'react'
+import { Grid } from '../../../Grid'
+import { Text } from '../../../Text'
+import { Input, Props as InputProps } from '../../../Input/Input'
+import { Paragraph } from '../../../Paragraph'
+import { context } from '../../Form'
 
 export interface Props {
-  label?: string;
-  htmlFor?: string;
-  error?: string;
-  center?: boolean;
+  label?: string
+  htmlFor?: string
+  error?: string
+  center?: boolean
 }
 
 export const Row: React.FunctionComponent<Props> = ({
@@ -19,10 +19,10 @@ export const Row: React.FunctionComponent<Props> = ({
   error,
   center,
 }) => {
-  const { narrow } = useContext(context);
-  const cols = 12;
-  const labelCols = narrow ? 12 : label ? 4 : undefined;
-  const contentCols = narrow ? 12 : label ? 8 : 12;
+  const { narrow } = useContext(context)
+  const cols = 12
+  const labelCols = narrow ? 12 : label ? 4 : undefined
+  const contentCols = narrow ? 12 : label ? 8 : 12
 
   return (
     <Grid.Row>
@@ -57,5 +57,5 @@ export const Row: React.FunctionComponent<Props> = ({
         )}
       </Grid.Col>
     </Grid.Row>
-  );
-};
+  )
+}
