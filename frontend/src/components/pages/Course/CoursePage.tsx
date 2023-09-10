@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { Header, Footer } from 'components/common'
+import { Header, Footer, Spinner } from 'components/common'
 import { PageLayout } from 'components/layouts'
 import { Grid, Paragraph } from 'components/ui'
 import { AuthorSection, SyllabusSection, BeneficiarsSection, TechStackSection, SubscribeSection } from './components'
 import { Author, Course } from 'models'
-import { BASE_URL } from 'constants/common'
+import { BASE_URL, API_COURSES_URL } from 'constants/urls'
 import axios, { AxiosResponse } from 'axios'
 
 type ParamsType = {
@@ -24,7 +24,7 @@ export const CoursePage: React.FunctionComponent = (): JSX.Element => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const result: AxiosResponse<Course> = await axios.get(BASE_URL + `/api/courses/${params.id}`, {withCredentials: true})
+            const result: AxiosResponse<Course> = await axios.get(BASE_URL + `${API_COURSES_URL}/${params.id}`, {withCredentials: true})
             setCourse(result.data)
             setAuthorNameToFetch(result.data.author)
 
@@ -55,7 +55,7 @@ export const CoursePage: React.FunctionComponent = (): JSX.Element => {
                 <TechStackSection techstack={course.techstack}/>
                 <SubscribeSection />
             </>
-            : <h2>Loading...</h2>}
+            : <Spinner witdth={100} />}
         </PageLayout>
     ) 
 }

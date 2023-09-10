@@ -3,7 +3,7 @@ import { Footer, Header } from 'components/common'
 import { PageLayout } from 'components/layouts'
 import { Grid } from 'components/ui'
 import { AddAuthorForm, Success } from './components'
-import { BASE_URL } from 'constants/common'
+import { BASE_URL, API_ADD_AUTHOR_URL } from 'constants/urls'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchAddAuthorFailure, fetchAddAuthorRequest, fetchAddAuthorSuccess, fetchAuthorActionChange } from 'redux/author/authorActions'
@@ -35,7 +35,7 @@ export const AddAuthorPage: React.FunctionComponent = (): JSX.Element => {
           dispatch(fetchAddAuthorRequest())
 
         try {
-          await axios.post(BASE_URL + '/api/admin/add/author', {author}, {withCredentials: true})
+          await axios.post(BASE_URL + API_ADD_AUTHOR_URL, {author}, {withCredentials: true})
           dispatch(fetchAddAuthorSuccess(author))
         } catch (error) {
             console.log(error) /* TODO: handle error properly */

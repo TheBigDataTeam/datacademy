@@ -3,7 +3,7 @@ import { Footer, Header } from 'components/common'
 import { PageLayout } from 'components/layouts'
 import { Grid } from 'components/ui'
 import { AddCourseForm, Success } from './components'
-import { BASE_URL } from 'constants/common'
+import { BASE_URL, API_ADD_COURSE_URL } from 'constants/urls'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchAddCourseFailure, fetchAddCourseRequest, fetchAddCourseSuccess, fetchCourseActionChange } from 'redux/course/courseActions'
@@ -32,7 +32,7 @@ export const AddCoursePage: React.FunctionComponent = (): JSX.Element => {
           dispatch(fetchAddCourseRequest())
 
         try {
-          await axios.post(BASE_URL + '/api/admin/add/course', {course}, {withCredentials: true})
+          await axios.post(BASE_URL + API_ADD_COURSE_URL, {course}, {withCredentials: true})
           dispatch(fetchAddCourseSuccess(course))
         } catch (error) {
             console.log(error) /* TODO: handle error properly */

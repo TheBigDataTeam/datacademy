@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import axios, { AxiosResponse } from 'axios'
 import { PageLayout } from 'components/layouts'
-import { Header, Footer } from 'components/common'
+import { Header, Footer, Spinner } from 'components/common'
 import { Author } from 'models'
 import { Grid } from 'components/ui'
 import { SocialSection, BioSection } from './components'
-import { BASE_URL, TITLE_PREFIX } from 'constants/common'
+import { BASE_URL, API_AUTHORS_URL } from 'constants/urls'
+import { TITLE_PREFIX } from 'constants/common'
 import { useDocTitle } from 'components/hooks'
 
 interface ParamsType {
@@ -20,7 +21,7 @@ export const AuthorPage: React.FunctionComponent = (): JSX.Element => {
 
     useEffect(() => {
         const fetchAuthor = async () => {
-            const result: AxiosResponse<Author> = await axios.get(BASE_URL + `/api/authors/${params.id}`, {withCredentials: true})
+            const result: AxiosResponse<Author> = await axios.get(BASE_URL + `${API_AUTHORS_URL}/${params.id}`, {withCredentials: true})
             setAuthor(result.data)
         }
         fetchAuthor()
@@ -45,7 +46,7 @@ export const AuthorPage: React.FunctionComponent = (): JSX.Element => {
                     </Grid.Col>
                 </Grid.Row>
             </>
-            : <h2>Loading...</h2>}  
+            : <Spinner witdth={100} />}  
         </PageLayout>
     )
 }
