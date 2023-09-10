@@ -50,7 +50,7 @@ const LABELS = [
 
 export const AddAuthorForm: React.FunctionComponent<Props> = ({ data, errors, error, isLoading, onChange, onSubmit }: Props): JSX.Element => {
   
-    const focusField = getFocusField(errors, isLoading)
+  const focusField = getFocusField(errors, isLoading)
 
   return (
     <Form title='New author' error={error} onSubmit={onSubmit}>

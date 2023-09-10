@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { CourseCard} from "./components"
+import { CourseCard } from './components'
+import { Spinner } from 'components/common'
 import { Grid } from 'components/ui'
 import { Course } from 'models'
 import { BASE_URL, COURSES_URL, API_COURSES_URL } from 'constants/urls'
@@ -30,7 +31,7 @@ export const CoursesSection: React.FunctionComponent = (): JSX.Element => {
                         />
                     </Link>
                 </Grid.Col>
-            )) : <h2>Loading ...</h2>}
+            )) : <Spinner witdth={100} />}
         </Grid.Row>
     )
 }

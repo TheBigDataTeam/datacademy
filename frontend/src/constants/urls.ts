@@ -25,7 +25,13 @@ export const USER_DASHBOARD_URL = '/dashboard'
 export const NOT_FOUND_URL = '*'
 
 // API URLs
+export const API_USER_URL = '/api/auth/user'
 export const API_LOGIN_URL = '/api/auth/login'
+export const API_LOGOUT_URL = '/api/auth/logout'
 export const API_REGISTRATION_URL = '/api/auth/signup'
+
 export const API_AUTHORS_URL = '/api/authors'
 export const API_COURSES_URL = '/api/courses'
+
+export const API_ADD_AUTHOR_URL = '/api/admin/add/author'
+export const API_ADD_COURSE_URL = '/api/admin/add/course'
